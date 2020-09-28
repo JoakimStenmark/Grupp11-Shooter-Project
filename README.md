@@ -5,7 +5,8 @@ List of filer
 Main
 Gameobject Class
 Player
-EnemyClass
+EnemyManager
+Enemy Class
 Enemy1
 Enemy2 etc
 Bullet
