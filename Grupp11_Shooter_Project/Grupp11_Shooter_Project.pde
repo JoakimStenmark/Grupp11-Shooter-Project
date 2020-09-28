@@ -11,4 +11,6 @@ void draw()
 	background(0);
 	e.Move(new PVector(5,0));
 	e.Draw();
+
+	print ("Hej");
 }
