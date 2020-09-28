@@ -76,7 +76,7 @@ public class Input
 
     public boolean GetButtonDown (BUTTON_NAME buttonName)
     {
-        // print ("\n\nb1: " + buttons[buttonName.value] + "\nb2: " + BUTTON_STATE.value);
+        print ("\n\nb1: " + buttons[buttonName.value] + "\nb2: " + BUTTON_STATE.value);
         return (buttons[buttonName.value] == BUTTON_STATE.DOWN) ? true : false;
     }
 
