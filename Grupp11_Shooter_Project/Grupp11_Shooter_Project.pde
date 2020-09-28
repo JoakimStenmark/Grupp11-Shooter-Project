@@ -1,7 +1,10 @@
-void setup() {
-	
+void setup ()
+{
+	size (512, 512);
 }
 
-void draw() {
-	
+void draw ()
+{
+    background (0);
+    input.DisplayInputText (new PVector ());
 }
