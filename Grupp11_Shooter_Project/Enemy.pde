@@ -1,6 +1,6 @@
 class Enemy extends GameObject
 {
-
+	float size = 30;
 
 	Enemy()
 	{
@@ -22,7 +22,7 @@ class Enemy extends GameObject
 	{
 		fill(col);
 		rectMode(CENTER);
-		rect(position.x,position.y, 50, 50);
+		rect(position.x,position.y, size, size);
 	}
 
 }
