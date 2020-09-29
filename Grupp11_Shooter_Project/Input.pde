@@ -8,6 +8,11 @@ public class Input
     public int right;
 
     BUTTON_STATE[] buttons;
+
+    public boolean shootDown;
+    public boolean restartDown;
+
+    // temp...
  
     Input ()
     {
