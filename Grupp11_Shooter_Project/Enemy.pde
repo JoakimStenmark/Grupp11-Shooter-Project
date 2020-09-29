@@ -1,6 +1,5 @@
 class Enemy extends GameObject
 {
-	float size = 30;
 	int stepsTaken = 0;
 	int stepLength = 50;
 	boolean goLeft = false;
@@ -23,21 +22,33 @@ class Enemy extends GameObject
 
 	}
 
-	Enemy(float x, float y, PVector dir)
+	Enemy(float x, float y, PVector dir, int health, float speed, float radius)
 	{
-		super(x, y, dir); 
+		super(x, y, dir, health, speed, radius);
+
 		col = color(255, 0, 0);
 		moveLength = new PVector(50,0);
 
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);
+	}
 
+	void Draw()
+	{
+		if (health <= 0)
+			return;
+
+		fill(col);
+		rectMode(CENTER);
+		rect(position.x,position.y, diameter, diameter);
 	}
 
 	void Move()
 	{
-		
+		if (health <= 0)
+			return;
+
 		moveLength.set(right);
 
 		if (stepsTaken % 4 == 3) 
@@ -58,22 +69,23 @@ class Enemy extends GameObject
 			//goRight = !goRight;
 		}
 
-
 		position.add(moveLength);
 		stepsTaken++;
 		//println("stepsTaken: " + stepsTaken % 4);
 		if (position.y > height - 50) 
 		{
-			gameOver = true;
+			gameManager.gameOver = true;
 		}
-
 	}
 
-	void Draw()
+	public void GotHit (int amount)
 	{
-		fill(col);
-		rectMode(CENTER);
-		rect(position.x,position.y, size, size);
-	}
+		health -= amount;
 
+		if (health <= 0)
+		{
+			position = new PVector (-100f, -100f);
+			health = 0;
+		}
+	}
 }
