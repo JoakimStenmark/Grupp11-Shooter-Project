@@ -34,7 +34,11 @@ public class EnemyManager
 	void update()
 	{
 		MoveEnemies();
+<<<<<<< Updated upstream
 
+=======
+		
+>>>>>>> Stashed changes
 	}
 
 	void MoveEnemies()
