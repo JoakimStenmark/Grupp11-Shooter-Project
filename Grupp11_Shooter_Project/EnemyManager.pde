@@ -34,7 +34,7 @@ public class EnemyManager
 	void update()
 	{
 		MoveEnemies();
-
+		Draw();
 	}
 
 	void MoveEnemies()
