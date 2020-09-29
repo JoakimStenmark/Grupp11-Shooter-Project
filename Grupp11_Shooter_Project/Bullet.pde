@@ -36,10 +36,7 @@ public class Bullet extends GameObject
 		if (!isActive)
 			return;
 
-		position.add (direction.copy ().mult (speed * deltaTime));
-
-		if (position.y < -radius)
-			isActive = false;
+		Move ();
 	}
 
 	public void Draw ()
@@ -50,6 +47,14 @@ public class Bullet extends GameObject
 		noStroke ();
 		fill (col);
 		ellipse (position.x, position.y, diameter, diameter);
+	}
+
+	private void Move ()
+	{
+		position.add (direction.copy ().mult (speed * deltaTime));
+
+		if (position.y < -radius)
+			isActive = false;
 	}
 
 	public void Fire (PVector position)
