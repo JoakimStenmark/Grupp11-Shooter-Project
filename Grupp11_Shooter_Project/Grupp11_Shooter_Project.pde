@@ -14,13 +14,7 @@ void draw ()
 
 	UpdateDeltaTime ();
 
-<<<<<<< HEAD
 	input.Update ();
-=======
-	GetInput ();
-	
-	
->>>>>>> parent of 89d4a85... Merge branch 'master' into Jockes-Branch
 	
 	gameManager.Update ();
 	gameManager.Draw ();
