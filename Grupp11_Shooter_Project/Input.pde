@@ -11,8 +11,6 @@ public class Input
 
     public boolean shootDown;
     public boolean restartDown;
-
-    // temp...
  
     Input ()
     {
