@@ -9,7 +9,7 @@ class Enemy extends GameObject
 	PVector right;
 	PVector left;
 	PVector down;
-
+	int points;
 	Enemy()
 	{
 		super();
@@ -32,6 +32,7 @@ class Enemy extends GameObject
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);
+		points = 100;
 	}
 
 	void Draw()
@@ -86,6 +87,7 @@ class Enemy extends GameObject
 		{
 			position = new PVector (-100f, -100f);
 			health = 0;
+			gameManager.score += points;
 		}
 	}
 }
