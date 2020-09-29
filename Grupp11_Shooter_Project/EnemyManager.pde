@@ -25,35 +25,24 @@ public class EnemyManager
 				j++;
 				h = 0;	
 			}
-			enemies[i] = new Enemy(	80 + h * spacing,	// Position.x
-									j * spacing,		// Position.y
-									enemyDirection,		// Direction
-									1,					// Health
-									60f,				// Speed
-									16f);				// Radius
+			enemies[i] = new Enemy(80 + h * spacing, j * spacing, enemyDirection);
 			h++;
 		}
 		
 	}
 
-	void Update()
+	void update()
 	{
 		MoveEnemies();
 		Draw();
 	}
 
-	void Draw()
-	{
-		for (Enemy e : enemies) 
-		{
-			e.Draw();
-		}
-	}
-
 	void MoveEnemies()
 	{
+		
 		if (millis() > time) 
 		{
+
 			for (Enemy e : enemies) 
 			{
 				e.Move();		
@@ -63,5 +52,16 @@ public class EnemyManager
 			time = millis() + timePerStep;
 			timePerStep *= 0.98;
 		}
+
 	}
+	void Draw()
+	{
+		for (Enemy e : enemies) 
+		{
+			e.Draw();
+		}
+	}
+
+
+
 }
