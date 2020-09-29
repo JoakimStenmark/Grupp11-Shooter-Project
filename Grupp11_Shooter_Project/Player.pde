@@ -55,19 +55,7 @@ public class Player extends GameObject
 
 		for (Bullet bullet : bullets)
 		{
-			if (!bullet.isActive)
-				continue;
-
 			bullet.Update ();
-			
-			for (Enemy enemy : gameManager.enemyManager.enemies)
-			{
-				if (enemy.health > 0 && bullet.DidCollide (enemy))
-				{
-					enemy.GotHit (1);
-					bullet.isActive = false;
-				}
-			}
 		}
 	}
 
