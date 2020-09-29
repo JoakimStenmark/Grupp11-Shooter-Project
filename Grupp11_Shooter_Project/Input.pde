@@ -163,6 +163,7 @@ void keyReleased ()
     if (key == 'k')
         input.SetInput (BUTTON_NAME.SHOOT, false);
 
-    if (key == 'r')
-        input.SetInput (BUTTON_NAME.RESTART, true);
+    // RESTART
+    if (key == 'r' && input.restartDown)
+        input.restartDown = false;
 }

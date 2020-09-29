@@ -57,11 +57,6 @@ public class Bullet extends GameObject
 			isActive = false;
 	}
 
-	// public void CheckForCollision (GameObject other)
-	// {
-
-	// }
-
 	public void Fire (PVector position)
 	{
 		this.position = position.copy ();
