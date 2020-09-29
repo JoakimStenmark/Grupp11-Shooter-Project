@@ -3,8 +3,12 @@ public class GameManager
 {
     // EnemyManager enemyManager;
     Player player;
+<<<<<<< HEAD
     int score;
     int textSize = 96;
+=======
+
+>>>>>>> master
     GameManager ()
     {
         // enemyManager = new EnemyManager ();
@@ -24,6 +28,7 @@ public class GameManager
 
     public void Update ()
     {
+<<<<<<< HEAD
         if (gameOver) 
         {
             enemyManager.update();
@@ -31,10 +36,14 @@ public class GameManager
             
         }
 
+=======
+        player.Update ();
+>>>>>>> master
     }
 
     public void Draw ()
     {
+<<<<<<< HEAD
 
         enemyManager.Draw();
         player.Draw ();
@@ -48,5 +57,8 @@ public class GameManager
             text("Your score was: " + score + "!", width/2, height/2+128);    
 
         }
+=======
+        player.Draw ();
+>>>>>>> master
     }
 }

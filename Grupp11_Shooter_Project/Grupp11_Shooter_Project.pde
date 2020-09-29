@@ -16,7 +16,7 @@ void draw ()
 	UpdateDeltaTime ();
 
 	GetInput ();
-	
+	enemyManager.update();
 	
 	
 	gameManager.Update ();
