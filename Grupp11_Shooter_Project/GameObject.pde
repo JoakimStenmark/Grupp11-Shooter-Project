@@ -5,6 +5,11 @@ class GameObject
 	int health;
 	color col = 255;
 
+	float speed;
+
+	float radius;
+	float diameter;
+
 	GameObject()
 	{
 		position = new PVector(0,0);
@@ -17,6 +22,11 @@ class GameObject
 		direction = new PVector(dir.x, dir.y);
 	}
 
+	public void Update ()
+	{
+	}
 
-
+	public void Draw ()
+	{
+	}
 }

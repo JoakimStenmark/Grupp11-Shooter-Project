@@ -1,16 +1,32 @@
-Enemy e;
+GameManager gameManager;
+
 void setup()
 {
-	size(672,768);
-	e = new Enemy();
+	size (672, 768);
+	frameRate (60);
+
+	Init ();
 }
 
-void draw() 
+void draw () 
 {
-
 	background(0);
-	e.Move(new PVector(5,0));
-	e.Draw();
 
-	print ("Hej");
+	UpdateDeltaTime ();
+
+	GetInput ();
+	
+	gameManager.Update ();
+	gameManager.Draw ();
+}
+
+public void GetInput ()
+{
+	input.Update ();
+}
+
+public void Init ()
+{
+	gameManager = new GameManager ();
+	gameManager.Init ();
 }
