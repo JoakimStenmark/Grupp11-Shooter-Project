@@ -1,16 +1,13 @@
-public Input input = new Input ();
+Input input = new Input ();
 
 public class Input
 {
     private PVector direction;
 
-    // public int left;
-    // public int right;
+    public int left;
+    public int right;
 
     BUTTON_STATE[] buttons;
-
-    public boolean shootDown;
-    public boolean restartDown;
  
     Input ()
     {
@@ -21,12 +18,9 @@ public class Input
         {
             buttons[i] = BUTTON_STATE.NONE;
         }
-
-        shootDown = false;
-        restartDown = false;
         
-        // left = 37;
-        // right = 39;
+        left = 37;
+        right = 39;
     }
 
     public PVector GetDirectionRAW ()
@@ -37,6 +31,7 @@ public class Input
     public PVector GetDirectionNormalized ()
     {
         return direction.normalize ();
+        // return direction.normalized ();
     }
 
     public void SetInput (BUTTON_NAME button, boolean pressed)
@@ -48,10 +43,10 @@ public class Input
 
         if (pressed)
         {
-            if (previousState == BUTTON_STATE.PRESSED || previousState == BUTTON_STATE.HOLD)
-                buttons[buttonIndex] = BUTTON_STATE.HOLD;
-            else
+            if (previousState == BUTTON_STATE.NONE || previousState == BUTTON_STATE.RELEASED)
                 buttons[buttonIndex] = BUTTON_STATE.PRESSED;
+            else
+                buttons[buttonIndex] = BUTTON_STATE.HOLD;
         }
         else
             if (previousState == BUTTON_STATE.RELEASED)
@@ -66,28 +61,11 @@ public class Input
     {
         direction = new PVector ();
 
-        int rightState = buttons[BUTTON_NAME.RIGHT.value].value;
-        int leftState = buttons[BUTTON_NAME.LEFT.value].value;
-        int upState = buttons[BUTTON_NAME.UP.value].value;
-        int downState = buttons[BUTTON_NAME.DOWN.value].value;
-
-        if (rightState == BUTTON_STATE.PRESSED.value || rightState == BUTTON_STATE.HOLD.value)
-            direction.x++;
-
-        if (leftState == BUTTON_STATE.PRESSED.value || leftState == BUTTON_STATE.HOLD.value)
-            direction.x--;
-
-        if (upState == BUTTON_STATE.PRESSED.value || upState == BUTTON_STATE.HOLD.value)
-            direction.y--;
-
-        if (downState == BUTTON_STATE.PRESSED.value || downState == BUTTON_STATE.HOLD.value)
-            direction.y++;
-
-        // direction.x += buttons[BUTTON_NAME.RIGHT.value].value - buttons[BUTTON_NAME.LEFT.value].value;
-        // direction.y += buttons[BUTTON_NAME.DOWN.value].value - buttons[BUTTON_NAME.UP.value].value;
+        direction.x += buttons[BUTTON_NAME.RIGHT.value].value - buttons[BUTTON_NAME.LEFT.value].value;
+        direction.y += buttons[BUTTON_NAME.DOWN.value].value - buttons[BUTTON_NAME.UP.value].value;
     }
 
-    private void ResetDirectionButtons ()
+    public void ResetDirectionButtons ()
     {
         for (int i = 0; i < buttons.length; i++)
         {
@@ -96,14 +74,15 @@ public class Input
         }
     }
 
-    // public boolean GetButtonDown (int buttonName)
+    // public boolean GetButtonDown (BUTTON_NAME buttonName)
     // {
-    //     return (buttons[buttonName].value == BUTTON_STATE.PRESSED.value) ? true : false;
+    //     print ("\n\nb1: " + buttons[buttonName.value] + "\nb2: " + BUTTON_STATE.value);
+    //     return (buttons[buttonName.value] == BUTTON_STATE.DOWN) ? true : false;
     // }
 
     public void DisplayInputText (PVector position)
     {
-        BUTTON_NAME[] buttonNames = new BUTTON_NAME[] {BUTTON_NAME.LEFT, BUTTON_NAME.RIGHT, BUTTON_NAME.UP, BUTTON_NAME.DOWN, BUTTON_NAME.SHOOT, BUTTON_NAME.RESTART};
+        BUTTON_NAME[] buttonNames = new BUTTON_NAME[] {BUTTON_NAME.LEFT, BUTTON_NAME.RIGHT, BUTTON_NAME.UP, BUTTON_NAME.DOWN, BUTTON_NAME.SHOOT};
     
         textSize (32f);
         textAlign (LEFT, TOP);
@@ -113,20 +92,14 @@ public class Input
             text ("Button: " + buttonNames[i] + " - [" + input.buttons[i] + "]\n", position.x, position.y + (32f * i));
         }
     }
-
-    public void Update ()
-    {
-        UpdateDirection ();
-        ResetDirectionButtons ();
-    }
 }
 
 enum BUTTON_STATE
 {
     NONE (0),
     PRESSED (1),
-    HOLD (2),
-    RELEASED (3);
+    HOLD (1),
+    RELEASED (0);
 
     private int value;
 
@@ -155,7 +128,6 @@ enum BUTTON_NAME
 
 void keyPressed ()
 {
-    // DIRECTION
     if (keyCode == LEFT || key == 'a')
         input.SetInput (BUTTON_NAME.LEFT, true);
     if (keyCode == RIGHT || key == 'd')
@@ -165,25 +137,15 @@ void keyPressed ()
     if (keyCode == DOWN || key == 's')
         input.SetInput (BUTTON_NAME.DOWN, true);
 
-    // SHOOT
-    if (key == 'k' && !input.shootDown)
-    {
+    if (key == 'k')
         input.SetInput (BUTTON_NAME.SHOOT, true);
-        input.shootDown = true;
-        gameManager.player.Shoot ();
-    }
 
-    // RESTART
-    if (key == 'r' && !input.restartDown)
-    {
-        input.restartDown = true;
-        Init ();
-    }
+    if (key == 'r')
+        input.SetInput (BUTTON_NAME.RESTART, true);
 }
 
 void keyReleased ()
 {
-    // DIRECTION
     if (keyCode == LEFT || key == 'a')
         input.SetInput (BUTTON_NAME.LEFT, false);
     if (keyCode == RIGHT || key == 'd')
@@ -193,14 +155,9 @@ void keyReleased ()
     if (keyCode == DOWN || key == 's')
         input.SetInput (BUTTON_NAME.DOWN, false);
 
-    // SHOOT
-    if (key == 'k' && input.shootDown)
-    {
+    if (key == 'k')
         input.SetInput (BUTTON_NAME.SHOOT, false);
-        input.shootDown = false;
-    }
 
-    // RESTART
-    if (key == 'r' && input.restartDown)
-        input.restartDown = false;
+    if (key == 'r')
+        input.SetInput (BUTTON_NAME.RESTART, true);
 }

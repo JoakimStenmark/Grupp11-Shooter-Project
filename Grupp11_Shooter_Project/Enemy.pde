@@ -71,7 +71,7 @@ class Enemy extends GameObject
 
 		position.add(moveLength);
 		stepsTaken++;
-		//println("stepsTaken: " + stepsTaken % 4);
+		println("stepsTaken: " + stepsTaken % 4);
 		if (position.y > height - 50) 
 		{
 			gameManager.gameOver = true;

@@ -5,11 +5,6 @@ class GameObject
 	int health;
 	color col = 255;
 
-	float speed;
-
-	float radius;
-	float diameter;
-
 	GameObject()
 	{
 		position = new PVector(0,0);
@@ -36,10 +31,8 @@ class GameObject
 		diameter = radius + radius;
 	}
 
-	public void Update ()
-	{
-	}
 
+<<<<<<< HEAD
 	public void Draw ()
 	{
 	}
@@ -56,4 +49,7 @@ class GameObject
 
 		return true;
 	}
+=======
+
+>>>>>>> parent of 89d4a85... Merge branch 'master' into Jockes-Branch
 }
