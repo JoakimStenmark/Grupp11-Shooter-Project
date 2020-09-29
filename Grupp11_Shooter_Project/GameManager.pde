@@ -1,25 +1,23 @@
 
 public class GameManager
 {
-    EnemyManager enemyManager;
+    // EnemyManager enemyManager;
     Player player;
-<<<<<<< HEAD
 
-    boolean gameOver = false;
-
-=======
     int score;
     int textSize = 96;
->>>>>>> parent of 89d4a85... Merge branch 'master' into Jockes-Branch
+
+
+
     GameManager ()
     {
-        enemyManager = new EnemyManager ();
+        // enemyManager = new EnemyManager ();
 
         player = new Player (   new PVector (width * 0.5f, height * 0.5f),  // Position
                                 new PVector (0, -1f),                       // Direction
                                 120f,                                       // Speed
                                 16f,                                        // Radius
-                                color (128, 128, 255));                     // Color
+                                color (255, 0, 0));                         // Color
 
         print ("\n\nGameManager Constructor...");
     }
@@ -30,10 +28,7 @@ public class GameManager
 
     public void Update ()
     {
-<<<<<<< HEAD
-        player.Update ();
-        enemyManager.Update ();
-=======
+
         if (gameOver) 
         {
             enemyManager.update();
@@ -41,14 +36,13 @@ public class GameManager
             
         }
 
->>>>>>> parent of 89d4a85... Merge branch 'master' into Jockes-Branch
+
+        player.Update ();
+
     }
 
     public void Draw ()
     {
-<<<<<<< HEAD
-        player.Draw ();
-=======
 
         enemyManager.Draw();
         player.Draw ();
@@ -62,6 +56,8 @@ public class GameManager
             text("Your score was: " + score + "!", width/2, height/2+128);    
 
         }
->>>>>>> parent of 89d4a85... Merge branch 'master' into Jockes-Branch
+
+        player.Draw ();
+
     }
 }
