@@ -19,29 +19,6 @@ class Enemy extends GameObject
 	
 	Enemy()
 	{
-		super();
-		col = color(255, 0, 0);
-		moveLength = new PVector(stepLength,0);
-
-		right = new PVector(moveLength.x, moveLength.y);
-		left = new PVector(moveLength.x * -1, moveLength.y);
-		down = new PVector(moveLength.y, moveLength.x*-1);
-
-		bullets = new Bullet[1];
-		for (int i = 0; i < bullets.length; i++)
-		{
-			bullets[i] = new Bullet (	new PVector (),			// Position
-										new PVector (0, 1f),	// Direction
-										1,						// Damage
-										240f,					// Speed
-										2f,						// Radius
-										color (255, 192, 192));	// Color
-		}
-
-		bulletTime = 1f;
-		bulletTimer = 1f;
-
-		points = 100;
 	}
 
 	Enemy(float x, float y, PVector direction, int health, float speed, float radius)
