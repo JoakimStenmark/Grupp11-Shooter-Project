@@ -98,8 +98,38 @@ class Enemy extends GameObject
 			
 			if (bullet.DidCollide (gameManager.player))
 			{
-				gameManager.player.GotHit (1);
+				gameManager.player.GotHit (bullet.damage);
 				bullet.isActive = false;
+			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier1)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
+				}
+			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier2)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
+				}
+			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier3)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
+				}
 			}
 		}
 	}

@@ -66,8 +66,39 @@ public class Player extends GameObject
 			{
 				if (enemy.health > 0 && bullet.DidCollide (enemy))
 				{
-					enemy.GotHit (1);
+					enemy.GotHit (bullet.damage);
 					bullet.isActive = false;
+					continue;
+				}
+			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier1)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
+				}
+			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier2)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
+				}
+			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier3)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
 				}
 			}
 		}
