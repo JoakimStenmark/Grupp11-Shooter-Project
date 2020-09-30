@@ -2,27 +2,13 @@ public class Player extends GameObject
 {
 	Bullet[] bullets;
 
+	float recoveryTime;
+	float recoveryTimer;
+
+	boolean hasTwinGun;
+
 	Player ()
 	{
-		super ();
-
-		speed = 240f;
-
-		radius = 16f;
-		diameter = radius + radius;
-
-		health = 1;
-
-		bullets = new Bullet[8];
-		for (int i = 0; i < bullets.length; i++)
-		{
-			bullets[i] = new Bullet (	new PVector (),			// Position
-										new PVector (0, -1f),	// Direction
-										1,						// Damage
-										480f,					// Speed
-										2f,						// Radius
-										color (255, 255, 0));	// Color
-		}
 	}
 
 	Player (PVector position, PVector direction, float speed, float radius, color colour)
@@ -37,9 +23,9 @@ public class Player extends GameObject
 
 		col = colour;
 
-		health = 1;
+		health = 3;
 
-		bullets = new Bullet[8];
+		bullets = new Bullet[16];
 		for (int i = 0; i < bullets.length; i++)
 		{
 			bullets[i] = new Bullet (	new PVector (),			// Position
@@ -49,6 +35,11 @@ public class Player extends GameObject
 										2f,						// Radius
 										color (255, 255, 0));	// Color
 		}
+
+		recoveryTime = 1.5f;
+		recoveryTimer = 0f;
+
+		hasTwinGun = false;
 	}
 
 	public void Update ()
@@ -66,19 +57,96 @@ public class Player extends GameObject
 			{
 				if (enemy.health > 0 && bullet.DidCollide (enemy))
 				{
-					enemy.GotHit (1);
+					enemy.GotHit (bullet.damage);
 					bullet.isActive = false;
+					continue;
 				}
 			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier1)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
+				}
+			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier2)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
+				}
+			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier3)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
+				}
+			}
+		}
+
+		if (recoveryTimer > 0f)
+		{
+			recoveryTimer -= deltaTime;
+
+			if (recoveryTimer <= 0f)
+				recoveryTimer = 0f;
 		}
 	}
 
 	public void Draw ()
 	{
+		int a = 255;
+		if (recoveryTimer > 0f)
+		{
+			float timeDiff = recoveryTimer / recoveryTime;
+			int b = (int)(timeDiff * 768);
+			a = b % 256;
+		}
+		color _col = color (red (col), green(col), blue (col), a);
+
 		noStroke ();
-		fill (col);
+		fill (_col);
 		ellipse (position.x, position.y, diameter, diameter);
 
+		float gunSize = 8f;
+
+		if (!hasTwinGun)
+		{
+			stroke (255);
+			strokeWeight (2);
+			fill (0);
+			ellipse (position.x, position.y, gunSize, gunSize);
+		}
+		else
+		{
+			stroke (255);
+			strokeWeight (2);
+			fill (0);
+			for (int i = 0; i < 2; i++)
+			{
+				ellipse ((position.x - radius) + (diameter * i), position.y, gunSize, gunSize);
+			}
+		}
+
+		// PLAYER HUD
+		for (int i = 0; i < health; i++)
+		{
+			stroke (255, 255, 255);
+			fill (red (col), green (col), blue (col), 192);
+			ellipse (i * (diameter + radius) + diameter, height - diameter, diameter, diameter);
+		}
+
+		// BULLETS
 		for (int i = 0; i < bullets.length; i++)
 		{
 			bullets[i].Draw ();
@@ -94,27 +162,52 @@ public class Player extends GameObject
 
 	public void Shoot ()
 	{
+		int bulletAmount = 0;
+
 		for (int i = 0; i < bullets.length; i++)
 		{
 			if (bullets[i].isActive)
 				continue;
 
-			bullets[i].Fire (position);
-			return;
+			if (!hasTwinGun)
+			{
+				bullets[i].Fire (position);
+				return;
+			}
+			else
+			{
+				bullets[i].Fire (new PVector ((position.x - radius) + (bulletAmount * diameter), position.y));
+				bulletAmount++;
+				if (bulletAmount >= 2)
+					return;
+			}
 		}
 	}
 
 	public void GotHit (int amount)
 	{
+		if (recoveryTimer > 0f)
+			return;
+
 		health -= amount;
 
-		print ("\n\nPlayer got hit with: " + amount + " amount!");
+		// print ("\n\nPlayer got hit with: " + amount + " amount!");
 
 		if (health <= 0)
 		{
 			health = 0;
 			position = new PVector (-100f, -100f);
 			gameManager.GameOver ();
+		}
+		else
+			recoveryTimer = recoveryTime;
+	}
+
+	public void GotPickUp (PickUp pickUp)
+	{
+		if (pickUp instanceof TwinGun)
+		{
+			hasTwinGun = true;
 		}
 	}
 }
