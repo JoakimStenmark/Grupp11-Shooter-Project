@@ -25,10 +25,7 @@ olika fiender
 fiender som skjuter
 invulnerability frames + anim (player and enemy)
 
-
 Powerups
 Levels
-
-Score ui
 
 general balancing

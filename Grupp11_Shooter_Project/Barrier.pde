@@ -28,6 +28,7 @@ public class Barrier extends GameObject
 	void Draw()
 	{
 		fill(255, 255, 0);
+		stroke(0);
 		rect(position.x,position.y, diameter,diameter);
 	}
 
