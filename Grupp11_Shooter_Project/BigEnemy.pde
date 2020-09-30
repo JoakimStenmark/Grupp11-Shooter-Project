@@ -1,19 +1,11 @@
 class BigEnemy extends Enemy
 {
-
-
 	BigEnemy()
 	{
-		super();
-		col = color(0, 0, 255);
 	}
 
 	BigEnemy(float x, float y, PVector direction, int health, float speed)
 	{
-
-		super(x, y);
-		col = color(0, 0, 255);
-
 		position = new PVector (x, y);
 		this.direction = direction;		
 		this.speed = speed;		
@@ -22,7 +14,6 @@ class BigEnemy extends Enemy
 		
 		diameter = radius + radius;
 
-	}
 		col = color(0, 0, 255);
 		moveLength = new PVector(50,0);
 
@@ -50,7 +41,6 @@ class BigEnemy extends Enemy
 		if (health > 1)
 		{
 			stroke(255);
-			
 		}
 		rectMode(CENTER);
 		rect(position.x,position.y, diameter, diameter);

@@ -12,7 +12,7 @@ public class GameManager
 
     GameManager ()
     {
-        enemyManager = new Wave1 ();
+        enemyManager = new Wave2 ();
         barrierManager = new BarrierManager ();
 
         player = new Player (   new PVector (width * 0.5f, height - 96),    // Position

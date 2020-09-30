@@ -13,10 +13,17 @@ public class EnemyManager
 
 	public EnemyManager () 
 	{
+		PVector direction = new PVector (0, 1f);
+		int health = 1;
+		float speed = 120f;
+		float radius = 24f;
+		
 		time = millis() + timePerStep;
 		enemies = new Enemy[enemyAmount];
+		enemyCount = enemyAmount;
 		int j = 0;
 		int h = 0;
+
 
 		for (int i = 0; i < enemies.length; ++i) 
 		{
@@ -28,18 +35,10 @@ public class EnemyManager
 
 			if (i % 3 == 2) 
 			{
-				enemies[i] = new BigEnemy(80 + h * spacing, j * spacing);	
-					
 				enemies[i] = new BigEnemy((float)(80 + h * spacing), (float)(j * spacing), direction, health, speed);
 			}
 			else if (i % 10 == 9)
 			{
-				enemies[i] = new Enemy(80 + h * (spacing), j * spacing);	
-				
-			}
-			else 
-			{
-				enemies[i] = new Enemy(80 + h * spacing, j * spacing);
 				enemies[i] = new FastEnemy((float)(80 + h * spacing), (float)(j * spacing), direction, health, speed);	
 			}
 			else 

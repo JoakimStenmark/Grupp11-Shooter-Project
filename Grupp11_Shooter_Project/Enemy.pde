@@ -19,41 +19,7 @@ class Enemy extends GameObject
 	
 	Enemy()
 	{
-		super();
-		col = color(255, 0, 0);
-		moveLength = new PVector(stepLength,0);
-
-		right = new PVector(moveLength.x, moveLength.y);
-		left = new PVector(moveLength.x * -1, moveLength.y);
-		down = new PVector(moveLength.y, moveLength.x*-1);
-
-		bullets = new Bullet[1];
-		for (int i = 0; i < bullets.length; i++)
-		{
-			bullets[i] = new Bullet (	new PVector (),			// Position
-										new PVector (0, 1f),	// Direction
-										1,						// Damage
-										240f,					// Speed
-										2f,						// Radius
-										color (255, 192, 192));	// Color
-		}
-
-		bulletTime = 1f;
-		bulletTimer = 1f;
-
-		points = 100;
 	}
-
-	Enemy(float x, float y)
-	{
-		//super(x, y, dir, health, speed, radius);
-
-		position = new PVector(x,y);
-		
-
-		this.health = 1;
-
-		
 
 	Enemy(float x, float y, PVector direction, int health, float speed)
 	{
@@ -71,19 +37,9 @@ class Enemy extends GameObject
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);
 
-		bullets = new Bullet[1];
-		for (int i = 0; i < bullets.length; i++)
-		{
-			bullets[i] = new Bullet (	new PVector (),			// Position
-										new PVector (0, 1f),	// Direction
-										1,						// Damage
-										240f,					// Speed
-										2f,						// Radius
-										color (255, 192, 192));	// Color
-		}
+		print ("\n\nmoveLength: ");
 
-		bulletTime = 1f;
-		bulletTimer = 1f;
+		InitBullets ();
 
 		points = 100;
 	}
@@ -91,9 +47,37 @@ class Enemy extends GameObject
 	public void Update ()
 	{
 		// Move ();
+
 		if (DidCollide (gameManager.player))
 		{
 			gameManager.player.GotHit (100);
+		}
+
+		for (Barrier barrier : gameManager.barrierManager.bigBarrier1)
+		{
+			if (DidCollide (barrier))
+			{
+				barrier.GotHit (100);
+				GotHit (100);
+			}
+		}
+
+		for (Barrier barrier : gameManager.barrierManager.bigBarrier2)
+		{
+			if (DidCollide (barrier))
+			{
+				barrier.GotHit (100);
+				GotHit (100);
+			}
+		}
+
+		for (Barrier barrier : gameManager.barrierManager.bigBarrier3)
+		{
+			if (DidCollide (barrier))
+			{
+				barrier.GotHit (100);
+				GotHit (100);
+			}
 		}
 
 		bulletTimer -= deltaTime;
@@ -114,8 +98,38 @@ class Enemy extends GameObject
 			
 			if (bullet.DidCollide (gameManager.player))
 			{
-				gameManager.player.GotHit (1);
+				gameManager.player.GotHit (bullet.damage);
 				bullet.isActive = false;
+			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier1)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
+				}
+			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier2)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
+				}
+			}
+
+			for (Barrier barrier : gameManager.barrierManager.bigBarrier3)
+			{
+				if (barrier.health > 0 && bullet.DidCollide (barrier))
+				{
+					barrier.GotHit (bullet.damage);
+					bullet.isActive = false;
+					continue;
+				}
 			}
 		}
 	}
@@ -130,8 +144,8 @@ class Enemy extends GameObject
 		if (health <= 0)
 			return;
 
-		noStroke();
-		fill(col);		
+		noStroke ();
+		fill(col);
 		rectMode(CENTER);
 		rect(position.x,position.y, diameter, diameter);
 	}
@@ -191,6 +205,24 @@ class Enemy extends GameObject
 			position = new PVector (-100f, -100f);
 			health = 0;
 			gameManager.score += points;
+			gameManager.enemyManager.enemyCount -= 1;
 		}
+	}
+
+	protected void InitBullets ()
+	{
+		bullets = new Bullet[1];
+		for (int i = 0; i < bullets.length; i++)
+		{
+			bullets[i] = new Bullet (	new PVector (),			// Position
+										new PVector (0, 1f),	// Direction
+										1,						// Damage
+										240f,					// Speed
+										4f,						// Radius
+										color (255, 192, 192));	// Color
+		}
+
+		bulletTime = 1f;
+		bulletTimer = 1f;
 	}
 }
