@@ -4,12 +4,12 @@ public class FastEnemy extends Enemy
 	{
 	}
 
-	FastEnemy(float x, float y, PVector direction, int health, float speed)
+	FastEnemy(float x, float y)
 	{
 		position = new PVector (x, y);
-		this.direction = direction;
+		this.direction = new PVector (0f, 1f);
 		
-		this.speed = speed;	
+		this.speed = 60f;
 		this.health = 1;
 		this.radius = 16f;
 		
