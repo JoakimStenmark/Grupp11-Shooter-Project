@@ -44,7 +44,7 @@ class Enemy extends GameObject
 		points = 100;
 	}
 
-	Enemy(float x, float y, float radius)
+	Enemy(float x, float y)
 	{
 		//super(x, y, dir, health, speed, radius);
 
@@ -55,7 +55,7 @@ class Enemy extends GameObject
 
 		
 
-		this.radius = radius;
+		this.radius = 16f;
 		diameter = radius + radius;
 
 		col = color(255, 0, 0);
@@ -124,7 +124,8 @@ class Enemy extends GameObject
 		if (health <= 0)
 			return;
 
-		fill(col);
+		noStroke();
+		fill(col);		
 		rectMode(CENTER);
 		rect(position.x,position.y, diameter, diameter);
 	}

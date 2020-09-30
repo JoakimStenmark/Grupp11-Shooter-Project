@@ -1,13 +1,13 @@
 public class EnemyManager
 {
-	int enemyAmount = 12;
+	int enemyAmount = 16;
 	int enemyCount;
 	Enemy[] enemies;
 	PVector enemyDirection = new PVector (0,1);
 	float timePerStep = 1000; //1000
 	float time; 
-	int spacing = 35;
-	int enemyPerRow = 12;
+	int spacing = 60;
+	int enemyPerRow = 8;
 	
 	//int stepsTaken;
 
@@ -25,9 +25,22 @@ public class EnemyManager
 				j++;
 				h = 0;	
 			}
-			enemies[i] = new Enemy(	80 + h * spacing,	// Position.x
-									j * spacing,		// Position.y									
-									16f);				// Radius
+
+			if (i % 3 == 2) 
+			{
+				enemies[i] = new BigEnemy(80 + h * spacing, j * spacing);	
+					
+			}
+			else if (i > 0)
+			{
+				enemies[i] = new Enemy(80 + h * (spacing), j * spacing);	
+				
+			}
+			else 
+			{
+				enemies[i] = new Enemy(80 + h * spacing, j * spacing);
+			}
+
 			h++;
 		}
 		
