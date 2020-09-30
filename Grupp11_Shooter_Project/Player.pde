@@ -5,6 +5,8 @@ public class Player extends GameObject
 	float recoveryTime;
 	float recoveryTimer;
 
+	boolean hasTwinGun;
+
 	Player ()
 	{
 	}
@@ -23,7 +25,7 @@ public class Player extends GameObject
 
 		health = 3;
 
-		bullets = new Bullet[8];
+		bullets = new Bullet[16];
 		for (int i = 0; i < bullets.length; i++)
 		{
 			bullets[i] = new Bullet (	new PVector (),			// Position
@@ -36,6 +38,8 @@ public class Player extends GameObject
 
 		recoveryTime = 1.5f;
 		recoveryTimer = 0f;
+
+		hasTwinGun = false;
 	}
 
 	public void Update ()
@@ -114,6 +118,26 @@ public class Player extends GameObject
 		fill (_col);
 		ellipse (position.x, position.y, diameter, diameter);
 
+		float gunSize = 8f;
+
+		if (!hasTwinGun)
+		{
+			stroke (255);
+			strokeWeight (2);
+			fill (0);
+			ellipse (position.x, position.y, gunSize, gunSize);
+		}
+		else
+		{
+			stroke (255);
+			strokeWeight (2);
+			fill (0);
+			for (int i = 0; i < 2; i++)
+			{
+				ellipse ((position.x - radius) + (diameter * i), position.y, gunSize, gunSize);
+			}
+		}
+
 		// PLAYER HUD
 		for (int i = 0; i < health; i++)
 		{
@@ -138,13 +162,25 @@ public class Player extends GameObject
 
 	public void Shoot ()
 	{
+		int bulletAmount = 0;
+
 		for (int i = 0; i < bullets.length; i++)
 		{
 			if (bullets[i].isActive)
 				continue;
 
-			bullets[i].Fire (position);
-			return;
+			if (!hasTwinGun)
+			{
+				bullets[i].Fire (position);
+				return;
+			}
+			else
+			{
+				bullets[i].Fire (new PVector ((position.x - radius) + (bulletAmount * diameter), position.y));
+				bulletAmount++;
+				if (bulletAmount >= 2)
+					return;
+			}
 		}
 	}
 
@@ -165,5 +201,13 @@ public class Player extends GameObject
 		}
 		else
 			recoveryTimer = recoveryTime;
+	}
+
+	public void GotPickUp (PickUp pickUp)
+	{
+		if (pickUp instanceof TwinGun)
+		{
+			hasTwinGun = true;
+		}
 	}
 }

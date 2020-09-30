@@ -154,6 +154,7 @@ class Enemy extends GameObject
 		if (health <= 0)
 			return;
 
+		noStroke ();
 		fill(col);
 		rectMode(CENTER);
 		rect(position.x,position.y, diameter, diameter);

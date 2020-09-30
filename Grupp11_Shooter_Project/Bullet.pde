@@ -53,7 +53,5 @@ public class Bullet extends GameObject
 	{
 		this.position = position.copy ();
 		isActive = true;
-
-		print ("\n\nBullet.pos: " + this.position + "\ncolor: " + red(col) + "\nisActive: " + isActive);
 	}
 }
