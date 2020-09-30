@@ -32,7 +32,7 @@ public class Player extends GameObject
 										new PVector (0, -1f),	// Direction
 										1,						// Damage
 										480f,					// Speed
-										2f,						// Radius
+										4f,						// Radius
 										color (255, 255, 0));	// Color
 		}
 

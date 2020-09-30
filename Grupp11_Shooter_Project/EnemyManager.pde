@@ -18,6 +18,11 @@ public class EnemyManager
 		int j = 0;
 		int h = 0;
 
+		PVector direction = new PVector (0, 1f);
+		int health = 1;
+		float speed = 120f;
+		float radius = 24f;
+
 		for (int i = 0; i < enemies.length; ++i) 
 		{
 			if (i % enemyPerRow == 0) 
@@ -28,17 +33,15 @@ public class EnemyManager
 
 			if (i % 3 == 2) 
 			{
-				enemies[i] = new BigEnemy(80 + h * spacing, j * spacing);	
-					
+				enemies[i] = new BigEnemy((float)(80 + h * spacing), (float)(j * spacing));
 			}
 			else if (i > 0)
 			{
-				enemies[i] = new Enemy(80 + h * (spacing), j * spacing);	
-				
+				enemies[i] = new Enemy((float)(80 + h * (spacing)), (float)(j * spacing), direction, health, speed, radius);	
 			}
 			else 
 			{
-				enemies[i] = new Enemy(80 + h * spacing, j * spacing);
+				enemies[i] = new Enemy((float)(80 + h * spacing), (float)(j * spacing), direction, health, speed, radius);
 			}
 
 			h++;

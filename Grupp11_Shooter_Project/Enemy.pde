@@ -37,19 +37,9 @@ class Enemy extends GameObject
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);
 
-		bullets = new Bullet[1];
-		for (int i = 0; i < bullets.length; i++)
-		{
-			bullets[i] = new Bullet (	new PVector (),			// Position
-										new PVector (0, 1f),	// Direction
-										1,						// Damage
-										240f,					// Speed
-										2f,						// Radius
-										color (255, 192, 192));	// Color
-		}
+		print ("\n\nmoveLength: ");
 
-		bulletTime = 1f;
-		bulletTimer = 1f;
+		InitBullets ();
 
 		points = 100;
 	}
@@ -216,5 +206,22 @@ class Enemy extends GameObject
 			health = 0;
 			gameManager.score += points;
 		}
+	}
+
+	protected void InitBullets ()
+	{
+		bullets = new Bullet[1];
+		for (int i = 0; i < bullets.length; i++)
+		{
+			bullets[i] = new Bullet (	new PVector (),			// Position
+										new PVector (0, 1f),	// Direction
+										1,						// Damage
+										240f,					// Speed
+										4f,						// Radius
+										color (255, 192, 192));	// Color
+		}
+
+		bulletTime = 1f;
+		bulletTimer = 1f;
 	}
 }
