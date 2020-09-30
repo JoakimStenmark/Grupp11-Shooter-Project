@@ -23,6 +23,7 @@ class BigEnemy extends Enemy
 		diameter = radius + radius;
 
 	}
+		col = color(0, 0, 255);
 		moveLength = new PVector(50,0);
 
 		right = new PVector(moveLength.x, moveLength.y);
