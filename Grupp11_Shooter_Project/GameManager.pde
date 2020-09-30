@@ -11,6 +11,7 @@ public class GameManager
     GameManager ()
     {
         enemyManager = new EnemyManager ();
+        barrierManager = new BarrierManager ();
 
         player = new Player (   new PVector (width * 0.5f, height - 96),    // Position
                                 new PVector (0, -1f),                       // Direction
