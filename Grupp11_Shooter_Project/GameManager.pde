@@ -1,6 +1,8 @@
 public class GameManager
 {
     EnemyManager enemyManager;
+    EnemyManager[] waves;
+    int currentWave = 0;
     BarrierManager barrierManager;
     Player player;
 
@@ -10,9 +12,18 @@ public class GameManager
 
     TwinGun twinGun;
 
+
     GameManager ()
     {
-        enemyManager = new Wave2 ();
+        //loading all waves
+        waves = new EnemyManager[4];
+        waves[0] = new Wave0();
+        waves[1] = new Wave1();
+        waves[2] = new Wave2();
+        waves[3] = new Wave3();
+
+        //current wave
+        enemyManager = waves[currentWave];
         barrierManager = new BarrierManager ();
 
         player = new Player (   new PVector (width * 0.5f, height - 96),    // Position
@@ -39,12 +50,25 @@ public class GameManager
     public void Update ()
     {
 
+
+
         if (!gameOver) 
         {
             player.Update ();
             enemyManager.Update ();
 
             twinGun.Update ();
+
+            if (enemyManager.enemyCount == 0) 
+            {
+                currentWave++;
+                if (currentWave >= waves.length) 
+                {
+                    currentWave = 0;
+                }
+                
+                enemyManager = waves[currentWave];
+            }
         }
 
     }
@@ -67,6 +91,7 @@ public class GameManager
             textSize(textSize/2);
             text("Your score was: " + score + "!", width/2, height/2+128);
         }
+        println("enemyManager.enemyCount: "+enemyManager.enemyCount);
     }
 
     private void DrawBackground ()

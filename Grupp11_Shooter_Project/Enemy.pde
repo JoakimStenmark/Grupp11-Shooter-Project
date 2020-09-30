@@ -37,7 +37,7 @@ class Enemy extends GameObject
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);
 
-		print ("\n\nmoveLength: ");
+		
 
 		InitBullets ();
 
@@ -198,6 +198,10 @@ class Enemy extends GameObject
 
 	public void GotHit (int amount)
 	{
+		if (health <= 0) 
+		{
+			return;
+		}
 		health -= amount;
 
 		if (health <= 0)

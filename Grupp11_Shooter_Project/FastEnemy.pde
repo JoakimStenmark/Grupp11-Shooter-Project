@@ -40,7 +40,9 @@ public class FastEnemy extends Enemy
 		fill(col);
 		noStroke();
 		rectMode(CENTER);
-		rect(position.x,position.y, diameter, diameter);
+		
+		triangle(position.x, position.y + radius, position.x - radius , position.y - radius, position.x + radius, position.y - radius);
+
 	}
 
 	void Move()
@@ -68,16 +70,6 @@ public class FastEnemy extends Enemy
 			
 			
 		}
-
-
-		// else if (goLeft)
-		// {
-		// 	moveLength.set(left);			
-		// }
-		// else if (goRight)
-		// {
-		// 	moveLength.set(right);
-		// }
 
 		position.add(moveLength);
 		stepsTaken++;

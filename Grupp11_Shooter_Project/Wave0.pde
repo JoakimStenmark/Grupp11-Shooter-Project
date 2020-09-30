@@ -1,12 +1,12 @@
-public class Wave2 extends EnemyManager
+public class Wave0 extends EnemyManager
 {
-	Wave2()
-	{		
+	Wave0()
+	{
 		PVector direction = new PVector (0, 1f);
 		int health = 1;
 		float speed = 120f;
 		
-		enemyAmount = 16;
+		enemyAmount = 12;
 		enemyCount = enemyAmount;
 		spacing = 60;
 		enemyPerRow = 8;
@@ -24,14 +24,8 @@ public class Wave2 extends EnemyManager
 				h = 0;	
 			}
 
-			if (i == 0 || i == 7)
-			{
-				enemies[i] = new BigEnemy((float)(70 + h * spacing), (float)(-20 + j * spacing), direction, health, speed);
-			}
-			else 
-			{
-				enemies[i] = new Enemy((float)(70 + h * spacing), (float)(-20 + j * spacing), direction, health, speed);
-			}
+
+			enemies[i] = new Enemy((float)(70 + h * spacing), (float)(-20 + j * spacing), direction, health, speed);
 
 
 			h++;
