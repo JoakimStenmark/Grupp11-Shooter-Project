@@ -17,3 +17,15 @@ List of filer
 
 Deadline
 fredag 2 okt
+
+to do: 
+
+Barriärer
+olika fiender
+fiender som skjuter
+invulnerability frames + anim (player and enemy)
+
+Powerups
+Levels
+
+general balancing

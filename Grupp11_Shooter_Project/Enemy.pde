@@ -15,6 +15,8 @@ class Enemy extends GameObject
 	float bulletTime;
 	float bulletTimer;
 
+	int points;
+	
 	Enemy()
 	{
 		super();
@@ -38,6 +40,8 @@ class Enemy extends GameObject
 
 		bulletTime = 1f;
 		bulletTimer = 1f;
+
+		points = 100;
 	}
 
 	Enemy(float x, float y, PVector dir, int health, float speed, float radius)
@@ -64,6 +68,8 @@ class Enemy extends GameObject
 
 		bulletTime = 1f;
 		bulletTimer = 1f;
+
+		points = 100;
 	}
 
 	public void Update ()
@@ -167,6 +173,7 @@ class Enemy extends GameObject
 		{
 			position = new PVector (-100f, -100f);
 			health = 0;
+			gameManager.score += points;
 		}
 	}
 }

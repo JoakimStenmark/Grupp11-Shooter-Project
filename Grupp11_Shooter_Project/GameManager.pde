@@ -1,6 +1,7 @@
 public class GameManager
 {
     EnemyManager enemyManager;
+    BarrierManager barrierManager;
     Player player;
 
     boolean gameOver;
@@ -19,8 +20,9 @@ public class GameManager
 
         score = 0;
         gameOver = false;
+        
         print ("\n\nGameManager Constructor...");
-    }
+    }   
 
     public void Init ()
     {
@@ -42,6 +44,7 @@ public class GameManager
         DrawBackground ();
         player.Draw ();
         enemyManager.Draw();
+        barrierManager.DrawBarriers();
         if (gameOver) 
         {
             textSize(textSize);
