@@ -1,6 +1,6 @@
 public class EnemyManager
 {
-	int enemyAmount = 16;
+	int enemyAmount = 24;
 	int enemyCount;
 	Enemy[] enemies;
 	PVector enemyDirection = new PVector (0,1);
@@ -30,8 +30,9 @@ public class EnemyManager
 			{
 				enemies[i] = new BigEnemy(80 + h * spacing, j * spacing);	
 					
+				enemies[i] = new BigEnemy((float)(80 + h * spacing), (float)(j * spacing), direction, health, speed);
 			}
-			else if (i > 0)
+			else if (i % 10 == 9)
 			{
 				enemies[i] = new Enemy(80 + h * (spacing), j * spacing);	
 				
@@ -39,6 +40,11 @@ public class EnemyManager
 			else 
 			{
 				enemies[i] = new Enemy(80 + h * spacing, j * spacing);
+				enemies[i] = new FastEnemy((float)(80 + h * spacing), (float)(j * spacing), direction, health, speed);	
+			}
+			else 
+			{
+				enemies[i] = new Enemy((float)(80 + h * spacing), (float)(j * spacing), direction, health, speed);
 			}
 
 			h++;

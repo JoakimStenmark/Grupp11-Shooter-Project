@@ -55,6 +55,12 @@ class Enemy extends GameObject
 
 		
 
+	Enemy(float x, float y, PVector direction, int health, float speed)
+	{
+		position = new PVector (x, y);
+		this.direction = direction;
+		this.health = 1;
+		this.speed = speed;
 		this.radius = 16f;
 		diameter = radius + radius;
 
