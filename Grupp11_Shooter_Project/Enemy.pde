@@ -205,6 +205,7 @@ class Enemy extends GameObject
 			position = new PVector (-100f, -100f);
 			health = 0;
 			gameManager.score += points;
+			gameManager.enemyManager.enemyCount -= 1;
 		}
 	}
 
