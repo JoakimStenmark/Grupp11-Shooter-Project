@@ -10,10 +10,6 @@ class GameObject
 	float radius;
 	float diameter;
 
-	GameObject()
-	{
-	}
-
 	public void Update ()
 	{
 		if (health <= 0)

@@ -6,7 +6,6 @@ void setup()
 	frameRate (60);
 
 	Init ();
-
 }
 
 void draw () 
@@ -17,11 +16,9 @@ void draw ()
 	
 	gameManager.Update ();
 	gameManager.Draw ();
-
 }
 
 public void Init ()
 {
 	gameManager = new GameManager ();
-	gameManager.Init ();
 }

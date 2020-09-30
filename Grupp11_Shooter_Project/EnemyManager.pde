@@ -8,22 +8,14 @@ public class EnemyManager
 	float time; 
 	int spacing = 60;
 	int enemyPerRow = 8;
-	
-	//int stepsTaken;
 
 	public EnemyManager () 
 	{
-		PVector direction = new PVector (0, 1f);
-		int health = 1;
-		float speed = 120f;
-		float radius = 24f;
-		
 		time = millis() + timePerStep;
 		enemies = new Enemy[enemyAmount];
 		enemyCount = enemyAmount;
 		int j = 0;
 		int h = 0;
-
 
 		for (int i = 0; i < enemies.length; ++i) 
 		{
@@ -39,11 +31,11 @@ public class EnemyManager
 			}
 			else if (i > 0)
 			{
-				enemies[i] = new Enemy((float)(80 + h * (spacing)), (float)(j * spacing), direction, health, speed, radius);	
+				enemies[i] = new Enemy((float)(80 + h * (spacing)), (float)(j * spacing));	
 			}
 			else 
 			{
-				enemies[i] = new Enemy((float)(80 + h * spacing), (float)(j * spacing), direction, health, speed, radius);
+				enemies[i] = new Enemy((float)(80 + h * spacing), (float)(j * spacing));
 			}
 
 			h++;
@@ -75,8 +67,7 @@ public class EnemyManager
 		{
 			for (Enemy e : enemies) 
 			{
-				e.Move();		
-				//stepsTaken++;
+				e.Move();
 			}
 
 			time = millis() + timePerStep;

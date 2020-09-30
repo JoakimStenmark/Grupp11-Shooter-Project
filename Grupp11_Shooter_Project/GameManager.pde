@@ -8,7 +8,8 @@ public class GameManager
     int textSize = 96;
     int score;
 
-    Pickups[] pickups;
+    Pickup[] pickups;
+    int pickupsIndex;
 
     GameManager ()
     {
@@ -26,24 +27,21 @@ public class GameManager
 
         InitPickups ();
         
-        print ("\n\nGameManager Constructor...");
-    }   
-
-    public void Init ()
-    {
+        print ("\n\nGameManager Constructor...\n");
     }
 
     public void Update ()
     {
+        if (gameOver)
+            return;
 
-        if (!gameOver) 
+        player.Update ();
+        enemyManager.Update ();
+
+        for (Pickup pickup : pickups)
         {
-            player.Update ();
-            enemyManager.Update ();
-
-            // twinGun.Update ();
+            pickup.Update ();
         }
-
     }
 
     public void Draw ()
@@ -53,26 +51,38 @@ public class GameManager
         enemyManager.Draw();
         barrierManager.DrawBarriers();
 
-        twinGun.Draw ();
-
-        if (gameOver) 
+        for (Pickup pickup : pickups)
         {
-            textSize(textSize);
-            fill(255, 255, 255, 127);
-            textAlign(CENTER);
-            text("Game Over", width/2, height/2);    
-            textSize(textSize/2);
-            text("Your score was: " + score + "!", width/2, height/2+128);
+            pickup.Draw ();
         }
+
+        if (gameOver)
+            DrawGameOverScreen ();
     }
 
     private void DrawBackground ()
     {
         background (0);
-
+        noStroke ();
         fill (255, 0, 0, 64);
         rectMode(CENTER);
         rect(width * 0.5f, height - 48, width, 96);
+
+        textSize(textSize);
+        fill(255, 255, 255, 255);
+        textAlign(RIGHT, BOTTOM);
+        textSize(32f);
+        text("SCORE: " + score, width, height);
+    }
+
+    private void DrawGameOverScreen ()
+    {
+        textSize(textSize);
+        fill(255, 255, 255, 127);
+        textAlign(CENTER);
+        text("Game Over", width/2, height/2);    
+        textSize(textSize/2);
+        text("Your score was: " + score + "!", width/2, height/2+128);
     }
 
     public void GameOver ()
@@ -80,17 +90,20 @@ public class GameManager
         gameOver = true;
     }
 
-    public void SpawnPowerUp ()
+    public void SpawnPickup ()
     {
-
+        if (pickups[pickupsIndex].CouldSpawn ())
+            pickupsIndex = (pickupsIndex + 1) % pickups.length;
     }
 
     private void InitPickups ()
     {
-        pickups = new PickUps[2];
+        pickups = new Pickup[2];
 
-        pickups[TWIN_GUN] = new TwinGun (new PVector (width * 0.5f, height * 0.5f), 90f, 8f);
-        pickups[EXTRA_LIFE] = new ExtraLife (new PVector (width * 0.5f, height * 0.5f), 60f, 16f);
+        pickups[TWIN_GUN] = new TwinGun (180f, 12f);
+        pickups[EXTRA_LIFE] = new ExtraLife (120f, 16f);
+
+        pickupsIndex = 0;
     }
 }
 

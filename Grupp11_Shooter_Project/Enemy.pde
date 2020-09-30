@@ -16,18 +16,21 @@ class Enemy extends GameObject
 	float bulletTimer;
 
 	int points;
-	
-	Enemy()
+
+	int maxHealth;
+
+	Enemy ()
 	{
 	}
 
-	Enemy(float x, float y, PVector direction, int health, float speed, float radius)
+	Enemy(float x, float y)
 	{
 		position = new PVector (x, y);
-		this.direction = direction;
-		this.health = health;
-		this.speed = speed;
-		this.radius = radius;
+		this.direction = new PVector (0f, 1f);
+		this.health = 1;
+		this.maxHealth = this.health;
+		this.speed = 120f;
+		this.radius = 24f;
 		diameter = radius + radius;
 
 		col = color(255, 0, 0);
@@ -142,8 +145,9 @@ class Enemy extends GameObject
 		if (health <= 0)
 			return;
 
-		noStroke ();
-		fill(col);
+		stroke (255, 255, 255, 255);
+		strokeWeight (4);
+		fill(GetColorPercentValue ());
 		rectMode(CENTER);
 		rect(position.x,position.y, diameter, diameter);
 	}
@@ -196,6 +200,9 @@ class Enemy extends GameObject
 
 	public void GotHit (int amount)
 	{
+		if (health <= 0)
+			return;
+
 		health -= amount;
 
 		if (health <= 0)
@@ -222,5 +229,13 @@ class Enemy extends GameObject
 
 		bulletTime = 1f;
 		bulletTimer = 1f;
+	}
+
+	private color GetColorPercentValue ()
+	{
+		int r = round (((float)health / (float)maxHealth) * red(col));
+		int g = round (((float)health / (float)maxHealth) * green(col));
+		int b = round (((float)health / (float)maxHealth) * blue(col));
+		return color (r, g, b, alpha(col));
 	}
 }
