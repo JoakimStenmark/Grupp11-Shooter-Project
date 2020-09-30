@@ -8,10 +8,11 @@ public class GameManager
     int textSize = 96;
     int score;
 
+    TwinGun twinGun;
+
     GameManager ()
     {
-        enemyManager = new EnemyManager ();
-        enemyManager = new Wave2 ();
+        enemyManager = new Wave1 ();
         barrierManager = new BarrierManager ();
 
         player = new Player (   new PVector (width * 0.5f, height - 96),    // Position
@@ -22,6 +23,11 @@ public class GameManager
 
         score = 0;
         gameOver = false;
+
+        twinGun = new TwinGun ( new PVector (width * 0.5f, height * 0.5f),  // Position
+                                new PVector (0, 1f),                        // Direction
+                                120f,                                       // Speed
+                                8f);                                        // Radius
         
         print ("\n\nGameManager Constructor...");
     }   
@@ -37,6 +43,8 @@ public class GameManager
         {
             player.Update ();
             enemyManager.Update ();
+
+            twinGun.Update ();
         }
 
     }
@@ -47,6 +55,9 @@ public class GameManager
         player.Draw ();
         enemyManager.Draw();
         barrierManager.DrawBarriers();
+
+        twinGun.Draw ();
+
         if (gameOver) 
         {
             textSize(textSize);
