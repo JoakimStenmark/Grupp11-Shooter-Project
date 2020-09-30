@@ -1,31 +1,12 @@
-public class TwinGun extends PickUp
+public class TwinGun extends Pickup
 {
-    int damage = 2;
-
-    TwinGun ()
+    TwinGun (float speed, float radius)
     {
-    }
+        super (speed, radius);
 
-    TwinGun (PVector position, PVector direction, float speed, float radius)
-    {
-        super (position, direction, speed, radius);
+        this.col = color (128, 255, 255);
 
-        col = color (128, 255, 255);
-        isActive = true;
-    }
-
-    public void Update ()
-    {
-        if (!isActive)
-            return;
-
-        super.Update ();
-
-        if (DidCollide (gameManager.player))
-        {
-            gameManager.player.hasTwinGun = true;
-            isActive = false;
-        }
+        this.value = 2; // (Damage!?)
     }
 
     public void Draw ()
@@ -33,6 +14,11 @@ public class TwinGun extends PickUp
         if (!isActive)
             return;
 
-        super.Draw ();
+        stroke (255, 255, 255, 255);
+        strokeWeight (2);
+        fill (0);
+        ellipse(position.x, position.y, diameter, diameter);
+        ellipse(position.x - radius, position.y, radius * 0.75f, radius * 0.75f);
+        ellipse(position.x + radius, position.y, radius * 0.75f, radius * 0.75f);
     }
 }

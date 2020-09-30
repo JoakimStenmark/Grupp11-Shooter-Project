@@ -3,10 +3,6 @@ public class Bullet extends GameObject
 	boolean isActive;
 	int damage;
 
-	Bullet ()
-	{
-	}
-
 	Bullet (PVector position, PVector direction, int damage, float speed, float radius, color col)
 	{
 		this.position = position;

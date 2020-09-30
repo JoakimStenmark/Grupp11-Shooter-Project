@@ -1,15 +1,12 @@
 class BigEnemy extends Enemy
 {
-	BigEnemy()
-	{
-	}
-
-	BigEnemy(float x, float y, PVector direction, int health, float speed)
+	BigEnemy(float x, float y)
 	{
 		position = new PVector (x, y);
 		this.direction = direction;		
 		this.speed = speed;		
 		this.health = 5;
+		this.maxHealth = this.health;
 		this.radius = 24f;
 		
 		diameter = radius + radius;
@@ -24,25 +21,5 @@ class BigEnemy extends Enemy
 		InitBullets ();
 
 		points = 200;
-	}
-
-
-	void Draw()
-	{
-		for (Bullet bullet : bullets)
-		{
-			bullet.Draw ();
-		}
-
-		if (health <= 0)
-			return;
-
-		fill(col);
-		if (health > 1)
-		{
-			stroke(255);
-		}
-		rectMode(CENTER);
-		rect(position.x,position.y, diameter, diameter);
 	}
 }

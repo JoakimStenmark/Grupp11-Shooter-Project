@@ -7,9 +7,8 @@ public class Player extends GameObject
 
 	boolean hasTwinGun;
 
-	Player ()
-	{
-	}
+	int killCount;
+	int spawnGoal;
 
 	Player (PVector position, PVector direction, float speed, float radius, color colour)
 	{
@@ -31,7 +30,7 @@ public class Player extends GameObject
 			bullets[i] = new Bullet (	new PVector (),			// Position
 										new PVector (0, -1f),	// Direction
 										1,						// Damage
-										480f,					// Speed
+										600f,					// Speed
 										4f,						// Radius
 										color (255, 255, 0));	// Color
 		}
@@ -40,6 +39,9 @@ public class Player extends GameObject
 		recoveryTimer = 0f;
 
 		hasTwinGun = false;
+
+		killCount = 0; // Counts as the player kills an Enemy.
+		spawnGoal = 5; // Every 5th enemy spawns a Pickup.
 	}
 
 	public void Update ()
@@ -59,6 +61,10 @@ public class Player extends GameObject
 				{
 					enemy.GotHit (bullet.damage);
 					bullet.isActive = false;
+
+					killCount++;
+					if (killCount % spawnGoal == 0)
+						gameManager.SpawnPickup ();
 					continue;
 				}
 			}
@@ -158,13 +164,19 @@ public class Player extends GameObject
 		direction = input.GetDirectionRAW ();
 		direction.y = 0f;
 		position.add (direction.copy ().mult (speed * deltaTime));
+
+		if (position.x <= radius)
+			position.x = radius;
+		else if (position.x >= width - radius)
+			position.x = width - radius;
 	}
 
 	public void Shoot ()
 	{
 		int bulletAmount = 0;
+		int maxBullets = (hasTwinGun) ? bullets.length : (int)(bullets.length * 0.5f);
 
-		for (int i = 0; i < bullets.length; i++)
+		for (int i = 0; i < maxBullets; i++)
 		{
 			if (bullets[i].isActive)
 				continue;
@@ -191,7 +203,7 @@ public class Player extends GameObject
 
 		health -= amount;
 
-		// print ("\n\nPlayer got hit with: " + amount + " amount!");
+		hasTwinGun = false;
 
 		if (health <= 0)
 		{
@@ -203,11 +215,11 @@ public class Player extends GameObject
 			recoveryTimer = recoveryTime;
 	}
 
-	public void GotPickUp (PickUp pickUp)
+	public void GotPickup (Pickup pickup)
 	{
-		if (pickUp instanceof TwinGun)
-		{
+		if (pickup instanceof TwinGun)
 			hasTwinGun = true;
-		}
+		else if (pickup instanceof ExtraLife)
+			health += pickup.value;
 	}
 }

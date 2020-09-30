@@ -2,10 +2,6 @@ public class Barrier extends GameObject
 {
 	int maxHealth;
 
-	Barrier()
-	{
-	}
-
 	Barrier(float x, float y, PVector direction, int health, float radius)
 	{
 		position = new PVector (x, y);
