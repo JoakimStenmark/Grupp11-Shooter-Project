@@ -4,16 +4,17 @@ public class Barrier extends GameObject
 
 	Barrier()
 	{
-		super();
-		col = color (255, 255, 0);
-		maxHealth = health;
 	}
 
-	Barrier(float x, float y, PVector dir, int health, float speed, float radius)
+	Barrier(float x, float y, PVector direction, int health, float radius)
 	{
-		super(x,y,dir,health,0,radius);
-		col = color (255, 255, 0);
+		position = new PVector (x, y);
+		this.direction = direction;
+		this.health = health;
 		maxHealth = health;
+		this.radius = radius;
+		diameter = radius + radius;
+		col = color (255, 255, 0);
 	}
 
 	void Draw()

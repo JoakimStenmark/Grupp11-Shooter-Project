@@ -44,9 +44,14 @@ class Enemy extends GameObject
 		points = 100;
 	}
 
-	Enemy(float x, float y, PVector dir, int health, float speed, float radius)
+	Enemy(float x, float y, PVector direction, int health, float speed, float radius)
 	{
-		super(x, y, dir, health, speed, radius);
+		position = new PVector (x, y);
+		this.direction = direction;
+		this.health = health;
+		this.speed = speed;
+		this.radius = radius;
+		diameter = radius + radius;
 
 		col = color(255, 0, 0);
 		moveLength = new PVector(50,0);
@@ -75,9 +80,37 @@ class Enemy extends GameObject
 	public void Update ()
 	{
 		// Move ();
+
 		if (DidCollide (gameManager.player))
 		{
 			gameManager.player.GotHit (100);
+		}
+
+		for (Barrier barrier : gameManager.barrierManager.bigBarrier1)
+		{
+			if (DidCollide (barrier))
+			{
+				barrier.GotHit (100);
+				GotHit (100);
+			}
+		}
+
+		for (Barrier barrier : gameManager.barrierManager.bigBarrier2)
+		{
+			if (DidCollide (barrier))
+			{
+				barrier.GotHit (100);
+				GotHit (100);
+			}
+		}
+
+		for (Barrier barrier : gameManager.barrierManager.bigBarrier3)
+		{
+			if (DidCollide (barrier))
+			{
+				barrier.GotHit (100);
+				GotHit (100);
+			}
 		}
 
 		bulletTimer -= deltaTime;

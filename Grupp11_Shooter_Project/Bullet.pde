@@ -5,18 +5,6 @@ public class Bullet extends GameObject
 
 	Bullet ()
 	{
-		position = new PVector (0, 0);
-		direction = new PVector (0, -1f);
-
-		radius = 2f;
-		diameter = radius + radius;
-
-		col = color (192, 192, 192);
-
-		damage = 1;
-		speed = 480f;
-
-		isActive = false;
 	}
 
 	Bullet (PVector position, PVector direction, int damage, float speed, float radius, color col)

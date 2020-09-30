@@ -2,27 +2,11 @@ public class Player extends GameObject
 {
 	Bullet[] bullets;
 
+	float recoveryTime;
+	float recoveryTimer;
+
 	Player ()
 	{
-		super ();
-
-		speed = 240f;
-
-		radius = 16f;
-		diameter = radius + radius;
-
-		health = 1;
-
-		bullets = new Bullet[8];
-		for (int i = 0; i < bullets.length; i++)
-		{
-			bullets[i] = new Bullet (	new PVector (),			// Position
-										new PVector (0, -1f),	// Direction
-										1,						// Damage
-										480f,					// Speed
-										2f,						// Radius
-										color (255, 255, 0));	// Color
-		}
 	}
 
 	Player (PVector position, PVector direction, float speed, float radius, color colour)
@@ -37,7 +21,7 @@ public class Player extends GameObject
 
 		col = colour;
 
-		health = 1;
+		health = 3;
 
 		bullets = new Bullet[8];
 		for (int i = 0; i < bullets.length; i++)
@@ -49,6 +33,9 @@ public class Player extends GameObject
 										2f,						// Radius
 										color (255, 255, 0));	// Color
 		}
+
+		recoveryTime = 1.5f;
+		recoveryTimer = 0f;
 	}
 
 	public void Update ()
@@ -102,14 +89,40 @@ public class Player extends GameObject
 				}
 			}
 		}
+
+		if (recoveryTimer > 0f)
+		{
+			recoveryTimer -= deltaTime;
+
+			if (recoveryTimer <= 0f)
+				recoveryTimer = 0f;
+		}
 	}
 
 	public void Draw ()
 	{
+		int a = 255;
+		if (recoveryTimer > 0f)
+		{
+			float timeDiff = recoveryTimer / recoveryTime;
+			int b = (int)(timeDiff * 768);
+			a = b % 256;
+		}
+		color _col = color (red (col), green(col), blue (col), a);
+
 		noStroke ();
-		fill (col);
+		fill (_col);
 		ellipse (position.x, position.y, diameter, diameter);
 
+		// PLAYER HUD
+		for (int i = 0; i < health; i++)
+		{
+			stroke (255, 255, 255);
+			fill (red (col), green (col), blue (col), 192);
+			ellipse (i * (diameter + radius) + diameter, height - diameter, diameter, diameter);
+		}
+
+		// BULLETS
 		for (int i = 0; i < bullets.length; i++)
 		{
 			bullets[i].Draw ();
@@ -137,9 +150,12 @@ public class Player extends GameObject
 
 	public void GotHit (int amount)
 	{
+		if (recoveryTimer > 0f)
+			return;
+
 		health -= amount;
 
-		print ("\n\nPlayer got hit with: " + amount + " amount!");
+		// print ("\n\nPlayer got hit with: " + amount + " amount!");
 
 		if (health <= 0)
 		{
@@ -147,5 +163,7 @@ public class Player extends GameObject
 			position = new PVector (-100f, -100f);
 			gameManager.GameOver ();
 		}
+		else
+			recoveryTimer = recoveryTime;
 	}
 }
