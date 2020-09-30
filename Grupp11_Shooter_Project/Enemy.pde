@@ -44,9 +44,19 @@ class Enemy extends GameObject
 		points = 100;
 	}
 
-	Enemy(float x, float y, PVector dir, int health, float speed, float radius)
+	Enemy(float x, float y, float radius)
 	{
-		super(x, y, dir, health, speed, radius);
+		//super(x, y, dir, health, speed, radius);
+
+		position = new PVector(x,y);
+		
+
+		this.health = 1;
+
+		
+
+		this.radius = radius;
+		diameter = radius + radius;
 
 		col = color(255, 0, 0);
 		moveLength = new PVector(50,0);

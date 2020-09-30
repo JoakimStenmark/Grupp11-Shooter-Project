@@ -23,9 +23,9 @@ public class BarrierManager
 			for (int j = 0; j < 4; j++) 
 			{
 
-				bigBarrier1[i*4+j] = new Barrier((width * 0.125f) + j * (barrierSize * 2), height * 0.75 + i * barrierSize * 2, new PVector(), 2, 0, barrierSize);
-				bigBarrier2[i*4+j] = new Barrier(width * 0.46f + j * barrierSize * 2, height * 0.75 + i * barrierSize * 2, new PVector(), 2, 0, barrierSize);   
-				bigBarrier3[i*4+j] = new Barrier(width * 0.875f - j * barrierSize * 2, height * 0.75 + i * barrierSize * 2, new PVector(), 2, 0, barrierSize);   
+				bigBarrier1[i*4+j] = new Barrier((width * 0.125f) + j * (barrierSize * 2), height * 0.75 + i * barrierSize * 2, barrierSize);
+				bigBarrier2[i*4+j] = new Barrier(width * 0.46f + j * barrierSize * 2, height * 0.75 + i * barrierSize * 2, barrierSize);   
+				bigBarrier3[i*4+j] = new Barrier(width * 0.875f - j * barrierSize * 2, height * 0.75 + i * barrierSize * 2, barrierSize);   
 
 			}
 

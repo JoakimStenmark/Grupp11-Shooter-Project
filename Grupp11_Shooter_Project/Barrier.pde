@@ -6,11 +6,18 @@ public class Barrier extends GameObject
 
 	}
 
-	Barrier(float x, float y, PVector dir, int health, float speed, float radius)
+	Barrier(float x, float y, float radius)
 	{
 		
-		super(x,y,dir,health,0,radius);
+		super(x,y);
+		position = new PVector(x,y);
+		
 
+		this.health = 1;
+
+		
+		this.radius = radius;
+		diameter = radius + radius;
 	}
 
 	void GotHit (int amount)

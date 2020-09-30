@@ -1,6 +1,6 @@
 public class EnemyManager
 {
-	int enemyAmount = 24;
+	int enemyAmount = 12;
 	int enemyCount;
 	Enemy[] enemies;
 	PVector enemyDirection = new PVector (0,1);
@@ -26,10 +26,7 @@ public class EnemyManager
 				h = 0;	
 			}
 			enemies[i] = new Enemy(	80 + h * spacing,	// Position.x
-									j * spacing,		// Position.y
-									enemyDirection,		// Direction
-									1,					// Health
-									60f,				// Speed
+									j * spacing,		// Position.y									
 									16f);				// Radius
 			h++;
 		}

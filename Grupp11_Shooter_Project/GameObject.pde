@@ -23,10 +23,10 @@ class GameObject
 		diameter = radius + radius;
 	}
 
-	GameObject(float x, float y, PVector dir, int health, float speed, float radius)
+	GameObject(float x, float y)
 	{
 		position = new PVector(x,y);
-		direction = new PVector(dir.x, dir.y);
+
 
 		this.health = health;
 
