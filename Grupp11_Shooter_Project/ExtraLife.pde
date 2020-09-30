@@ -1,12 +1,12 @@
-public class TwinGun extends Pickup
+public class ExtraLife extends Pickup
 {
-    int damage = 2;
+    int extraLifeAmount = 1;
 
-    TwinGun ()
+    ExtraLife ()
     {
     }
 
-    TwinGun (PVector position, float speed, float radius)
+    ExtraLife (PVector position, float speed, float radius)
     {
         super (position, speed, radius);
 
@@ -23,7 +23,7 @@ public class TwinGun extends Pickup
 
         if (DidCollide (gameManager.player))
         {
-            gameManager.player.hasTwinGun = true;
+            gameManager.player.health += extraLifeAmount;
             isActive = false;
         }
     }

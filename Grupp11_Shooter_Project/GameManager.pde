@@ -8,7 +8,7 @@ public class GameManager
     int textSize = 96;
     int score;
 
-    TwinGun twinGun;
+    Pickups[] pickups;
 
     GameManager ()
     {
@@ -24,10 +24,7 @@ public class GameManager
         score = 0;
         gameOver = false;
 
-        twinGun = new TwinGun ( new PVector (width * 0.5f, height * 0.5f),  // Position
-                                new PVector (0, 1f),                        // Direction
-                                120f,                                       // Speed
-                                8f);                                        // Radius
+        InitPickups ();
         
         print ("\n\nGameManager Constructor...");
     }   
@@ -44,7 +41,7 @@ public class GameManager
             player.Update ();
             enemyManager.Update ();
 
-            twinGun.Update ();
+            // twinGun.Update ();
         }
 
     }
@@ -82,4 +79,20 @@ public class GameManager
     {
         gameOver = true;
     }
+
+    public void SpawnPowerUp ()
+    {
+
+    }
+
+    private void InitPickups ()
+    {
+        pickups = new PickUps[2];
+
+        pickups[TWIN_GUN] = new TwinGun (new PVector (width * 0.5f, height * 0.5f), 90f, 8f);
+        pickups[EXTRA_LIFE] = new ExtraLife (new PVector (width * 0.5f, height * 0.5f), 60f, 16f);
+    }
 }
+
+final int TWIN_GUN = 0;
+final int EXTRA_LIFE = 1;

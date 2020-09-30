@@ -37,8 +37,6 @@ class Enemy extends GameObject
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);
 
-		print ("\n\nmoveLength: ");
-
 		InitBullets ();
 
 		points = 100;

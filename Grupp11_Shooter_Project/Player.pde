@@ -7,6 +7,8 @@ public class Player extends GameObject
 
 	boolean hasTwinGun;
 
+	int killCount;
+
 	Player ()
 	{
 	}
@@ -40,6 +42,7 @@ public class Player extends GameObject
 		recoveryTimer = 0f;
 
 		hasTwinGun = false;
+		killCount = 0;
 	}
 
 	public void Update ()
@@ -163,8 +166,9 @@ public class Player extends GameObject
 	public void Shoot ()
 	{
 		int bulletAmount = 0;
+		int maxBullets = (hasTwinGun) ? bullets.length : bullets.length * 0.5f;
 
-		for (int i = 0; i < bullets.length; i++)
+		for (int i = 0; i < maxBullets; i++)
 		{
 			if (bullets[i].isActive)
 				continue;

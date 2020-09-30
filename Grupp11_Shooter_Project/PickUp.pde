@@ -1,20 +1,19 @@
-public class PickUp extends GameObject
+public class Pickup extends GameObject
 {
     boolean isActive;
 
-    PickUp ()
+    Pickup ()
     {
     }
 
-    PickUp (PVector position, PVector direction, float speed, float radius)
+    Pickup (PVector position, float speed, float radius)
     {
         this.position = position;
-        this.direction = direction;
         this.speed = speed;
         this.radius = radius;
-        diameter = radius + radius;
+        this.diameter = radius + radius;
 
-        isActive = false;
+        this.isActive = false;
     }
 
     public void Update ()
