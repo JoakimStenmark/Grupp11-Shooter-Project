@@ -6,21 +6,22 @@ public class Player extends GameObject
 	{
 		super ();
 
-		speed = 120f;
+		speed = 240f;
 
 		radius = 16f;
 		diameter = radius + radius;
 
 		health = 1;
 
-		bullets = new Bullet[3];
+		bullets = new Bullet[8];
 		for (int i = 0; i < bullets.length; i++)
 		{
 			bullets[i] = new Bullet (	new PVector (),			// Position
 										new PVector (0, -1f),	// Direction
 										1,						// Damage
-										240f,					// Speed
-										2f);					// Radius
+										480f,					// Speed
+										2f,						// Radius
+										color (255, 255, 0));	// Color
 		}
 	}
 
@@ -38,14 +39,15 @@ public class Player extends GameObject
 
 		health = 1;
 
-		bullets = new Bullet[3];
+		bullets = new Bullet[8];
 		for (int i = 0; i < bullets.length; i++)
 		{
 			bullets[i] = new Bullet (	new PVector (),			// Position
 										new PVector (0, -1f),	// Direction
 										1,						// Damage
-										240f,					// Speed
-										2f);					// Radius
+										480f,					// Speed
+										2f,						// Radius
+										color (255, 255, 0));	// Color
 		}
 	}
 
@@ -99,6 +101,20 @@ public class Player extends GameObject
 
 			bullets[i].Fire (position);
 			return;
+		}
+	}
+
+	public void GotHit (int amount)
+	{
+		health -= amount;
+
+		print ("\n\nPlayer got hit with: " + amount + " amount!");
+
+		if (health <= 0)
+		{
+			health = 0;
+			position = new PVector (-100f, -100f);
+			gameManager.GameOver ();
 		}
 	}
 }

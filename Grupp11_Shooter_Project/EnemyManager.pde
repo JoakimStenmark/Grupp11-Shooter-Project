@@ -1,10 +1,10 @@
 public class EnemyManager
 {
-	int enemyAmount = 25;
+	int enemyAmount = 24;
 	int enemyCount;
 	Enemy[] enemies;
 	PVector enemyDirection = new PVector (0,1);
-	float timePerStep = 1000;
+	float timePerStep = 1000; //1000
 	float time; 
 	int spacing = 35;
 	int enemyPerRow = 12;
@@ -40,6 +40,10 @@ public class EnemyManager
 	{
 		MoveEnemies();
 		
+		for (Enemy enemy : enemies)
+		{
+			enemy.Update ();
+		}
 	}
 
 	void Draw()

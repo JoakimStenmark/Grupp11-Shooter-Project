@@ -10,6 +10,11 @@ class Enemy extends GameObject
 	PVector left;
 	PVector down;
 
+	Bullet[] bullets;
+
+	float bulletTime;
+	float bulletTimer;
+
 	Enemy()
 	{
 		super();
@@ -20,6 +25,19 @@ class Enemy extends GameObject
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x*-1);
 
+		bullets = new Bullet[1];
+		for (int i = 0; i < bullets.length; i++)
+		{
+			bullets[i] = new Bullet (	new PVector (),			// Position
+										new PVector (0, 1f),	// Direction
+										1,						// Damage
+										240f,					// Speed
+										2f,						// Radius
+										color (255, 192, 192));	// Color
+		}
+
+		bulletTime = 1f;
+		bulletTimer = 1f;
 	}
 
 	Enemy(float x, float y, PVector dir, int health, float speed, float radius)
@@ -32,10 +50,61 @@ class Enemy extends GameObject
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);
+
+		bullets = new Bullet[1];
+		for (int i = 0; i < bullets.length; i++)
+		{
+			bullets[i] = new Bullet (	new PVector (),			// Position
+										new PVector (0, 1f),	// Direction
+										1,						// Damage
+										240f,					// Speed
+										2f,						// Radius
+										color (255, 192, 192));	// Color
+		}
+
+		bulletTime = 1f;
+		bulletTimer = 1f;
+	}
+
+	public void Update ()
+	{
+		// Move ();
+		if (DidCollide (gameManager.player))
+		{
+			gameManager.player.GotHit (100);
+		}
+
+		bulletTimer -= deltaTime;
+		if (bulletTimer <= 0f)
+		{
+			if (round (random (10)) == 10)
+				Shoot ();
+
+			bulletTimer += bulletTime;
+		}
+
+		for (Bullet bullet : bullets)
+		{
+			if (!bullet.isActive)
+				continue;
+
+			bullet.Update ();
+			
+			if (bullet.DidCollide (gameManager.player))
+			{
+				gameManager.player.GotHit (1);
+				bullet.isActive = false;
+			}
+		}
 	}
 
 	void Draw()
 	{
+		for (Bullet bullet : bullets)
+		{
+			bullet.Draw ();
+		}
+
 		if (health <= 0)
 			return;
 
@@ -72,9 +141,21 @@ class Enemy extends GameObject
 		position.add(moveLength);
 		stepsTaken++;
 		//println("stepsTaken: " + stepsTaken % 4);
-		if (position.y > height - 50) 
+		if (position.y >= height - 96) 
 		{
 			gameManager.gameOver = true;
+		}
+	}
+
+	public void Shoot ()
+	{
+		for (Bullet bullet : bullets)
+		{
+			if (bullet.isActive)
+				continue;
+
+			bullet.Fire (position);
+			return;
 		}
 	}
 

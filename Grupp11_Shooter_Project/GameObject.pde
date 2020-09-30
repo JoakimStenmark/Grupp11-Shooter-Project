@@ -38,10 +38,14 @@ class GameObject
 
 	public void Update ()
 	{
+		if (health <= 0)
+			return;
 	}
 
 	public void Draw ()
 	{
+		if (health <= 0)
+			return;
 	}
 
 	public boolean DidCollide (GameObject other)

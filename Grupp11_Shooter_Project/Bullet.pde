@@ -11,13 +11,15 @@ public class Bullet extends GameObject
 		radius = 2f;
 		diameter = radius + radius;
 
+		col = color (192, 192, 192);
+
 		damage = 1;
-		speed = 240f;
+		speed = 480f;
 
 		isActive = false;
 	}
 
-	Bullet (PVector position, PVector direction, int damage, float speed, float radius)
+	Bullet (PVector position, PVector direction, int damage, float speed, float radius, color col)
 	{
 		this.position = position;
 		this.direction = direction;
@@ -27,6 +29,8 @@ public class Bullet extends GameObject
 
 		this.damage = damage;
 		this.speed = speed;
+
+		this.col = col;
 
 		isActive = false;
 	}
@@ -53,7 +57,7 @@ public class Bullet extends GameObject
 	{
 		position.add (direction.copy ().mult (speed * deltaTime));
 
-		if (position.y < -radius)
+		if (position.y < -radius || position.y > height + radius)
 			isActive = false;
 	}
 
@@ -61,5 +65,7 @@ public class Bullet extends GameObject
 	{
 		this.position = position.copy ();
 		isActive = true;
+
+		print ("\n\nBullet.pos: " + this.position + "\ncolor: " + red(col) + "\nisActive: " + isActive);
 	}
 }

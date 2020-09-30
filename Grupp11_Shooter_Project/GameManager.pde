@@ -11,9 +11,9 @@ public class GameManager
     {
         enemyManager = new EnemyManager ();
 
-        player = new Player (   new PVector (width * 0.5f, height - 100),  // Position
+        player = new Player (   new PVector (width * 0.5f, height - 96),    // Position
                                 new PVector (0, -1f),                       // Direction
-                                120f,                                       // Speed
+                                240f,                                       // Speed
                                 16f,                                        // Radius
                                 color (128, 128, 255));                     // Color
 
@@ -39,6 +39,7 @@ public class GameManager
 
     public void Draw ()
     {
+        DrawBackground ();
         player.Draw ();
         enemyManager.Draw();
         if (gameOver) 
@@ -48,9 +49,21 @@ public class GameManager
             textAlign(CENTER);
             text("Game Over", width/2, height/2);    
             textSize(textSize/2);
-            text("Your score was: " + score + "!", width/2, height/2+128);    
-
+            text("Your score was: " + score + "!", width/2, height/2+128);
         }
+    }
 
+    private void DrawBackground ()
+    {
+        background (0);
+
+        fill (255, 0, 0, 64);
+        rectMode(CENTER);
+        rect(width * 0.5f, height - 48, width, 96);
+    }
+
+    public void GameOver ()
+    {
+        gameOver = true;
     }
 }

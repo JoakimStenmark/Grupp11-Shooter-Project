@@ -10,8 +10,6 @@ void setup()
 
 void draw () 
 {
-	background(0);
-
 	UpdateDeltaTime ();
 
 	input.Update ();
