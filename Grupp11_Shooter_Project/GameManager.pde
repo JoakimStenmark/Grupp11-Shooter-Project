@@ -22,6 +22,7 @@ public class GameManager
     float fadeIn;
     boolean waitingForNextWave = false;
 
+    PImage skyBackground;
     // DEBUG
     boolean drawAABB = false;
 
@@ -32,6 +33,8 @@ public class GameManager
         gameIsPaused = true;
 
         print ("\n\nGameManager Constructor...\n");
+
+        skyBackground = loadImage("NightSky.jpg");
     }
 
     public void Update ()
@@ -98,8 +101,9 @@ public class GameManager
     private void DrawBackground ()
     {
         background (0);
+        image(skyBackground, 0, 0, width, height);
         noStroke ();
-        fill (255, 0, 0, 64);
+        fill (85, 45, 10, 255);
         rectMode(CENTER);
         rect(width * 0.5f, height - 48, width, 96);
 
@@ -117,7 +121,7 @@ public class GameManager
         textAlign(CENTER);
         text("Game Over", width/2, height/2);    
         textSize(textSize/2);
-        text("Your score was: " + score + "!\n'r' to restart game.", width/2, height/2+128);
+        text("Your score was: " + score + "!\n'r' to restart game.", width * 0.5, height * 0.5+128);
     }
 
     public void GameOver ()
