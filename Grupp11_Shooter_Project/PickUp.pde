@@ -1,3 +1,5 @@
+// Eddie Norberg
+
 public class Pickup extends GameObject
 {
     boolean isActive;

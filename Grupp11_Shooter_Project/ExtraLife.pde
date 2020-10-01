@@ -1,3 +1,5 @@
+// Eddie Norberg
+
 public class ExtraLife extends Pickup
 {
     ExtraLife (float speed, float radius)

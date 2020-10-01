@@ -1,3 +1,5 @@
+// Joakim Stenmark
+
 public class BarrierManager
 {
 	float barrierSize = 10;

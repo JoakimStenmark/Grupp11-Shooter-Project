@@ -1,3 +1,5 @@
+// Eddie Norberg
+
 public class BoundingBox
 {
     public PVector position;

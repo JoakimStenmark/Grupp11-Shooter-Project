@@ -1,3 +1,5 @@
+// Joakim Stenmark
+
 public class Ending extends EnemyManager
 {
 	Ending()

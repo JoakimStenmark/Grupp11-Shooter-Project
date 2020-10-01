@@ -1,11 +1,15 @@
+// Joakim Stenmark & Eddie Norberg
+
 public class GameManager
 {
+    MenuManager menuManager;
     EnemyManager enemyManager;
     EnemyManager[] waves;
     int currentWave = 9;
     BarrierManager barrierManager;
     Player player;
 
+    boolean gameIsPaused;
     boolean gameOver;
     boolean victory;
     int textSize = 96;
@@ -20,49 +24,16 @@ public class GameManager
 
     GameManager ()
     {
-        //loading all waves
-        waves = new EnemyManager[11];
-        waves[0] = new Wave0();
-        waves[1] = new Wave1();
-        waves[2] = new Wave2();
-        waves[3] = new Wave3();
-        waves[4] = new Wave4();
-        waves[5] = new Wave5();
-        waves[6] = new Wave6();
-        waves[7] = new Wave7();
-        waves[8] = new Wave8();
-        waves[9] = new Wave9();
-        waves[10] = new Ending();
+        menuManager = new MenuManager ();
 
-        //current wave
-        enemyManager = waves[currentWave];
+        gameIsPaused = true;
 
-
-        barrierManager = new BarrierManager ();
-
-        player = new Player (   new PVector (width * 0.5f, height - 96),    // Position
-                                new PVector (0, -1f),                       // Direction
-                                240f,                                       // Speed
-                                16f,                                        // Radius
-                                color (128, 128, 255));                     // Color
-        fadeIn = 0;
-        score = 0;
-        gameOver = false;
-        victory = false;
-
-        InitPickups ();
-        
         print ("\n\nGameManager Constructor...\n");
     }
 
     public void Update ()
     {
-        // if (victory) 
-        // {
-        //     return;
-        // }
-
-        if (gameOver)
+        if (gameOver || gameIsPaused || victory)
             return;
 
         player.Update ();
@@ -90,6 +61,12 @@ public class GameManager
 
     public void Draw ()
     {
+        if (gameIsPaused)
+        {
+            menuManager.Draw ();
+            return;
+        }
+
         DrawBackground ();
         player.Draw ();
         enemyManager.Draw();
@@ -126,13 +103,12 @@ public class GameManager
 
     private void DrawGameOverScreen ()
     {
-
         textSize(textSize);
         fill(255, 255, 255, 127);
         textAlign(CENTER);
         text("Game Over", width/2, height/2);    
         textSize(textSize/2);
-        text("Your score was: " + score + "!", width/2, height/2+128);
+        text("Your score was: " + score + "!\n'r' to restart game.", width/2, height/2+128);
     }
 
     public void GameOver ()
@@ -145,7 +121,7 @@ public class GameManager
         if (fadeIn < 255) 
         {
             fadeIn += 1;
-            
+            // println("fadeIn: "+fadeIn);
         }
         fill(0, 0, 0, fadeIn);
         rectMode(CORNER);
@@ -156,8 +132,42 @@ public class GameManager
         text("You won!", width/2, height/2);
         textSize(textSize/2);
         text("The earth is safe", width/2, height/2+96);    
-        text("Your score was: " + score + "!", width/2, height/2+256);
+        text("Your score was: " + score + "!\n'r' to restart game.", width/2, height/2+256);
+    }
 
+    public void StartGame ()
+    {
+        //loading all waves
+        waves = new EnemyManager[11];
+        waves[0] = new Wave0();
+        waves[1] = new Wave1();
+        waves[2] = new Wave2();
+        waves[3] = new Wave3();
+        waves[4] = new Wave4();
+        waves[5] = new Wave5();
+        waves[6] = new Wave6();
+        waves[7] = new Wave7();
+        waves[8] = new Wave8();
+        waves[9] = new Wave9();
+        waves[10] = new Ending();
+
+        //current wave
+        enemyManager = waves[currentWave];
+        barrierManager = new BarrierManager ();
+
+        player = new Player (   new PVector (width * 0.5f, height - 96),    // Position
+                                new PVector (0, -1f),                       // Direction
+                                240f,                                       // Speed
+                                16f,                                        // Radius
+                                color (128, 128, 255));                     // Color
+        
+        fadeIn = 0;
+        score = 0;
+        gameOver = false;
+        gameIsPaused = false;
+        victory = false;
+
+        InitPickups ();
     }
 
     public void SpawnPickup ()
