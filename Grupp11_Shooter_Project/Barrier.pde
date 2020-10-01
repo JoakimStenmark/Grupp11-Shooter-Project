@@ -17,6 +17,9 @@ public class Barrier extends GameObject
 
 	void Draw()
 	{
+		if (gameManager.gameIsPaused)
+			return;
+			
 		int g = round (((float)health / (float)maxHealth) * 255);
 		fill(red (col), g, 0);
 		stroke(0);

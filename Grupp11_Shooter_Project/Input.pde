@@ -12,6 +12,8 @@ public class Input
     public boolean shootDown;
     public boolean restartDown;
     public boolean aabbDown;
+    public boolean upMenuDown;
+    public boolean downMenuDown;
 
     // temp...
  
@@ -27,6 +29,9 @@ public class Input
 
         shootDown = false;
         restartDown = false;
+        aabbDown = false;
+        upMenuDown = false;
+        downMenuDown = false;
         
         // left = 37;
         // right = 39;
@@ -163,17 +168,21 @@ void keyPressed ()
         input.SetInput (BUTTON_NAME.LEFT, true);
     if (keyCode == RIGHT || key == 'd')
         input.SetInput (BUTTON_NAME.RIGHT, true);
-    if (keyCode == UP || key == 'w')
-        input.SetInput (BUTTON_NAME.UP, true);
-    if (keyCode == DOWN || key == 's')
-        input.SetInput (BUTTON_NAME.DOWN, true);
+    // if (keyCode == UP || key == 'w')
+    //     input.SetInput (BUTTON_NAME.UP, true);
+    // if (keyCode == DOWN || key == 's')
+    //     input.SetInput (BUTTON_NAME.DOWN, true);
 
-    // SHOOT
+    // SHOOT / CONFIRM
     if (key == 'k' && !input.shootDown)
     {
         input.SetInput (BUTTON_NAME.SHOOT, true);
         input.shootDown = true;
-        gameManager.player.Shoot ();
+
+        if (gameManager.menuManager.isOpen)
+            gameManager.menuManager.Confirm ();
+        else
+            gameManager.player.Shoot ();
     }
 
     // RESTART
@@ -189,6 +198,18 @@ void keyPressed ()
         input.aabbDown = true;
         gameManager.drawAABB = !gameManager.drawAABB;
     }
+
+    // MOVE UP/DOWN - MENU
+    if ((keyCode == UP || key == 'w') && !input.upMenuDown)
+    {
+        input.upMenuDown = true;
+        gameManager.menuManager.MoveMenu (-1);
+    }
+    else if ((keyCode == DOWN || key == 's') && !input.downMenuDown)
+    {
+        input.downMenuDown = true;
+        gameManager.menuManager.MoveMenu (1);
+    }
 }
 
 void keyReleased ()
@@ -198,10 +219,10 @@ void keyReleased ()
         input.SetInput (BUTTON_NAME.LEFT, false);
     if (keyCode == RIGHT || key == 'd')
         input.SetInput (BUTTON_NAME.RIGHT, false);
-    if (keyCode == UP || key == 'w')
-        input.SetInput (BUTTON_NAME.UP, false);
-    if (keyCode == DOWN || key == 's')
-        input.SetInput (BUTTON_NAME.DOWN, false);
+    // if (keyCode == UP || key == 'w')
+    //     input.SetInput (BUTTON_NAME.UP, false);
+    // if (keyCode == DOWN || key == 's')
+    //     input.SetInput (BUTTON_NAME.DOWN, false);
 
     // SHOOT
     if (key == 'k' && input.shootDown)
@@ -217,4 +238,12 @@ void keyReleased ()
     // DRAW AABB
     if (key == 'b' && input.aabbDown)
         input.aabbDown = false;
+
+    // MOVE UP - MENU
+    if ((keyCode == UP || key == 'w') && input.upMenuDown)
+        input.upMenuDown = false;
+
+    // MOVE DOWN - MENU
+    if ((keyCode == DOWN || key == 's') && input.downMenuDown)
+        input.downMenuDown = false;
 }

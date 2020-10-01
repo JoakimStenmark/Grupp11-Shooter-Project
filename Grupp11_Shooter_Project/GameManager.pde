@@ -1,11 +1,13 @@
 public class GameManager
 {
+    MenuManager menuManager;
     EnemyManager enemyManager;
     EnemyManager[] waves;
     int currentWave = 3;
     BarrierManager barrierManager;
     Player player;
 
+    boolean gameIsPaused;
     boolean gameOver;
     boolean victory;
     int textSize = 96;
@@ -20,6 +22,8 @@ public class GameManager
 
     GameManager ()
     {
+        menuManager = new MenuManager ();
+
         //loading all waves
         waves = new EnemyManager[5];
         waves[0] = new Wave0();
@@ -40,6 +44,7 @@ public class GameManager
         fadeIn = 0;
         score = 0;
         gameOver = false;
+        gameIsPaused = true;
         victory = false;
 
         InitPickups ();
@@ -54,7 +59,7 @@ public class GameManager
         //     return;
         // }
 
-        if (gameOver)
+        if (gameOver || gameIsPaused)
             return;
 
         player.Update ();
@@ -82,6 +87,12 @@ public class GameManager
 
     public void Draw ()
     {
+        if (gameIsPaused)
+        {
+            menuManager.Draw ();
+            return;
+        }
+
         DrawBackground ();
         player.Draw ();
         enemyManager.Draw();
