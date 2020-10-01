@@ -172,10 +172,10 @@ void keyPressed ()
         input.SetInput (BUTTON_NAME.LEFT, true);
     if (keyCode == RIGHT || key == 'd')
         input.SetInput (BUTTON_NAME.RIGHT, true);
-    // if (keyCode == UP || key == 'w')
-    //     input.SetInput (BUTTON_NAME.UP, true);
-    // if (keyCode == DOWN || key == 's')
-    //     input.SetInput (BUTTON_NAME.DOWN, true);
+    if (keyCode == UP || key == 'w')
+        input.SetInput (BUTTON_NAME.UP, true);
+    if (keyCode == DOWN || key == 's')
+        input.SetInput (BUTTON_NAME.DOWN, true);
 
     // SHOOT / CONFIRM
     if (key == 'k' && !input.shootDown)
@@ -230,10 +230,10 @@ void keyReleased ()
         input.SetInput (BUTTON_NAME.LEFT, false);
     if (keyCode == RIGHT || key == 'd')
         input.SetInput (BUTTON_NAME.RIGHT, false);
-    // if (keyCode == UP || key == 'w')
-    //     input.SetInput (BUTTON_NAME.UP, false);
-    // if (keyCode == DOWN || key == 's')
-    //     input.SetInput (BUTTON_NAME.DOWN, false);
+    if (keyCode == UP || key == 'w')
+        input.SetInput (BUTTON_NAME.UP, false);
+    if (keyCode == DOWN || key == 's')
+        input.SetInput (BUTTON_NAME.DOWN, false);
 
     // SHOOT
     if (key == 'k' && input.shootDown)

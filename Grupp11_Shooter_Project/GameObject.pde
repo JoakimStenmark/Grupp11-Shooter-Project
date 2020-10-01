@@ -33,7 +33,7 @@ class GameObject
 
 	public boolean DidCollide (GameObject other)
 	{
-		return aabb.CollidedWithAABB (other.aabb, _name, other._name);
+		return aabb.CollidedWithAABB (other.aabb, GetVelocity (), _name, other._name);
 	}
 
 	public PVector GetVelocity ()
