@@ -13,6 +13,9 @@ public class GameManager
     Pickup[] pickups;
     int pickupsIndex;
 
+    // DEBUG
+    boolean drawAABB = false;
+
     GameManager ()
     {
         //loading all waves

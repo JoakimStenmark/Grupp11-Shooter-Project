@@ -10,6 +10,8 @@ class BigEnemy extends Enemy
 		this.radius = 24f;
 		
 		diameter = radius + radius;
+		aabb = new BoundingBox (new PVector (diameter, diameter));
+		aabb.Update (position);
 
 		col = color(0, 0, 255);
 		moveLength = new PVector(50,0);

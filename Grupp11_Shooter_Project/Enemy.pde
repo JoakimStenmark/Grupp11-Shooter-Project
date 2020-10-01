@@ -32,6 +32,8 @@ class Enemy extends GameObject
 		this.speed = 120f;
 		this.radius = 24f;
 		diameter = radius + radius;
+		aabb = new BoundingBox (new PVector (diameter, diameter));
+		aabb.Update (position);
 
 		col = color(255, 0, 0);
 		moveLength = new PVector(50,0);
@@ -150,6 +152,8 @@ class Enemy extends GameObject
 		fill(GetColorPercentValue ());
 		rectMode(CENTER);
 		rect(position.x,position.y, diameter, diameter);
+
+		aabb.Draw ();
 	}
 
 	void Move()
@@ -184,6 +188,8 @@ class Enemy extends GameObject
 		{
 			gameManager.gameOver = true;
 		}
+
+		aabb.Update (position);
 	}
 
 	public void Shoot ()
@@ -225,6 +231,8 @@ class Enemy extends GameObject
 										240f,					// Speed
 										4f,						// Radius
 										color (255, 192, 192));	// Color
+
+			bullets[i]._name = "E-Bullet["+i+"]";
 		}
 
 		bulletTime = 1f;

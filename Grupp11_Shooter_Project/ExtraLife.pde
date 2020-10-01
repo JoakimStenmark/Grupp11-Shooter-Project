@@ -7,6 +7,7 @@ public class ExtraLife extends Pickup
         this.col = color (128, 255, 255);
         
         this.value = 1; // (ExtraLife+)
+        _name = "ExtraLife";
     }
 
     public void Draw ()
@@ -25,5 +26,7 @@ public class ExtraLife extends Pickup
         noStroke ();
         ellipse (position.x - radius * 0.5f, position.y - radius * 0.5f, radius , radius * 0.75f);
         ellipse (position.x + radius * 0.5f, position.y - radius * 0.5f, radius , radius * 0.75f);
+
+        aabb.Draw ();
     }
 }

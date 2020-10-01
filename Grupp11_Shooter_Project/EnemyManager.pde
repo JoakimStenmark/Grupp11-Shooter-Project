@@ -28,14 +28,17 @@ public class EnemyManager
 			if (i % 3 == 2) 
 			{
 				enemies[i] = new BigEnemy((float)(80 + h * spacing), (float)(j * spacing));
+				enemies[i]._name = "BigEnemy["+i+"]";
 			}
 			else if (i % 10 == 9)
 			{
 				enemies[i] = new Enemy((float)(80 + h * (spacing)), (float)(j * spacing));	
+				enemies[i]._name = "Enemy["+i+"]";
 			}
 			else 
 			{
 				enemies[i] = new Enemy((float)(80 + h * spacing), (float)(j * spacing));
+				enemies[i]._name = "Enemy["+i+"]";
 			}
 
 			h++;
