@@ -22,7 +22,7 @@ public class Bullet extends GameObject
 
 	public void Update ()
 	{
-		if (!isActive || gameManager.gameIsPaused)
+		if (!isActive)
 			return;
 
 		Move ();
@@ -31,7 +31,7 @@ public class Bullet extends GameObject
 
 	public void Draw ()
 	{
-		if (!isActive || gameManager.gameIsPaused)
+		if (!isActive)
 			return;
 		
 		noStroke ();

@@ -49,6 +49,8 @@ class Enemy extends GameObject
 
 	public void Update ()
 	{
+		if (health <= 0)
+			return;
 		// Move ();
 
 		if (DidCollide (gameManager.player))
