@@ -1,3 +1,5 @@
+// Eddie Norberg (mostly)
+
 class GameObject
 {
 	PVector position;

@@ -1,3 +1,5 @@
+// Eddie Norberg
+
 public class Bullet extends GameObject
 {
 	boolean isActive;

@@ -1,3 +1,5 @@
+// Eddie Norberg
+
 public class Player extends GameObject
 {
 	Bullet[] bullets;

@@ -1,3 +1,5 @@
+// Eddie Norberg
+
 public class MenuManager
 {
     boolean isOpen;

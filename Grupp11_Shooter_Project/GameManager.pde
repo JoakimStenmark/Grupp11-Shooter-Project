@@ -1,3 +1,5 @@
+// Joakim Stenmark & Eddie Norberg
+
 public class GameManager
 {
     MenuManager menuManager;

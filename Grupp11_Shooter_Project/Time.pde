@@ -1,3 +1,5 @@
+// Eddie Norberg
+
 long time;
 float deltaTime;
 

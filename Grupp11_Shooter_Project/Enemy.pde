@@ -1,3 +1,5 @@
+// Joakim Stenmark
+
 class Enemy extends GameObject
 {
 	int stepsTaken = 0;

@@ -1,3 +1,5 @@
+// Joakim Stenmark
+
 public class FastEnemy extends Enemy
 {
 	FastEnemy()

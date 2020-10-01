@@ -1,3 +1,5 @@
+// Joakim Stenmark
+
 class BigEnemy extends Enemy
 {
 	BigEnemy(float x, float y)

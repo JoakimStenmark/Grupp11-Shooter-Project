@@ -1,3 +1,5 @@
+// Eddie Norberg (mostly)
+
 public class Barrier extends GameObject
 {
 	int maxHealth;

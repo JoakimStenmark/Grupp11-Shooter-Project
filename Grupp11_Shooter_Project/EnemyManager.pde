@@ -1,3 +1,5 @@
+// Joakim Stenmark
+
 public class EnemyManager
 {
 	int enemyAmount = 24;

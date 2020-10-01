@@ -1,3 +1,5 @@
+// Eddie Norberg
+
 public class TwinGun extends Pickup
 {
     TwinGun (float speed, float radius)
