@@ -12,8 +12,7 @@ public class Barrier extends GameObject
 		maxHealth = health;
 		this.radius = radius;
 		diameter = radius + radius;
-		aabb = new BoundingBox (new PVector (diameter, diameter));
-		aabb.Update (position);
+		aabb = new BoundingBox (position, new PVector (diameter, diameter));
 		col = color (255, 255, 0);
 		isActive = true;
 	}

@@ -11,7 +11,7 @@ public class Pickup extends GameObject
         this.speed = speed;
         this.radius = radius;
         this.diameter = radius + radius;
-        aabb = new BoundingBox (new PVector (diameter, diameter));
+        aabb = new BoundingBox (new PVector (), new PVector (diameter, diameter));
 
         this.isActive = false;
         this.value = 0;
@@ -63,6 +63,8 @@ public class Pickup extends GameObject
             return false;
 
         position = new PVector (random (diameter, width - diameter), -diameter);
+        aabb.Update (position);
+
         return isActive = true;
     }
 }

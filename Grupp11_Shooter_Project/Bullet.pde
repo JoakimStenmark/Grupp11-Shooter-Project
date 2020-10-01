@@ -11,7 +11,7 @@ public class Bullet extends GameObject
 
 		this.radius = radius;
 		diameter = radius + radius;
-		aabb = new BoundingBox (new PVector (diameter, diameter));
+		aabb = new BoundingBox (position, new PVector (diameter, diameter));
 
 		this.damage = damage;
 		this.speed = speed;
@@ -21,6 +21,7 @@ public class Bullet extends GameObject
 
 	public void Update ()
 	{
+		// println (_name + " active: " + isActive + " - pos: " + position + " - box.pos: " + aabb.position);
 		if (!isActive)
 			return;
 
@@ -31,7 +32,12 @@ public class Bullet extends GameObject
 	public void Draw ()
 	{
 		if (!isActive)
+		{
+			noStroke ();
+			fill (255, 0, 0, 128);
+			ellipse (position.x, position.y, diameter, diameter);
 			return;
+		}
 		
 		noStroke ();
 		fill (col);

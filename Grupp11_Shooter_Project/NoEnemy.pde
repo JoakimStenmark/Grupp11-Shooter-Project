@@ -12,8 +12,7 @@ class NoEnemy extends Enemy
 		this.radius = 0f;
 		
 		diameter = radius + radius;
-		aabb = new BoundingBox (new PVector (diameter, diameter));
-		aabb.Update (position);
+		// aabb = new BoundingBox (position, new PVector (diameter, diameter));
 
 		col = color(0, 0, 0);
 		moveLength = new PVector(0,0);
@@ -25,6 +24,8 @@ class NoEnemy extends Enemy
 		InitBullets ();
 
 		points = 0;
+
+		isActive = false;
 	}
 	public void Shoot ()
 	{

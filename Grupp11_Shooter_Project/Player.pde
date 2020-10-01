@@ -19,14 +19,16 @@ public class Player extends GameObject
 	Player (PVector position, PVector direction, float speed, float radius, color colour)
 	{
 		this.position = position;
+		// this.position.x = 300f;
+		this.position.x = 300f;
 		this.direction = direction;
 
 		this.speed = speed;
 
 		this.radius = radius;
 		diameter = radius + radius;
-		aabb = new BoundingBox (new PVector (diameter, diameter));
-		aabb.SetPerfectSize (new PVector (diameter, diameter));
+		aabb = new BoundingBox (position, new PVector (diameter, diameter));
+		// aabb.SetPerfectSize (new PVector (diameter, diameter));
 
 		col = colour;
 
@@ -53,7 +55,7 @@ public class Player extends GameObject
 		recoveryTime = 1.5f;
 		recoveryTimer = 0f;
 
-		numOfTurrets = 3;
+		numOfTurrets = 1;
 
 		killCount = 0; // Counts as the player kills an Enemy.
 		spawnGoal = 5; // Every 5th enemy spawns a Pickup.
@@ -82,6 +84,7 @@ public class Player extends GameObject
 		color _col = color (red (col), green(col), blue (col), a);
 
 		// Player
+		rectMode (CENTER);
 		noStroke ();
 		fill (_col);
 		ellipse (position.x, position.y, diameter, diameter);
@@ -163,7 +166,7 @@ public class Player extends GameObject
 
 			if (numOfTurrets == 1)
 			{
-				bullets[i].Fire (position);
+				bullets[i].Fire (position.copy ());
 				return;
 			}
 			else if (numOfTurrets == 2)
@@ -183,27 +186,19 @@ public class Player extends GameObject
 
 	private void BulletCollisionCheck ()
 	{
-		// println ();
-
 		for (Bullet bullet : bullets)
 		{
 			if (!bullet.isActive)
 				continue;
-			
-			println ();
-			println (bullet._name + " isActive: " + bullet.isActive);
 
-			bullet.Update ();
+			bullet.aabb.Update (bullet.position);
 
 			boolean didCollide = false;
 			
 			// ENEMIES
+			// println ("e.count: " + gameManager.enemyManager.enemies.length);
 			for (Enemy enemy : gameManager.enemyManager.enemies)
 			{
-
-				if (didCollide)
-					break;
-
 				if (enemy.isActive && bullet.DidCollide (enemy))
 				{
 					enemy.GotHit (bullet.damage);
@@ -213,68 +208,48 @@ public class Player extends GameObject
 					if (killCount % spawnGoal == 0)
 						gameManager.SpawnPickup ();
 
-					didCollide = true;
-
 					println (_name + " collided with " + enemy._name);
+
+					didCollide = true;
+					break;
 				}
 			}
 
+			// Still looking?
 			if (didCollide)
 				continue;
 
-			// BIG BARRIER 1
-			for (Barrier barrier : gameManager.barrierManager.bigBarrier1)
+			// BARRIERS
+			// How many small barriers in one big.
+			int numOfBarriers = gameManager.barrierManager.bigBarrier1.length;
+			int barrierIndex = numOfBarriers - 1;
+			Barrier[] barriers = new Barrier[numOfBarriers * 3];
+
+			for (int i = 0; i < numOfBarriers; i++)
 			{
-				if (didCollide)
-					break;
+				barriers[i] = gameManager.barrierManager.bigBarrier1[barrierIndex - i];
+				barriers[numOfBarriers + i] = gameManager.barrierManager.bigBarrier2[barrierIndex - i];
+				barriers[numOfBarriers * 2 + i] = gameManager.barrierManager.bigBarrier3[barrierIndex - i];
+			}
 
-				if (barrier.health > 0 && bullet.DidCollide (barrier))
+			for (int i = 0; i < barriers.length; i++)
+			{
+				// if (bullet._name.equals ("P-Bullet[0]"))
+				// {
+				// 	println("barriers[" + i + "].active: " + barriers[i].isActive);
+				// }
+
+				if (barriers[i].isActive && bullet.DidCollide (barriers[i]))
 				{
-					barrier.GotHit (bullet.damage);
+					barriers[i].GotHit (bullet.damage);
 					bullet.isActive = false;
+					println (_name + " collided with " + barriers[i]._name + " health: " + barriers[i].health);
 					didCollide = true;
-
-					println (_name + " collided with (1) " + barrier._name);
+					break;
 				}
 			}
 
-			if (didCollide)
-				continue;
-
-			// BIG BARRIER 2
-			for (Barrier barrier : gameManager.barrierManager.bigBarrier2)
-			{
-				if (didCollide)
-					break;
-
-				if (barrier.isActive && bullet.DidCollide (barrier))
-				{
-					barrier.GotHit (bullet.damage);
-					bullet.isActive = false;
-					didCollide = true;
-
-					println (_name + " collided with (2) " + barrier._name + " health: " + barrier.health);
-				}
-			}
-
-			if (didCollide)
-				continue;
-
-			// BIG BARRIER 3
-			for (Barrier barrier : gameManager.barrierManager.bigBarrier3)
-			{
-				if (didCollide)
-					break;
-
-				if (barrier.health > 0 && bullet.DidCollide (barrier))
-				{
-					barrier.GotHit (bullet.damage);
-					bullet.isActive = false;
-					didCollide = true;
-
-					println (_name + " collided with (3) " + barrier._name);
-				}
-			}
+			bullet.Update ();
 		}
 	}
 

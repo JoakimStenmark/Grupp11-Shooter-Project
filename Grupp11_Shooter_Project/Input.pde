@@ -6,9 +6,6 @@ public class Input
 {
     private PVector direction;
 
-    // public int left;
-    // public int right;
-
     BUTTON_STATE[] buttons;
 
     public boolean shootDown;
@@ -17,8 +14,6 @@ public class Input
     public boolean upMenuDown;
     public boolean downMenuDown;
     public boolean pauseDown;
-
-    // temp...
  
     Input ()
     {
@@ -36,9 +31,6 @@ public class Input
         upMenuDown = false;
         downMenuDown = false;
         pauseDown = false;
-        
-        // left = 37;
-        // right = 39;
     }
 
     public PVector GetDirectionRAW ()

@@ -2,7 +2,7 @@
 BoundingBox enemy;
 BoundingBox player;
 float scale = 1f;
-boolean debuging = true;
+boolean debuging = false;
 boolean stop = false;
 int loopCounter;
 
@@ -11,11 +11,9 @@ GameManager gameManager;
 void setup()
 {
 	size (672, 768);
-	frameRate (2);
+	frameRate (60);
 
 	Init ();
-
-	DebugInit ();
 }
 
 void draw () 
@@ -46,11 +44,11 @@ private void DebugInit ()
 {
 	background (0);
 
-	enemy = new BoundingBox (new PVector (100f, 100f).mult (scale));
-	player = new BoundingBox (new PVector (50f, 50f).mult (scale));
+	enemy = new BoundingBox (	new PVector (0f, 200f),
+								new PVector (100f, 100f).mult (scale));
 
-	enemy.position = new PVector (200f, 200f);
-	player.position = new PVector (200f + 100f - 10f, 200f + 100f + 100f);
+	player = new BoundingBox (	new PVector (10f + 100f - 10f, 200f + 100f + 100f),
+								new PVector (50f, 50f).mult (scale));
 
 	loopCounter = 0;
 	stop = false;
@@ -60,9 +58,12 @@ private void DebugInit ()
 	rect (player.position.x, player.position.y, player.size.x, player.size.y);
 	player.Draw ();
 
+	rectMode (CORNER);
 	fill (0, 255, 0, 128);
 	rect (enemy.position.x, enemy.position.y, enemy.size.x, enemy.size.y);
-	enemy.Draw ();
+	println ("e.pos: " + enemy.position);
+	println ("e.size: " + enemy.size);
+	// enemy.Draw ();
 }
 
 private void DebugUpdate ()
@@ -73,6 +74,7 @@ private void DebugUpdate ()
 	loopCounter++;
 
 	fill (0, 0, 0, 16);
+	rectMode(CORNER);
 	rect(0, 0, width, height);
 
 	stroke (255);
@@ -82,7 +84,7 @@ private void DebugUpdate ()
 	// PVector velocity = direction.mult (speed * deltaTime);
 	float speed = 10f;
 	PVector velocity = direction.mult (speed);
-	velocity.y = -30000f;
+	// velocity.y = -30000f;
 
 	println ("\n\n\nCurrent loop: " + loopCounter);
 	println ("Player.pos: " + player.position);
@@ -111,7 +113,8 @@ private void DebugUpdate ()
 	rect (player.position.x, player.position.y, player.size.x, player.size.y);
 	player.Draw ();
 
+	rectMode (CORNER);
 	fill (0, 255, 0, 128);
 	rect (enemy.position.x, enemy.position.y, enemy.size.x, enemy.size.y);
-	enemy.Draw ();
+	// enemy.Draw ();
 }

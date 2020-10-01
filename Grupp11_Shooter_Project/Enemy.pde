@@ -37,8 +37,7 @@ class Enemy extends GameObject
 		this.speed = 120f;
 		this.radius = 16f;
 		diameter = radius + radius;
-		aabb = new BoundingBox (new PVector (diameter, diameter));
-		aabb.Update (position);
+		aabb = new BoundingBox (position, new PVector (diameter, diameter));
 
 		col = color(255, 0, 0);
 		moveLength = new PVector(50,0);
@@ -186,6 +185,7 @@ class Enemy extends GameObject
 			strokeWeight (4);
 			fill(GetColorPercentValue ());
 		}
+		
 		rectMode(CENTER);
 		rect(position.x,position.y, diameter, diameter);
 
