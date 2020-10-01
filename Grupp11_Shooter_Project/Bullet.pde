@@ -67,21 +67,27 @@ public class Bullet extends GameObject
 		if (isPlayerBullet)
 		{
 			// ENEMIES
+			// if (position.y > height - 100f)
+			// {
+			// 	println ();
+			// 	println (_name + " - pos: " + position + " - aabb.pos: " + aabb.position);
+			// }
 			for (Enemy enemy : gameManager.enemyManager.enemies)
 			{
-				if (_name.charAt (0) == 'P')
-				{
-					if (enemy.isActive)
-					{
-						println (_name + " - pos: " + position + " - aabb.pos: " + aabb.position);
-						println (enemy._name + " - pos: " + enemy.position + " - aabb.pos: " + enemy.aabb.position);
-					}
-				}
+				// if (_name.charAt (0) == 'P')
+				// {
+					// if (enemy.isActive && position.y > height - 100f && enemy._name.equals ("FastEnemy[20]"))
+					// {
+					// 	println (enemy._name + " - pos: " + enemy.position + " - aabb.pos: " + enemy.aabb.position);
+					// }
+				// }
 				if (enemy.isActive && DidCollide (enemy))
 				{
 					enemy.GotHit (damage);
 					isActive = false;
 					println (_name + " collided with " + enemy._name + " - health: " + enemy.health);
+					if (enemy.health - damage <= 0)
+						println (_name + " killed " + enemy._name + " at: " + enemy.position);
 					return true;
 				}
 			}

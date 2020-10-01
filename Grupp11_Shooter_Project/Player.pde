@@ -151,6 +151,9 @@ public class Player extends GameObject
 
 	public void Shoot ()
 	{
+		if (gameManager.gameOver || gameManager.victory)
+			return;
+			
 		int bulletAmount = 0;
 		int maxBullets = numOfTurrets * maxBulletsPerTurret;
 		int x = -1;

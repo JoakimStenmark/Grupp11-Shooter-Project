@@ -3,7 +3,7 @@
 class Enemy extends GameObject
 {
 	int stepsTaken = 0;
-	int stepLength = 50;
+	int stepLength = 48;
 	boolean goLeft = false;
 	boolean goRight = true;
 
@@ -18,6 +18,7 @@ class Enemy extends GameObject
 	float bulletTimer;
 
 	int points;
+	int shootChance = 6;
 
 	int maxHealth;
 
@@ -40,7 +41,7 @@ class Enemy extends GameObject
 		aabb = new BoundingBox (position, new PVector (diameter, diameter));
 
 		col = color(255, 0, 0);
-		moveLength = new PVector(50,0);
+		moveLength = new PVector(48,0);
 
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);
@@ -127,12 +128,33 @@ class Enemy extends GameObject
 		position.add(moveLength);
 		stepsTaken++;
 		//println("stepsTaken: " + stepsTaken % 4);
-		if (position.y >= height - 96) 
+		if (position.y + radius >= height - 96) 
 		{
+			println (_name + " reached the End Zone at: " + position);
 			gameManager.gameOver = true;
 		}
 
+		ClampPosition (true, false);
 		aabb.Update (position);
+	}
+
+	protected void ClampPosition (boolean horizontal, boolean vertical)
+	{
+		if (horizontal)
+		{
+			if (position.x < -radius)
+				position.x = -radius;
+			else if (position.x > width - radius)
+				position.x = width - radius;
+		}
+
+		if (vertical)
+		{
+			if (position.y < -radius)
+				position.y = -radius;
+			else if (position.y > height - radius)
+				position.y = height - radius;
+		}
 	}
 
 	public void Shoot ()
@@ -200,6 +222,7 @@ class Enemy extends GameObject
 	private void GotKilled (boolean getPoints)
 	{
 		isActive = false;
+		println (_name + " got killed!");
 		if (getPoints)
 			gameManager.EnemyGotKilled (points);
 	}
@@ -218,7 +241,7 @@ class Enemy extends GameObject
 		bulletTimer -= deltaTime;
 		if (bulletTimer <= 0f)
 		{
-			if (round (random (10)) == 10)
+			if (round (random (shootChance)) == 10)
 				Shoot ();
 
 			bulletTimer += bulletTime;

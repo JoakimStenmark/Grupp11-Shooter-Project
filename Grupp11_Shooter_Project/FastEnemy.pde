@@ -19,7 +19,7 @@ public class FastEnemy extends Enemy
 		aabb = new BoundingBox (position, new PVector (diameter, diameter));
 
 		col = color(127, 0, 127);
-		moveLength = new PVector(50,0);
+		moveLength = new PVector(48,0);
 
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);
@@ -39,7 +39,7 @@ public class FastEnemy extends Enemy
 
 	void Draw()
 	{
-		if (health <= 0)
+		if (!isActive)
 			return;
 
 		if (recoveryTimer > 0f)
@@ -60,6 +60,10 @@ public class FastEnemy extends Enemy
 		}
 		
 		rectMode(CENTER);
+
+		// if (_name.equals ("FastEnemy[24]"))
+		// 	fill (255);
+
 		triangle(position.x, position.y + radius, position.x - radius , position.y - radius, position.x + radius, position.y - radius);
 
 		aabb.Draw ();
@@ -93,11 +97,13 @@ public class FastEnemy extends Enemy
 		position.add(moveLength);
 		stepsTaken++;
 		
-		if (position.y >= height - 96) 
+		if (position.y - radius >= height - 96) 
 		{
+			println (_name + " reached the End Zone at: " + position);
 			gameManager.gameOver = true;
 		}
 
+		ClampPosition (true, false);
 		aabb.Update (position);
 	}
 
