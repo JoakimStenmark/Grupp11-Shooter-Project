@@ -1,3 +1,5 @@
+// Joakim Stenmark
+
 public class Wave7 extends EnemyManager
 {
 	Wave7()
