@@ -2,25 +2,27 @@ public class GameManager
 {
     EnemyManager enemyManager;
     EnemyManager[] waves;
-    int currentWave = 0;
+    int currentWave = 3;
     BarrierManager barrierManager;
     Player player;
 
     boolean gameOver;
+    boolean victory;
     int textSize = 96;
     int score;
 
     Pickup[] pickups;
     int pickupsIndex;
-
+    float fadeIn;
     GameManager ()
     {
         //loading all waves
-        waves = new EnemyManager[4];
+        waves = new EnemyManager[5];
         waves[0] = new Wave0();
         waves[1] = new Wave1();
         waves[2] = new Wave2();
         waves[3] = new Wave3();
+        waves[4] = new Ending();
 
         //current wave
         enemyManager = waves[currentWave];
@@ -31,9 +33,10 @@ public class GameManager
                                 240f,                                       // Speed
                                 16f,                                        // Radius
                                 color (128, 128, 255));                     // Color
-
+        fadeIn = 0;
         score = 0;
         gameOver = false;
+        victory = false;
 
         InitPickups ();
         
@@ -42,6 +45,11 @@ public class GameManager
 
     public void Update ()
     {
+        // if (victory) 
+        // {
+        //     return;
+        // }
+
         if (gameOver)
             return;
 
@@ -51,12 +59,15 @@ public class GameManager
         if (enemyManager.enemyCount == 0) 
         {
             currentWave++;
-            if (currentWave >= waves.length) 
+            if (currentWave < waves.length) 
             {
-                currentWave = 0;
+                enemyManager = waves[currentWave];
+                if (waves[currentWave] instanceof Ending) 
+                {
+                    victory = true;
+                }
             }
-            
-            enemyManager = waves[currentWave];
+    
         }
 
         for (Pickup pickup : pickups)
@@ -75,6 +86,11 @@ public class GameManager
         for (Pickup pickup : pickups)
         {
             pickup.Draw ();
+        }
+
+        if (victory) 
+        {
+            DrawVictoryScreen();
         }
 
         if (gameOver)
@@ -98,6 +114,7 @@ public class GameManager
 
     private void DrawGameOverScreen ()
     {
+
         textSize(textSize);
         fill(255, 255, 255, 127);
         textAlign(CENTER);
@@ -109,6 +126,26 @@ public class GameManager
     public void GameOver ()
     {
         gameOver = true;
+    }
+
+    public void DrawVictoryScreen() 
+    {
+        if (fadeIn < 255) 
+        {
+            fadeIn += 1;
+            println("fadeIn: "+fadeIn);
+        }
+        fill(0, 0, 0, fadeIn);
+        rectMode(CORNER);
+        rect(0, 0, width, height);
+        fill(255, 255, 255, fadeIn);
+        textAlign(CENTER);
+        textSize(textSize);
+        text("You won!", width/2, height/2);
+        textSize(textSize/2);
+        text("The earth is safe", width/2, height/2+96);    
+        text("Your score was: " + score + "!", width/2, height/2+256);
+
     }
 
     public void SpawnPickup ()
