@@ -30,7 +30,7 @@ class Enemy extends GameObject
 		this.health = 1;
 		this.maxHealth = this.health;
 		this.speed = 120f;
-		this.radius = 24f;
+		this.radius = 16f;
 		diameter = radius + radius;
 		aabb = new BoundingBox (new PVector (diameter, diameter));
 		aabb.Update (position);
@@ -147,7 +147,7 @@ class Enemy extends GameObject
 		if (health <= 0)
 			return;
 
-		stroke (255, 255, 255, 255);
+		stroke (255, 255, 255, 127);
 		strokeWeight (4);
 		fill(GetColorPercentValue ());
 		rectMode(CENTER);

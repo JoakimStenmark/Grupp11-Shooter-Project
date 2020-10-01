@@ -8,6 +8,7 @@ public class EnemyManager
 	float time; 
 	int spacing = 60;
 	int enemyPerRow = 8;
+	float timePerStepModifier = 0.98f;
 
 	public EnemyManager () 
 	{
@@ -74,7 +75,7 @@ public class EnemyManager
 			}
 
 			time = millis() + timePerStep;
-			timePerStep *= 0.98;
+			timePerStep *= timePerStepModifier;
 		}
 	}
 }

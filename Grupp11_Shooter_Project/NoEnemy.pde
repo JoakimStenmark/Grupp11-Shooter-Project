@@ -1,20 +1,20 @@
-class BigEnemy extends Enemy
+class NoEnemy extends Enemy
 {
-	BigEnemy(float x, float y)
+	NoEnemy(float x, float y)
 	{
 		position = new PVector (x, y);
 		this.direction = direction;		
 		this.speed = speed;		
-		this.health = 5;
+		this.health = 0;
 		this.maxHealth = this.health;
-		this.radius = 24f;
+		this.radius = 0f;
 		
 		diameter = radius + radius;
 		aabb = new BoundingBox (new PVector (diameter, diameter));
 		aabb.Update (position);
 
-		col = color(0, 0, 255);
-		moveLength = new PVector(50,0);
+		col = color(0, 0, 0);
+		moveLength = new PVector(0,0);
 
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);
@@ -22,7 +22,11 @@ class BigEnemy extends Enemy
 
 		InitBullets ();
 
-		points = 200;
+		points = 0;
 	}
-	
+	public void Shoot ()
+	{
+		//NoEnemy has no shoot
+	}
+
 }

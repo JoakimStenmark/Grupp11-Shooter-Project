@@ -2,7 +2,7 @@ public class GameManager
 {
     EnemyManager enemyManager;
     EnemyManager[] waves;
-    int currentWave = 3;
+    int currentWave = 9;
     BarrierManager barrierManager;
     Player player;
 
@@ -21,15 +21,23 @@ public class GameManager
     GameManager ()
     {
         //loading all waves
-        waves = new EnemyManager[5];
+        waves = new EnemyManager[11];
         waves[0] = new Wave0();
         waves[1] = new Wave1();
         waves[2] = new Wave2();
         waves[3] = new Wave3();
-        waves[4] = new Ending();
+        waves[4] = new Wave4();
+        waves[5] = new Wave5();
+        waves[6] = new Wave6();
+        waves[7] = new Wave7();
+        waves[8] = new Wave8();
+        waves[9] = new Wave9();
+        waves[10] = new Ending();
 
         //current wave
         enemyManager = waves[currentWave];
+
+
         barrierManager = new BarrierManager ();
 
         player = new Player (   new PVector (width * 0.5f, height - 96),    // Position
@@ -137,7 +145,7 @@ public class GameManager
         if (fadeIn < 255) 
         {
             fadeIn += 1;
-            println("fadeIn: "+fadeIn);
+            
         }
         fill(0, 0, 0, fadeIn);
         rectMode(CORNER);

@@ -70,8 +70,7 @@ public class FastEnemy extends Enemy
 				goRight = !goRight;
 				goLeft = !goLeft;
 			}
-			
-			
+						
 		}
 
 		position.add(moveLength);
