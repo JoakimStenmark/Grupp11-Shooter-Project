@@ -20,12 +20,12 @@ fredag 2 okt
 
 to do: 
 
-Barriärer
-olika fiender
-fiender som skjuter
-invulnerability frames + anim (player and enemy)
+Ending
+Start menu
+Fler Waves
+Game feel
+	screen shake
+	effekter
+	fler fiender
+	
 
-Powerups
-Levels
-
-general balancing
