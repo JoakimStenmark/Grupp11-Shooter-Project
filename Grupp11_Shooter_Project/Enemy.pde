@@ -54,110 +54,21 @@ class Enemy extends GameObject
 
 		recoveryTime = 0.05f;
 		recoveryTimer = 0f;
+
+		isActive = true;
 	}
 
 	public void Update ()
 	{
 		for (Bullet bullet : bullets)
 		{
-			if (!bullet.isActive)
-				continue;
-
-			bullet.Update ();
-			
-			if (bullet.DidCollide (gameManager.player))
-			{
-				gameManager.player.GotHit (bullet.damage);
-				bullet.isActive = false;
-			}
-
-			for (Barrier barrier : gameManager.barrierManager.bigBarrier1)
-			{
-				if (barrier.health > 0 && bullet.DidCollide (barrier))
-				{
-					barrier.GotHit (bullet.damage);
-					bullet.isActive = false;
-					continue;
-				}
-			}
-
-			for (Barrier barrier : gameManager.barrierManager.bigBarrier2)
-			{
-				if (barrier.health > 0 && bullet.DidCollide (barrier))
-				{
-					barrier.GotHit (bullet.damage);
-					bullet.isActive = false;
-					continue;
-				}
-			}
-
-			for (Barrier barrier : gameManager.barrierManager.bigBarrier3)
-			{
-				if (barrier.health > 0 && bullet.DidCollide (barrier))
-				{
-					barrier.GotHit (bullet.damage);
-					bullet.isActive = false;
-					continue;
-				}
-			}
+			bullet.Update (false);
 		}
-		
-		if (health <= 0)
+
+		if (!isActive)
 			return;
 
-		if (DidCollide (gameManager.player))
-		{
-			gameManager.player.GotHit (100);
-		}
-
-		for (Barrier barrier : gameManager.barrierManager.bigBarrier1)
-		{
-			if (barrier.health <= 0)
-				continue;
-
-			if (DidCollide (barrier))
-			{
-				barrier.GotHit (100);
-				GotHit (100);
-				return;
-			}
-		}
-
-		for (Barrier barrier : gameManager.barrierManager.bigBarrier2)
-		{
-			if (barrier.health <= 0)
-				continue;
-
-			if (DidCollide (barrier))
-			{
-				barrier.GotHit (100);
-				GotHit (100);
-				return;
-				// println (_name + " got killed by BigBarrier2!");
-			}
-		}
-
-		for (Barrier barrier : gameManager.barrierManager.bigBarrier3)
-		{
-			if (barrier.health <= 0)
-				continue;
-
-			if (DidCollide (barrier))
-			{
-				barrier.GotHit (100);
-				GotHit (100);
-				return;
-			}
-		}
-
-		bulletTimer -= deltaTime;
-		if (bulletTimer <= 0f)
-		{
-			if (round (random (10)) == 10)
-				Shoot ();
-
-			bulletTimer += bulletTime;
-		}
+		FoundCollision ();
 	}
 
 	void Draw()
@@ -174,10 +85,6 @@ class Enemy extends GameObject
 		{
 			noStroke ();
 			fill (255);
-
-			recoveryTimer -= deltaTime;
-			if (recoveryTimer <= 0f)
-				recoveryTimer = 0f;
 		}
 		else
 		{
@@ -240,6 +147,40 @@ class Enemy extends GameObject
 		}
 	}
 
+	private boolean FoundCollision ()
+	{
+		if (DidCollide (gameManager.player))
+		{
+			gameManager.player.GotHit ();
+			GotKilled (false);
+		}
+
+		// BARRIERS
+		// How many small barriers in one big.
+		int numOfBarriers = gameManager.barrierManager.bigBarrier1.length;
+		Barrier[] barriers = new Barrier[numOfBarriers * 3];
+
+		for (int i = 0; i < numOfBarriers; i++)
+		{
+			barriers[i] = gameManager.barrierManager.bigBarrier1[i];
+			barriers[numOfBarriers + i] = gameManager.barrierManager.bigBarrier2[i];
+			barriers[numOfBarriers * 2 + i] = gameManager.barrierManager.bigBarrier3[i];
+		}
+
+		for (int i = 0; i < barriers.length; i++)
+		{
+			if (barriers[i].isActive && DidCollide (barriers[i]))
+			{
+				barriers[i].GotKilled ();
+				GotKilled (false);
+				println (_name + " collided with " + barriers[i]._name + " health: " + barriers[i].health);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public void GotHit (int amount)
 	{
 		if (health <= 0)
@@ -249,17 +190,39 @@ class Enemy extends GameObject
 
 		if (health <= 0)
 		{
-			GotKilled ();
+			GotKilled (true);
 			return;
 		}
 
 		recoveryTimer = recoveryTime;
 	}
 
-	private void GotKilled ()
+	private void GotKilled (boolean getPoints)
 	{
 		isActive = false;
-		gameManager.EnemyGotKilled (points);
+		if (getPoints)
+			gameManager.EnemyGotKilled (points);
+	}
+
+	private void UpdateTimers ()
+	{
+		// Update Recovery Animation if was hit recently.
+		if (recoveryTimer > 0f)
+		{
+			recoveryTimer -= deltaTime;
+			if (recoveryTimer <= 0f)
+				recoveryTimer = 0f;
+		}
+
+		// Do we Shoot?
+		bulletTimer -= deltaTime;
+		if (bulletTimer <= 0f)
+		{
+			if (round (random (10)) == 10)
+				Shoot ();
+
+			bulletTimer += bulletTime;
+		}
 	}
 
 	protected void InitBullets ()

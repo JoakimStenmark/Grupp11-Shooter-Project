@@ -1,8 +1,8 @@
-// Joakim Stenmark (Originally Creator)
+// Joakim Stenmark (Originally Creator), Eddie Norberg (Mostly Re-written)
 
 public class BarrierManager
 {
-	float barrierSize = 14;
+	float barrierSize = 12f;
 
 	Barrier[] bigBarrier1;
 	Barrier[] bigBarrier2;
@@ -21,8 +21,7 @@ public class BarrierManager
 
 		float factor = 8f;
 		float _width = width / 3f;
-		float _x = _width / factor;
-		
+		float _x = ((_width - (barrierSize * 2f * 4f)) * 0.5f) + barrierSize;
 
 		println ("_x: " + _x + " - _width: " + _width);
 		

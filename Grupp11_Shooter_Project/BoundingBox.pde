@@ -9,7 +9,7 @@ public class BoundingBox
     {
         this.position = position;
         // this.size = size.mult (1.5f);
-        this.size = size;
+        this.size = size.mult (0.5f);
     }
 
     public void Update (PVector position)
@@ -31,8 +31,8 @@ public class BoundingBox
         strokeWeight(2);
         fill (colour);
         // noFill ();
-        rectMode(CORNER);
-        rect (position.x, position.y, size.x, size.y);
+        rectMode(CENTER);
+        rect (position.x, position.y, size.x + size.x, size.y + size.y);
 
         strokeWeight (1);
         float diameter = 8f;
@@ -43,7 +43,7 @@ public class BoundingBox
         {
             for (int x = -1; x <= 2; x += 2)
             {
-                ellipse (position.x + x * (size.x * 0.5f), position.y + y * (size.y * 0.5f), diameter, diameter);
+                ellipse (position.x + x * size.x, position.y + y * size.y, diameter, diameter);
             }
         }
     }
@@ -63,14 +63,14 @@ public class BoundingBox
     public boolean CollidedWithAABB (BoundingBox other, PVector velocity, String first, String second)
     {
         // if (first.charAt(0) == 'P')
-        if (first.equals ("P-Bullet[0]") && second.equals ("BB2_[1,0]"))
-        {
-            println ("Collision between: " + first + " and " + second);
-            println ();
-            println (first + ".pos: " + position + " - size: " + size);
-            println (second + ".pos: " + other.position + " - size: " + other.size);
-            println ();
-        }
+        // if (first.equals ("P-Bullet[0]") && second.equals ("BB2_[1,0]"))
+        // {
+        //     println ("Collision between: " + first + " and " + second);
+        //     println ();
+        //     println (first + ".pos: " + position + " - size: " + size);
+        //     println (second + ".pos: " + other.position + " - size: " + other.size);
+        //     println ();
+        // }
 
         // println ();
 
@@ -91,9 +91,9 @@ public class BoundingBox
             //     break;
             // }
 
-            for (int y = 0; y < 2; y++)
+            for (int y = -1; y < 2; y += 2)
             {
-                for (int x = 0; x < 2; x++)
+                for (int x = -1; x < 2; x += 2)
                 {
                     // boolean doPrint = (y == 0 && x == 0) ? true : false;
                     // boolean doPrint = true;
@@ -169,9 +169,13 @@ public class BoundingBox
         // println ((point.y > box.position.y) ? "(TRUE) - point.y[" + point.y + "] > box.position.y[" + box.position.y + "]" : "(FALSE) - point.y[" + point.y +"] <= box.position.y[" + box.position.y + "]");
         // println ((point.y < box.position.y + box.size.y) ? "(TRUE) - point.y[" + point.y + "] < box.position.y + box.size.y[" + (box.position.y + box.size.y) + "]" : "(FALSE) - point.y[" + point.y + "] >= box.position.y + box.size.y[" + (box.position.y + box.size.y) + "]");
 
-        if (point.x > box.position.x && point.x < box.position.x + box.size.x &&
-            point.y > box.position.y && point.y < box.position.y + box.size.y)
+        if (point.x > box.position.x - box.size.x && point.x < box.position.x + box.size.x &&
+            point.y > box.position.y - box.size.y && point.y < box.position.y + box.size.y)
             return true;
+        
+        // if (point.x > box.position.x && point.x < box.position.x + box.size.x &&
+        //     point.y > box.position.y && point.y < box.position.y + box.size.y)
+        //     return true;
             
         return false;
     }

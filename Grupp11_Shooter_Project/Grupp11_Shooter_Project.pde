@@ -5,6 +5,7 @@ float scale = 1f;
 boolean debuging = false;
 boolean stop = false;
 int loopCounter;
+boolean newTest = true;
 
 GameManager gameManager;
 

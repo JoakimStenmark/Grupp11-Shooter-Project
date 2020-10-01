@@ -30,11 +30,17 @@ public class Barrier extends GameObject
 		aabb.Draw ();
 	}
 
-	void GotHit (int amount)
+	public void GotHit (int amount)
 	{
 		health -= amount;
 
 		if (health <= 0)
-			isActive = false;
+			GotKilled ();
+	}
+
+	public void GotKilled ()
+	{
+		println (_name + " got Killed");
+		isActive = false;
 	}
 }

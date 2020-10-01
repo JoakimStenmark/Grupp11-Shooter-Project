@@ -19,14 +19,12 @@ public class Bullet extends GameObject
 		this.col = col;
 	}
 
-	public void Update ()
+	public void Update (boolean isPlayerBullet)
 	{
-		// println (_name + " active: " + isActive + " - pos: " + position + " - box.pos: " + aabb.position);
-		if (!isActive)
+		if (!isActive || FoundCollision (isPlayerBullet))
 			return;
 
 		Move ();
-		aabb.Update (position);
 	}
 
 	public void Draw ()
@@ -53,12 +51,83 @@ public class Bullet extends GameObject
 		if (position.y < -radius || position.y > height + radius ||
 			position.x < -radius || position.x > width + radius)
 			isActive = false;
+
+		aabb.Update (position);
 	}
 
 	public void Fire (PVector position)
 	{
 		this.position = position.copy ();
+		aabb.Update (position);
 		isActive = true;
+	}
+
+	private boolean FoundCollision (boolean isPlayerBullet)
+	{
+		if (isPlayerBullet)
+		{
+			// ENEMIES
+			for (Enemy enemy : gameManager.enemyManager.enemies)
+			{
+				if (_name.charAt (0) == 'P')
+				{
+					if (enemy.isActive)
+					{
+						println (_name + " - pos: " + position + " - aabb.pos: " + aabb.position);
+						println (enemy._name + " - pos: " + enemy.position + " - aabb.pos: " + enemy.aabb.position);
+					}
+				}
+				if (enemy.isActive && DidCollide (enemy))
+				{
+					enemy.GotHit (damage);
+					isActive = false;
+					println (_name + " collided with " + enemy._name + " - health: " + enemy.health);
+					return true;
+				}
+			}
+		}
+		else
+		{
+			if (DidCollide (gameManager.player))
+			{
+				gameManager.player.GotHit ();
+				isActive = false;
+				println (_name + " collided with " + gameManager.player._name + " - health: " + gameManager.player.health);
+				return true;
+			}	
+		}
+
+		// if (newTest)
+		// 	return false;
+
+		// BARRIERS
+		// How many small barriers in one big.
+		int numOfBarriers = gameManager.barrierManager.bigBarrier1.length;
+		int barrierIndex = numOfBarriers - 1;	// Fill the array in reverse so we check the lower first.
+		Barrier[] barriers = new Barrier[numOfBarriers * 3];
+
+		for (int i = 0; i < numOfBarriers; i++)
+		{
+			if (!isPlayerBullet)
+				barrierIndex = i;	// if not player then fill array in order
+
+			barriers[i] = gameManager.barrierManager.bigBarrier1[barrierIndex - i];
+			barriers[numOfBarriers + i] = gameManager.barrierManager.bigBarrier2[barrierIndex - i];
+			barriers[numOfBarriers * 2 + i] = gameManager.barrierManager.bigBarrier3[barrierIndex - i];
+		}
+
+		for (int i = 0; i < barriers.length; i++)
+		{
+			if (barriers[i].isActive && DidCollide (barriers[i]))
+			{
+				barriers[i].GotHit (damage);
+				isActive = false;
+				// println (_name + " collided with " + barriers[i]._name + " health: " + barriers[i].health);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public void SetNewDirection (float angle)

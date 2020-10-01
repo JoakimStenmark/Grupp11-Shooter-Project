@@ -14,6 +14,8 @@ public class GameManager
     boolean victory;
     int textSize = 96;
     int score;
+    int killCount;
+    int spawnGoal;
 
     Pickup[] pickups;
     int pickupsIndex;
@@ -168,6 +170,9 @@ public class GameManager
         gameIsPaused = false;
         victory = false;
 
+        killCount = 0; // Counts as the player kills an Enemy.
+		spawnGoal = 5; // Every 5th enemy spawns a Pickup.
+
         InitPickups ();
     }
 
@@ -175,6 +180,10 @@ public class GameManager
     {
         score += points;
 		enemyManager.enemyCount -= 1;
+
+        killCount++;
+        if (killCount % spawnGoal == 0)
+            SpawnPickup ();
     }
 
     public void PauseGame ()

@@ -11,7 +11,6 @@ public class Player extends GameObject
 	int maxNumOfTurrets;
 	int maxBulletsPerTurret;
 
-	int killCount;
 	int spawnGoal;
 
 	int maxExtraLives = 5;
@@ -19,8 +18,6 @@ public class Player extends GameObject
 	Player (PVector position, PVector direction, float speed, float radius, color colour)
 	{
 		this.position = position;
-		// this.position.x = 300f;
-		this.position.x = 300f;
 		this.direction = direction;
 
 		this.speed = speed;
@@ -55,20 +52,19 @@ public class Player extends GameObject
 		recoveryTime = 1.5f;
 		recoveryTimer = 0f;
 
-		numOfTurrets = 1;
-
-		killCount = 0; // Counts as the player kills an Enemy.
-		spawnGoal = 5; // Every 5th enemy spawns a Pickup.
+		numOfTurrets = 2;
 	}
 
 	public void Update ()
 	{
 		Move ();
-		aabb.Update (position);
+
+		for (Bullet bullet : bullets)
+		{
+			bullet.Update (true);
+		}
 
 		UpdateTimers ();
-
-		BulletCollisionCheck ();
 	}
 
 	public void Draw ()
@@ -149,6 +145,8 @@ public class Player extends GameObject
 			position.x = radius;
 		else if (position.x >= width - radius)
 			position.x = width - radius;
+
+		aabb.Update (position);
 	}
 
 	public void Shoot ()
@@ -184,81 +182,12 @@ public class Player extends GameObject
 		}
 	}
 
-	private void BulletCollisionCheck ()
-	{
-		for (Bullet bullet : bullets)
-		{
-			if (!bullet.isActive)
-				continue;
-
-			bullet.aabb.Update (bullet.position);
-
-			boolean didCollide = false;
-			
-			// ENEMIES
-			// println ("e.count: " + gameManager.enemyManager.enemies.length);
-			for (Enemy enemy : gameManager.enemyManager.enemies)
-			{
-				if (enemy.isActive && bullet.DidCollide (enemy))
-				{
-					enemy.GotHit (bullet.damage);
-					bullet.isActive = false;
-
-					killCount++;
-					if (killCount % spawnGoal == 0)
-						gameManager.SpawnPickup ();
-
-					println (_name + " collided with " + enemy._name);
-
-					didCollide = true;
-					break;
-				}
-			}
-
-			// Still looking?
-			if (didCollide)
-				continue;
-
-			// BARRIERS
-			// How many small barriers in one big.
-			int numOfBarriers = gameManager.barrierManager.bigBarrier1.length;
-			int barrierIndex = numOfBarriers - 1;
-			Barrier[] barriers = new Barrier[numOfBarriers * 3];
-
-			for (int i = 0; i < numOfBarriers; i++)
-			{
-				barriers[i] = gameManager.barrierManager.bigBarrier1[barrierIndex - i];
-				barriers[numOfBarriers + i] = gameManager.barrierManager.bigBarrier2[barrierIndex - i];
-				barriers[numOfBarriers * 2 + i] = gameManager.barrierManager.bigBarrier3[barrierIndex - i];
-			}
-
-			for (int i = 0; i < barriers.length; i++)
-			{
-				// if (bullet._name.equals ("P-Bullet[0]"))
-				// {
-				// 	println("barriers[" + i + "].active: " + barriers[i].isActive);
-				// }
-
-				if (barriers[i].isActive && bullet.DidCollide (barriers[i]))
-				{
-					barriers[i].GotHit (bullet.damage);
-					bullet.isActive = false;
-					println (_name + " collided with " + barriers[i]._name + " health: " + barriers[i].health);
-					didCollide = true;
-					break;
-				}
-			}
-
-			bullet.Update ();
-		}
-	}
-
-	public void GotHit (int amount)
+	public void GotHit ()
 	{
 		if (recoveryTimer > 0f)
 			return;
 
-		health -= amount;
+		health--;
 
 		numOfTurrets--;
 		if (numOfTurrets <= 1)
