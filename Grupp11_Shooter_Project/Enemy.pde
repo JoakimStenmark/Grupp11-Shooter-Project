@@ -1,4 +1,4 @@
-// Joakim Stenmark
+// Eddie Norberg (mostly)
 
 class Enemy extends GameObject
 {
@@ -20,6 +20,9 @@ class Enemy extends GameObject
 	int points;
 
 	int maxHealth;
+
+	float recoveryTime;
+	float recoveryTimer;
 
 	Enemy ()
 	{
@@ -46,7 +49,12 @@ class Enemy extends GameObject
 
 		InitBullets ();
 
+		_name = "Enemy";
+
 		points = 100;
+
+		recoveryTime = 0.05f;
+		recoveryTimer = 0f;
 	}
 
 	public void Update ()
@@ -97,7 +105,6 @@ class Enemy extends GameObject
 		
 		if (health <= 0)
 			return;
-		// Move ();
 
 		if (DidCollide (gameManager.player))
 		{
@@ -106,28 +113,41 @@ class Enemy extends GameObject
 
 		for (Barrier barrier : gameManager.barrierManager.bigBarrier1)
 		{
+			if (barrier.health <= 0)
+				continue;
+
 			if (DidCollide (barrier))
 			{
 				barrier.GotHit (100);
 				GotHit (100);
+				return;
 			}
 		}
 
 		for (Barrier barrier : gameManager.barrierManager.bigBarrier2)
 		{
+			if (barrier.health <= 0)
+				continue;
+
 			if (DidCollide (barrier))
 			{
 				barrier.GotHit (100);
 				GotHit (100);
+				return;
+				// println (_name + " got killed by BigBarrier2!");
 			}
 		}
 
 		for (Barrier barrier : gameManager.barrierManager.bigBarrier3)
 		{
+			if (barrier.health <= 0)
+				continue;
+
 			if (DidCollide (barrier))
 			{
 				barrier.GotHit (100);
 				GotHit (100);
+				return;
 			}
 		}
 
@@ -148,12 +168,24 @@ class Enemy extends GameObject
 			bullet.Draw ();
 		}
 
-		if (health <= 0)
+		if (!isActive)
 			return;
 
-		stroke (255, 255, 255, 127);
-		strokeWeight (4);
-		fill(GetColorPercentValue ());
+		if (recoveryTimer > 0f)
+		{
+			noStroke ();
+			fill (255);
+
+			recoveryTimer -= deltaTime;
+			if (recoveryTimer <= 0f)
+				recoveryTimer = 0f;
+		}
+		else
+		{
+			stroke (255, 255, 255, 127);
+			strokeWeight (4);
+			fill(GetColorPercentValue ());
+		}
 		rectMode(CENTER);
 		rect(position.x,position.y, diameter, diameter);
 
@@ -162,7 +194,7 @@ class Enemy extends GameObject
 
 	void Move()
 	{
-		if (health <= 0)
+		if (!isActive)
 			return;
 
 		moveLength.set(right);
@@ -217,11 +249,17 @@ class Enemy extends GameObject
 
 		if (health <= 0)
 		{
-			position = new PVector (-100f, -100f);
-			health = 0;
-			gameManager.score += points;
-			gameManager.enemyManager.enemyCount -= 1;
+			GotKilled ();
+			return;
 		}
+
+		recoveryTimer = recoveryTime;
+	}
+
+	private void GotKilled ()
+	{
+		isActive = false;
+		gameManager.EnemyGotKilled (points);
 	}
 
 	protected void InitBullets ()

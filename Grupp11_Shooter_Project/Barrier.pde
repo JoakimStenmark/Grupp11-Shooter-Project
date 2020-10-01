@@ -15,14 +15,20 @@ public class Barrier extends GameObject
 		aabb = new BoundingBox (new PVector (diameter, diameter));
 		aabb.Update (position);
 		col = color (255, 255, 0);
+		isActive = true;
 	}
 
 	void Draw()
-	{		
+	{
+		if (!isActive)
+			return;
+			
 		int g = round (((float)health / (float)maxHealth) * 255);
 		fill(red (col), g, 0);
 		stroke(0);
 		rect(position.x,position.y, diameter,diameter);
+
+		aabb.Draw ();
 	}
 
 	void GotHit (int amount)
@@ -30,9 +36,6 @@ public class Barrier extends GameObject
 		health -= amount;
 
 		if (health <= 0)
-		{
-			position = new PVector (-100f, -100f);
-			health = 0;
-		}
+			isActive = false;
 	}
 }

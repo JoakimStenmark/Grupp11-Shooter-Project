@@ -28,6 +28,11 @@ public class FastEnemy extends Enemy
 
 		InitBullets ();
 
+		_name = "FastEnemy";
+
+		recoveryTime = 0.05f;
+		recoveryTimer = 0f;
+
 		points = 200;
 	}
 
@@ -36,9 +41,23 @@ public class FastEnemy extends Enemy
 		if (health <= 0)
 			return;
 
-		fill(col);
-		noStroke();
-		rectMode(CENTER);
+		if (recoveryTimer > 0f)
+		{
+			noStroke ();
+			fill (255);
+
+			println ("Fast Damage: " + recoveryTimer + " - " + recoveryTime);
+
+			recoveryTimer -= deltaTime;
+			if (recoveryTimer <= 0f)
+				recoveryTimer = 0f;
+		}
+		else
+		{
+			fill(col);
+			noStroke();
+			rectMode(CENTER);
+		}
 		
 		triangle(position.x, position.y + radius, position.x - radius , position.y - radius, position.x + radius, position.y - radius);
 

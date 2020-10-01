@@ -22,7 +22,8 @@ public class Wave1 extends EnemyManager
 			}
 
 			enemies[i] = new Enemy((float)(70 + h * spacing), (float)(-20 + j * spacing));
-
+			enemies[i]._name = "Enemy["+ i +"]";
+			
 			h++;
 		}
 	}

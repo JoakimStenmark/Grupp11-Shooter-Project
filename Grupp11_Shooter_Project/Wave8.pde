@@ -25,12 +25,13 @@ public class Wave8 extends EnemyManager
 			if (i == 2) 
 			{
 				enemies[i] = new Enemy((float)(70 + h * spacing), (float)(-20 + j * spacing));
-				
+				enemies[i]._name = "Enemy["+ i +"]";
 			}
 
 			else 
 			{
 				enemies[i] = new NoEnemy((float)(70 + h * spacing), (float)(-20 + j * spacing));
+				enemies[i]._name = "NoEnemy["+ i +"]";
 				enemyCount--;
 
 			}

@@ -24,6 +24,10 @@ class BigEnemy extends Enemy
 
 		InitBullets ();
 
+		_name = "BigEnemy";
+		recoveryTime = 0.05f;
+		recoveryTimer = 0f;
+
 		points = 200;
 	}
 	

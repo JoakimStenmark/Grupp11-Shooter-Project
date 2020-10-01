@@ -2,7 +2,6 @@
 
 public class Bullet extends GameObject
 {
-	boolean isActive;
 	int damage;
 
 	Bullet (PVector position, PVector direction, int damage, float speed, float radius, color col)
@@ -18,8 +17,6 @@ public class Bullet extends GameObject
 		this.speed = speed;
 
 		this.col = col;
-
-		isActive = false;
 	}
 
 	public void Update ()
@@ -45,9 +42,10 @@ public class Bullet extends GameObject
 
 	private void Move ()
 	{
-		position.add (direction.copy ().mult (speed * deltaTime));
+		position.add (GetVelocity ());
 
-		if (position.y < -radius || position.y > height + radius)
+		if (position.y < -radius || position.y > height + radius ||
+			position.x < -radius || position.x > width + radius)
 			isActive = false;
 	}
 
@@ -55,5 +53,10 @@ public class Bullet extends GameObject
 	{
 		this.position = position.copy ();
 		isActive = true;
+	}
+
+	public void SetNewDirection (float angle)
+	{
+        direction = new PVector (cos (radians (angle - 90f)), sin (radians (angle - 90f)));
 	}
 }

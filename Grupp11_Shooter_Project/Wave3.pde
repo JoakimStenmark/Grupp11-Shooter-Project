@@ -24,10 +24,12 @@ public class Wave3 extends EnemyManager
 			if (i > 1  && i < 6 )
 			{
 				enemies[i] = new FastEnemy((float)(70 + h * spacing), (float)(height * -0.5 + j * spacing));
+				enemies[i]._name = "FastEnemy["+ i +"]";
 			}
 			else 
 			{
 				enemies[i] = new Enemy((float)(70 + h * spacing), (float)(-20 + j * spacing));
+				enemies[i]._name = "Enemy["+ i +"]";
 			}
 
 			h++;

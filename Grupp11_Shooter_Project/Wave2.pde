@@ -25,10 +25,12 @@ public class Wave2 extends EnemyManager
 			if (i == 0 || i == 7)
 			{
 				enemies[i] = new BigEnemy((float)(70 + h * spacing), (float)(-20 + j * spacing));
+				enemies[i]._name = "BigEnemy["+ i +"]";
 			}
 			else 
 			{
 				enemies[i] = new Enemy((float)(70 + h * spacing), (float)(-20 + j * spacing));
+				enemies[i]._name = "Enemy["+ i +"]";
 			}
 
 			h++;

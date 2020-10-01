@@ -24,20 +24,23 @@ public class Wave7 extends EnemyManager
 			if (i % 3 == 0) 
 			{
 				enemies[i] = new Enemy((float)(70 + h * spacing), (float)(height * -0.66 + j * spacing));
+				enemies[i]._name = "Enemy["+ i +"]";
 			}
 			else if (i % 7 == 0) 
 			{
 				enemies[i] = new FastEnemy((float)(70 + h * spacing), (float)(height * -0.75 + j * spacing));
+				enemies[i]._name = "FastEnemy["+ i +"]";
 				
 			}
 			else if (i % 11 == 0) 
 			{
 				enemies[i] = new BigEnemy((float)(70 + h * spacing), (float)(height * -0.66 + j * spacing));
-				
+				enemies[i]._name = "BigEnemy["+ i +"]";
 			}
 			else 
 			{
 				enemies[i] = new NoEnemy((float)(70 + h * spacing), (float)(-20 + j * spacing));
+				enemies[i]._name = "NoEnemy["+ i +"]";
 				enemyCount--;
 
 			}

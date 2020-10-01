@@ -16,6 +16,7 @@ public class Input
     public boolean aabbDown;
     public boolean upMenuDown;
     public boolean downMenuDown;
+    public boolean pauseDown;
 
     // temp...
  
@@ -34,6 +35,7 @@ public class Input
         aabbDown = false;
         upMenuDown = false;
         downMenuDown = false;
+        pauseDown = false;
         
         // left = 37;
         // right = 39;
@@ -212,6 +214,13 @@ void keyPressed ()
         input.downMenuDown = true;
         gameManager.menuManager.MoveMenu (1);
     }
+
+    // PAUSE (FOR DEBUG ONLY)
+    if (key == 'p' && !input.pauseDown)
+    {
+        input.pauseDown = true;
+        gameManager.PauseGame ();
+    }
 }
 
 void keyReleased ()
@@ -248,4 +257,8 @@ void keyReleased ()
     // MOVE DOWN - MENU
     if ((keyCode == DOWN || key == 's') && input.downMenuDown)
         input.downMenuDown = false;
+
+    // PAUSE (FOR DEBUG ONLY)
+    if (key == 'p' && input.pauseDown)
+        input.pauseDown = false;
 }

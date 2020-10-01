@@ -5,7 +5,7 @@ public class GameManager
     MenuManager menuManager;
     EnemyManager enemyManager;
     EnemyManager[] waves;
-    int currentWave = 9;
+    int currentWave = 4;
     BarrierManager barrierManager;
     Player player;
 
@@ -20,7 +20,8 @@ public class GameManager
     float fadeIn;
 
     // DEBUG
-    boolean drawAABB = false;
+    boolean drawAABB = true;
+    boolean pauseDebug = false;
 
     GameManager ()
     {
@@ -33,7 +34,7 @@ public class GameManager
 
     public void Update ()
     {
-        if (gameOver || gameIsPaused || victory)
+        if (gameOver || gameIsPaused || victory || pauseDebug)
             return;
 
         player.Update ();
@@ -168,6 +169,18 @@ public class GameManager
         victory = false;
 
         InitPickups ();
+    }
+
+    public void EnemyGotKilled (int points)
+    {
+        score += points;
+		enemyManager.enemyCount -= 1;
+    }
+
+    public void PauseGame ()
+    {
+        if (!gameIsPaused)
+            pauseDebug = !pauseDebug;
     }
 
     public void SpawnPickup ()
