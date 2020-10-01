@@ -33,11 +33,6 @@ public class FastEnemy extends Enemy
 
 	void Draw()
 	{
-		for (Bullet bullet : bullets)
-		{
-			bullet.Draw ();
-		}
-
 		if (health <= 0)
 			return;
 
