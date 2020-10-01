@@ -5,7 +5,9 @@ public class GameManager
     MenuManager menuManager;
     EnemyManager enemyManager;
     EnemyManager[] waves;
-    int currentWave = 9;
+    int currentWave = 0;
+    float timeBetweenWaves = 2000;
+    float timeBetweenWavesCounter;
     BarrierManager barrierManager;
     Player player;
 
@@ -18,6 +20,7 @@ public class GameManager
     Pickup[] pickups;
     int pickupsIndex;
     float fadeIn;
+    boolean waitingForNextWave = false;
 
     // DEBUG
     boolean drawAABB = false;
@@ -41,22 +44,13 @@ public class GameManager
 
         if (enemyManager.enemyCount == 0) 
         {
-            currentWave++;
-            if (currentWave < waves.length) 
-            {
-                enemyManager = waves[currentWave];
-                if (waves[currentWave] instanceof Ending) 
-                {
-                    victory = true;
-                }
-            }
-    
+            StartNextWave();        
         }
 
-        for (Pickup pickup : pickups)
-        {
-            pickup.Update ();
-        }
+            for (Pickup pickup : pickups)
+            {
+                pickup.Update ();
+            }
     }
 
     public void Draw ()
@@ -84,6 +78,21 @@ public class GameManager
 
         if (gameOver)
             DrawGameOverScreen ();
+
+        if (waitingForNextWave) 
+        {   
+
+            textSize(textSize/2);
+            fill(255, 255, 255, fadeIn);
+            textAlign(CENTER);
+            text("Next wave inbound...", width/2, height/2);    
+            fadeIn += 5;
+            if (fadeIn > 127) 
+            {
+                fadeIn = 0;    
+            }
+        }
+
     }
 
     private void DrawBackground ()
@@ -129,10 +138,10 @@ public class GameManager
         fill(255, 255, 255, fadeIn);
         textAlign(CENTER);
         textSize(textSize);
-        text("You won!", width/2, height/2);
+        text("You won!", width/3, height/3);
         textSize(textSize/2);
-        text("The earth is safe", width/2, height/2+96);    
-        text("Your score was: " + score + "!\n'r' to restart game.", width/2, height/2+256);
+        text("The earth is safe", width/2, height/2);    
+        text("Your score was: " + score + "!\n'r' to restart game.", width/2, height/2+96);
     }
 
     public void StartGame ()
@@ -167,6 +176,7 @@ public class GameManager
         gameIsPaused = false;
         victory = false;
 
+
         InitPickups ();
     }
 
@@ -184,6 +194,32 @@ public class GameManager
         pickups[EXTRA_LIFE] = new ExtraLife (120f, 16f);
 
         pickupsIndex = 0;
+    }
+
+    public void StartNextWave()
+    {
+        if (!waitingForNextWave) 
+        {
+            timeBetweenWavesCounter = millis() + timeBetweenWaves;
+            waitingForNextWave = true;
+        }
+
+        if (millis() >= timeBetweenWavesCounter) 
+        {
+            waitingForNextWave = false;
+            currentWave++;
+            fadeIn = 0;
+            if (currentWave < waves.length) 
+            {
+                enemyManager = waves[currentWave];
+                if (waves[currentWave] instanceof Ending) 
+                {
+                    victory = true;
+                }
+            }
+            
+        }
+
     }
 }
 
