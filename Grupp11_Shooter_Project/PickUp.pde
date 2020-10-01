@@ -9,6 +9,7 @@ public class Pickup extends GameObject
         this.speed = speed;
         this.radius = radius;
         this.diameter = radius + radius;
+        aabb = new BoundingBox (new PVector (diameter, diameter));
 
         this.isActive = false;
         this.value = 0;
@@ -31,6 +32,8 @@ public class Pickup extends GameObject
         noStroke ();
         fill (col);
         ellipse (position.x, position.y, diameter, diameter);
+
+        aabb.Draw ();
     }
 
     protected void Move ()
@@ -43,6 +46,8 @@ public class Pickup extends GameObject
 
     protected void CollisionCheck ()
     {
+        aabb.Update (position);
+
         if (DidCollide (gameManager.player))
         {
             gameManager.player.GotPickup (this);

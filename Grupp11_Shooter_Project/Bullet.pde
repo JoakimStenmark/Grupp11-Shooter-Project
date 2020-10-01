@@ -10,6 +10,7 @@ public class Bullet extends GameObject
 
 		this.radius = radius;
 		diameter = radius + radius;
+		aabb = new BoundingBox (new PVector (diameter, diameter));
 
 		this.damage = damage;
 		this.speed = speed;
@@ -25,6 +26,7 @@ public class Bullet extends GameObject
 			return;
 
 		Move ();
+		aabb.Update (position);
 	}
 
 	public void Draw ()
@@ -35,6 +37,8 @@ public class Bullet extends GameObject
 		noStroke ();
 		fill (col);
 		ellipse (position.x, position.y, diameter, diameter);
+
+		aabb.Draw ();
 	}
 
 	private void Move ()

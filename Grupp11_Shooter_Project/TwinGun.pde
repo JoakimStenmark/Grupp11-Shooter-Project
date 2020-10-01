@@ -7,6 +7,7 @@ public class TwinGun extends Pickup
         this.col = color (128, 255, 255);
 
         this.value = 2; // (Damage!?)
+        _name = "TwinGun";
     }
 
     public void Draw ()
@@ -20,5 +21,7 @@ public class TwinGun extends Pickup
         ellipse(position.x, position.y, diameter, diameter);
         ellipse(position.x - radius, position.y, radius * 0.75f, radius * 0.75f);
         ellipse(position.x + radius, position.y, radius * 0.75f, radius * 0.75f);
+
+        aabb.Draw ();
     }
 }

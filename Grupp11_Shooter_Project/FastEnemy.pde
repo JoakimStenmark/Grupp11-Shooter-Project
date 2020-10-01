@@ -14,6 +14,8 @@ public class FastEnemy extends Enemy
 		this.radius = 16f;
 		
 		diameter = radius + radius;
+		aabb = new BoundingBox (new PVector (diameter, diameter));
+		aabb.Update (position);
 
 		col = color(127, 0, 127);
 		moveLength = new PVector(50,0);
@@ -43,6 +45,7 @@ public class FastEnemy extends Enemy
 		
 		triangle(position.x, position.y + radius, position.x - radius , position.y - radius, position.x + radius, position.y - radius);
 
+		aabb.Draw ();
 	}
 
 	void Move()
@@ -78,6 +81,8 @@ public class FastEnemy extends Enemy
 		{
 			gameManager.gameOver = true;
 		}
+
+		aabb.Update (position);
 	}
 
 	public void Shoot ()

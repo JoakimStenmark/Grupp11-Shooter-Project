@@ -11,6 +11,7 @@ public class Input
 
     public boolean shootDown;
     public boolean restartDown;
+    public boolean aabbDown;
 
     // temp...
  
@@ -181,6 +182,13 @@ void keyPressed ()
         input.restartDown = true;
         Init ();
     }
+
+    // DRAW AABB
+    if (key == 'b' && !input.aabbDown)
+    {
+        input.aabbDown = true;
+        gameManager.drawAABB = !gameManager.drawAABB;
+    }
 }
 
 void keyReleased ()
@@ -205,4 +213,8 @@ void keyReleased ()
     // RESTART
     if (key == 'r' && input.restartDown)
         input.restartDown = false;
+
+    // DRAW AABB
+    if (key == 'b' && input.aabbDown)
+        input.aabbDown = false;
 }

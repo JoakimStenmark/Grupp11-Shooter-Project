@@ -19,6 +19,7 @@ public class Player extends GameObject
 
 		this.radius = radius;
 		diameter = radius + radius;
+		aabb = new BoundingBox (new PVector (diameter, diameter));
 
 		col = colour;
 
@@ -33,7 +34,11 @@ public class Player extends GameObject
 										600f,					// Speed
 										4f,						// Radius
 										color (255, 255, 0));	// Color
+
+			bullets[i]._name = "P-Bullet["+i+"]";
 		}
+
+		_name = "Player";
 
 		recoveryTime = 1.5f;
 		recoveryTimer = 0f;
@@ -47,6 +52,7 @@ public class Player extends GameObject
 	public void Update ()
 	{
 		Move ();
+		aabb.Update (position);
 
 		for (Bullet bullet : bullets)
 		{
@@ -111,6 +117,7 @@ public class Player extends GameObject
 
 	public void Draw ()
 	{
+		// Calculate Alpha Color
 		int a = 255;
 		if (recoveryTimer > 0f)
 		{
@@ -120,10 +127,12 @@ public class Player extends GameObject
 		}
 		color _col = color (red (col), green(col), blue (col), a);
 
+		// Player
 		noStroke ();
 		fill (_col);
 		ellipse (position.x, position.y, diameter, diameter);
 
+		// Player Turrets
 		float gunSize = 8f;
 
 		if (!hasTwinGun)
@@ -143,6 +152,8 @@ public class Player extends GameObject
 				ellipse ((position.x - radius) + (diameter * i), position.y, gunSize, gunSize);
 			}
 		}
+
+		aabb.Draw ();
 
 		// PLAYER HUD
 		for (int i = 0; i < health; i++)

@@ -10,19 +10,11 @@ class GameObject
 	float radius;
 	float diameter;
 
-	public void Update ()
-	{
-		if (health <= 0)
-			return;
-	}
+	BoundingBox aabb;
 
-	public void Draw ()
-	{
-		if (health <= 0)
-			return;
-	}
+	String _name;
 
-	public boolean DidCollide (GameObject other)
+	public boolean DidCollideCircle (GameObject other)
 	{
 		float maxDistance = radius + other.radius;
 
@@ -33,5 +25,10 @@ class GameObject
             return false;
 
 		return true;
+	}
+
+	public boolean DidCollide (GameObject other)
+	{
+		return aabb.CollidedWithAABB (other.aabb);
 	}
 }

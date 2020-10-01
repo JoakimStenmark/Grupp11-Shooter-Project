@@ -14,6 +14,10 @@ public class GameManager
     Pickup[] pickups;
     int pickupsIndex;
     float fadeIn;
+
+    // DEBUG
+    boolean drawAABB = false;
+
     GameManager ()
     {
         //loading all waves
