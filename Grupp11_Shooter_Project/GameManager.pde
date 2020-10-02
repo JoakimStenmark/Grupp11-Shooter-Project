@@ -146,7 +146,7 @@ public class GameManager
         fill(255, 255, 255, fadeIn);
         textAlign(CENTER);
         textSize(textSize);
-        text("You won!", width/3, height/3);
+        text("You are Winer!", width/2, height/3);
         textSize(textSize/2);
         text("The earth is safe", width/2, height/2);    
         text("Your score was: " + score + "!\n'r' to restart game.", width/2, height/2+96);
