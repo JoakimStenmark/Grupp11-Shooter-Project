@@ -53,6 +53,7 @@ public class Player extends GameObject
 
 	public void Update ()
 	{
+		
 		Move ();
 
 		for (Bullet bullet : bullets)
@@ -154,6 +155,8 @@ public class Player extends GameObject
 		int maxBullets = numOfTurrets * maxBulletsPerTurret;
 		int x = -1;
 
+		soundManager.PlaySound("Laser_Shoot2.wav");
+
 		for (int i = 0; i < maxBullets; i++)
 		{
 			if (bullets[i].isActive)
@@ -203,7 +206,10 @@ public class Player extends GameObject
 			gameManager.GameOver ();
 		}
 		else
+		{
+			soundManager.PlaySound("Hit_Hurt3.wav");
 			recoveryTimer = recoveryTime;
+		}
 	}
 
 	public void GotPickup (Pickup pickup)
@@ -213,12 +219,15 @@ public class Player extends GameObject
 			numOfTurrets++;
 			if (numOfTurrets > 3)
 				numOfTurrets = 3;
+			soundManager.PlaySound("Powerup3.wav");
 		}
 		else if (pickup instanceof ExtraLife)
 		{
 			health += pickup.value;
 			if (health > maxExtraLives)
 				health = maxExtraLives;
+			soundManager.PlaySound("Life_Get.wav");
+
 		}
 	}
 

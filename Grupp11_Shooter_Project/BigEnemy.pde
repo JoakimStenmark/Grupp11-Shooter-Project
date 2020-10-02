@@ -17,6 +17,8 @@ class BigEnemy extends Enemy
 		col = color(0, 0, 255);
 		moveLength = new PVector(50,0);
 
+		soundFileToPlayWhenDie = "ExplosionBig.wav";
+
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);

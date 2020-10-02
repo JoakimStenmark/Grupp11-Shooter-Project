@@ -4,14 +4,16 @@ GameManager gameManager;
 public class GameManager
 {
     MenuManager menuManager;
+    
     EnemyManager enemyManager;
     EnemyManager[] waves;
-    int currentWave = 0;
+    int currentWave = 9;
     float timeBetweenWaves = 2000;
     float timeBetweenWavesCounter;
 
     BarrierManager barrierManager;
     Player player;
+
 
     boolean gameIsPaused;
     boolean gameOver;
@@ -40,6 +42,7 @@ public class GameManager
         print ("\n\nGameManager Constructor...\n");
 
         skyBackground = loadImage("NightSky.jpg");
+
     }
 
     public void Update ()
@@ -52,10 +55,11 @@ public class GameManager
 
         if (enemyManager.enemyCount == 0) 
         {
-            if (currentWave + 1 >= waves.length - 1)
+            if (currentWave >= 9)
                 victory = true;
+
             else
-                StartNextWave();        
+                StartNextWave();     
         }
 
         for (Pickup pickup : pickups)
@@ -154,22 +158,8 @@ public class GameManager
 
     public void StartGame ()
     {
-        //loading all waves
-        waves = new EnemyManager[11];
-        waves[0] = new Wave0();
-        waves[1] = new Wave1();
-        waves[2] = new Wave2();
-        waves[3] = new Wave3();
-        waves[4] = new Wave4();
-        waves[5] = new Wave5();
-        waves[6] = new Wave6();
-        waves[7] = new Wave7();
-        waves[8] = new Wave8();
-        waves[9] = new Wave9();
-        waves[10] = new Ending();
-
-        //current wave
-        enemyManager = waves[currentWave];
+        
+        enemyManager = new Wave(currentWave);
         barrierManager = new BarrierManager ();
 
         player = new Player (   new PVector (width * 0.5f, height - 96),    // Position
@@ -193,7 +183,7 @@ public class GameManager
     public void EnemyGotKilled (int points)
     {
         score += points;
-		enemyManager.enemyCount -= 1;
+        enemyManager.enemyCount -= 1;
 
         killCount++;
         if (killCount % spawnGoal == 0)
@@ -206,6 +196,33 @@ public class GameManager
             pauseDebug = !pauseDebug;
     }
 
+    public void StartNextWave()
+    {
+        if (!waitingForNextWave) 
+        {
+            timeBetweenWavesCounter = millis() + timeBetweenWaves;
+            waitingForNextWave = true;
+        }
+
+        if (millis() >= timeBetweenWavesCounter) 
+        {
+            waitingForNextWave = false;
+            currentWave++;
+            fadeIn = 0;
+            if (currentWave <= 9) 
+            {
+                enemyManager = new Wave(currentWave);
+            }
+            else if (currentWave >= 10) 
+            {   
+                enemyManager = new Ending();
+                
+                victory = true;
+            }
+            
+        }
+
+    }
     public void SpawnPickup ()
     {
         if (pickups[pickupsIndex].CouldSpawn ())
@@ -222,31 +239,6 @@ public class GameManager
         pickupsIndex = 0;
     }
 
-    public void StartNextWave()
-    {
-        if (!waitingForNextWave) 
-        {
-            timeBetweenWavesCounter = millis() + timeBetweenWaves;
-            waitingForNextWave = true;
-        }
-
-        if (millis() >= timeBetweenWavesCounter) 
-        {
-            waitingForNextWave = false;
-            currentWave++;
-            fadeIn = 0;
-            if (currentWave < waves.length) 
-            {
-                enemyManager = waves[currentWave];
-                if (waves[currentWave] instanceof Ending) 
-                {
-                    victory = true;
-                }
-            }
-            
-        }
-
-    }
 }
 
 final int TWIN_GUN = 0;

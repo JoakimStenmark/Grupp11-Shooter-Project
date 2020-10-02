@@ -62,6 +62,7 @@ public class Bullet extends GameObject
 		this.position = position.copy ();
 		aabb.Update (position);
 		isActive = true;
+		
 	}
 
 	private boolean FoundCollision (boolean isPlayerBullet)

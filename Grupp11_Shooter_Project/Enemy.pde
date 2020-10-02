@@ -27,6 +27,8 @@ class Enemy extends GameObject
 	float recoveryTime;
 	float recoveryTimer;
 
+	String soundFileToPlayWhenDie;
+
 	Enemy ()
 	{
 	}
@@ -44,6 +46,8 @@ class Enemy extends GameObject
 
 		col = color(255, 0, 0);
 		moveLength = new PVector(48,0);
+
+		soundFileToPlayWhenDie = "Explosion.wav";
 
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);
@@ -172,6 +176,8 @@ class Enemy extends GameObject
 
 			bullets[i]._name = _name + "-Bullet[" + i + "]";
 			bullets[i].Fire (position);
+			soundManager.PlaySound("Laser_Shoot.wav");
+
 			return;
 		}
 	}
@@ -227,6 +233,8 @@ class Enemy extends GameObject
 		isActive = false;
 		// println (_name + " got killed!");
 		gameManager.EnemyGotKilled (points);
+
+		soundManager.PlaySound(soundFileToPlayWhenDie);
 	}
 
 	private void UpdateTimers ()

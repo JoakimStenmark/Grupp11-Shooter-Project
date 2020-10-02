@@ -105,6 +105,7 @@ public class MenuManager
 
     public void Confirm ()
     {
+        soundManager.PlaySound("Blip_Confirm.wav");
         if (buttonIndex == START_GAME)
         {
             gameManager.StartGame ();
@@ -117,6 +118,7 @@ public class MenuManager
 
     public void MoveMenu (int amount)
     {
+        soundManager.PlaySound("Blip_Select.wav");
         if (!drawTitleScreen)
             return;
 

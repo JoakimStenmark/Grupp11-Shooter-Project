@@ -21,6 +21,8 @@ public class FastEnemy extends Enemy
 		col = color(127, 0, 127);
 		moveLength = new PVector(48,0);
 
+		soundFileToPlayWhenDie = "ExplosionBright.wav";
+
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);
