@@ -1,5 +1,15 @@
 # Grupp11-Shooter-Project
 
+CONTROLS:
+MOVE = LEFT 'a' + RIGHT 'd'
+SHOOT/CONFIRM(MENU) = 'k'
+RESTART = 'r'
+
+DEBUG MODE = 'b'
+
+Kill all enemies before they reach the end zone.
+Use your Barriers and powerups.
+
 List of filer
 
 1. Main
@@ -19,13 +29,7 @@ Deadline
 fredag 2 okt
 
 to do: 
-
-Ending
-Start menu
-Fler Waves
-Game feel
 	screen shake
 	effekter
 	fler fiender
 	
-
