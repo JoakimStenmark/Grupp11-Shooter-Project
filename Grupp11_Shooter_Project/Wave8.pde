@@ -6,7 +6,7 @@ public class Wave8 extends EnemyManager
 	{	
 		enemyAmount = 32;
 		enemyCount = enemyAmount;
-		spacing = 70;
+		spacing = 64;
 		enemyPerRow = 6;
 		time = millis() + timePerStep;
 		enemies = new Enemy[enemyAmount];
@@ -24,7 +24,7 @@ public class Wave8 extends EnemyManager
 			else if (j == 1) 
 			{
 				enemies[i] = new BigEnemy((float)(70 + h * spacing), (float)(height * -0.3+ j * spacing));
-				
+				enemies[i]._name = "Enemy["+ i +"]";
 			}
 			else 
 			{
@@ -39,7 +39,6 @@ public class Wave8 extends EnemyManager
 				h = 0;	
 			}
 			
-			println("i % 8: "+i % 8);
 			h++;
 		}
 	}

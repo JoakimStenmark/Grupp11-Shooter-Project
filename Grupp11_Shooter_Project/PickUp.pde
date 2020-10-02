@@ -11,7 +11,7 @@ public class Pickup extends GameObject
         this.speed = speed;
         this.radius = radius;
         this.diameter = radius + radius;
-        aabb = new BoundingBox (new PVector (diameter, diameter));
+        aabb = new BoundingBox (new PVector (), new PVector (diameter, diameter));
 
         this.isActive = false;
         this.value = 0;
@@ -19,11 +19,10 @@ public class Pickup extends GameObject
 
     public void Update ()
     {
-        if (!isActive)
+        if (!isActive || FoundCollision ())
             return;
 
         Move ();
-        CollisionCheck ();
     }
 
     public void Draw ()
@@ -44,17 +43,19 @@ public class Pickup extends GameObject
 
 		if (position.y > height + radius)
 			isActive = false;
+
+        aabb.Update (position);
 	}
 
-    protected void CollisionCheck ()
+    private boolean FoundCollision ()
     {
-        aabb.Update (position);
-
         if (DidCollide (gameManager.player))
         {
             gameManager.player.GotPickup (this);
             isActive = false;
         }
+
+        return !isActive;
     }
 
     public boolean CouldSpawn ()
@@ -63,6 +64,8 @@ public class Pickup extends GameObject
             return false;
 
         position = new PVector (random (diameter, width - diameter), -diameter);
+        aabb.Update (position);
+
         return isActive = true;
     }
 }

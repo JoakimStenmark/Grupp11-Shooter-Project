@@ -1,4 +1,5 @@
 // Joakim Stenmark & Eddie Norberg
+GameManager gameManager;
 
 public class GameManager
 {
@@ -8,6 +9,7 @@ public class GameManager
     int currentWave = 0;
     float timeBetweenWaves = 2000;
     float timeBetweenWavesCounter;
+
     BarrierManager barrierManager;
     Player player;
 
@@ -16,6 +18,8 @@ public class GameManager
     boolean victory;
     int textSize = 96;
     int score;
+    int killCount;
+    int spawnGoal;
 
     Pickup[] pickups;
     int pickupsIndex;
@@ -25,6 +29,7 @@ public class GameManager
     PImage skyBackground;
     // DEBUG
     boolean drawAABB = false;
+    boolean pauseDebug = false;
 
     GameManager ()
     {
@@ -39,7 +44,7 @@ public class GameManager
 
     public void Update ()
     {
-        if (gameOver || gameIsPaused || victory)
+        if (gameOver || gameIsPaused || victory || pauseDebug)
             return;
 
         player.Update ();
@@ -47,13 +52,16 @@ public class GameManager
 
         if (enemyManager.enemyCount == 0) 
         {
-            StartNextWave();        
+            if (currentWave + 1 >= waves.length - 1)
+                victory = true;
+            else
+                StartNextWave();        
         }
 
-            for (Pickup pickup : pickups)
-            {
-                pickup.Update ();
-            }
+        for (Pickup pickup : pickups)
+        {
+            pickup.Update ();
+        }
     }
 
     public void Draw ()
@@ -74,13 +82,10 @@ public class GameManager
             pickup.Draw ();
         }
 
-        if (victory) 
-        {
-            DrawVictoryScreen();
-        }
-
         if (gameOver)
             DrawGameOverScreen ();
+        else if (victory)
+            DrawVictoryScreen();
 
         if (waitingForNextWave) 
         {   
@@ -95,7 +100,6 @@ public class GameManager
                 fadeIn = 0;    
             }
         }
-
     }
 
     private void DrawBackground ()
@@ -180,8 +184,26 @@ public class GameManager
         gameIsPaused = false;
         victory = false;
 
+        killCount = 0;
+        spawnGoal = 5;
 
         InitPickups ();
+    }
+
+    public void EnemyGotKilled (int points)
+    {
+        score += points;
+		enemyManager.enemyCount -= 1;
+
+        killCount++;
+        if (killCount % spawnGoal == 0)
+            SpawnPickup ();
+    }
+
+    public void PauseGame ()
+    {
+        if (!gameIsPaused)
+            pauseDebug = !pauseDebug;
     }
 
     public void SpawnPickup ()

@@ -19,6 +19,7 @@ public class ExtraLife extends Pickup
 
         float quartz = radius * 0.75f;
 
+        strokeWeight (2);
         stroke (255);
         fill (255, 0, 0);
         ellipse(position.x, position.y, diameter, diameter);

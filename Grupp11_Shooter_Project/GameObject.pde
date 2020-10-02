@@ -16,6 +16,8 @@ class GameObject
 
 	String _name;
 
+	boolean isActive = false;
+
 	public boolean DidCollideCircle (GameObject other)
 	{
 		float maxDistance = radius + other.radius;
@@ -31,6 +33,11 @@ class GameObject
 
 	public boolean DidCollide (GameObject other)
 	{
-		return aabb.CollidedWithAABB (other.aabb);
+		return aabb.CollidedWithAABB (other.aabb, GetVelocity (), _name, other._name);
+	}
+
+	public PVector GetVelocity ()
+	{
+		return direction.copy ().mult (speed * deltaTime);
 	}
 }

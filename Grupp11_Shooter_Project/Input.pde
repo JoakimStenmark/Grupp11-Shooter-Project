@@ -6,9 +6,6 @@ public class Input
 {
     private PVector direction;
 
-    // public int left;
-    // public int right;
-
     BUTTON_STATE[] buttons;
 
     public boolean shootDown;
@@ -16,8 +13,7 @@ public class Input
     public boolean aabbDown;
     public boolean upMenuDown;
     public boolean downMenuDown;
-
-    // temp...
+    public boolean pauseDown;
  
     Input ()
     {
@@ -34,9 +30,7 @@ public class Input
         aabbDown = false;
         upMenuDown = false;
         downMenuDown = false;
-        
-        // left = 37;
-        // right = 39;
+        pauseDown = false;
     }
 
     public PVector GetDirectionRAW ()
@@ -170,10 +164,10 @@ void keyPressed ()
         input.SetInput (BUTTON_NAME.LEFT, true);
     if (keyCode == RIGHT || key == 'd')
         input.SetInput (BUTTON_NAME.RIGHT, true);
-    // if (keyCode == UP || key == 'w')
-    //     input.SetInput (BUTTON_NAME.UP, true);
-    // if (keyCode == DOWN || key == 's')
-    //     input.SetInput (BUTTON_NAME.DOWN, true);
+    if (keyCode == UP || key == 'w')
+        input.SetInput (BUTTON_NAME.UP, true);
+    if (keyCode == DOWN || key == 's')
+        input.SetInput (BUTTON_NAME.DOWN, true);
 
     // SHOOT / CONFIRM
     if (key == 'k' && !input.shootDown)
@@ -212,6 +206,13 @@ void keyPressed ()
         input.downMenuDown = true;
         gameManager.menuManager.MoveMenu (1);
     }
+
+    // PAUSE (FOR DEBUG ONLY)
+    if (key == 'p' && !input.pauseDown)
+    {
+        input.pauseDown = true;
+        gameManager.PauseGame ();
+    }
 }
 
 void keyReleased ()
@@ -221,10 +222,10 @@ void keyReleased ()
         input.SetInput (BUTTON_NAME.LEFT, false);
     if (keyCode == RIGHT || key == 'd')
         input.SetInput (BUTTON_NAME.RIGHT, false);
-    // if (keyCode == UP || key == 'w')
-    //     input.SetInput (BUTTON_NAME.UP, false);
-    // if (keyCode == DOWN || key == 's')
-    //     input.SetInput (BUTTON_NAME.DOWN, false);
+    if (keyCode == UP || key == 'w')
+        input.SetInput (BUTTON_NAME.UP, false);
+    if (keyCode == DOWN || key == 's')
+        input.SetInput (BUTTON_NAME.DOWN, false);
 
     // SHOOT
     if (key == 'k' && input.shootDown)
@@ -248,4 +249,8 @@ void keyReleased ()
     // MOVE DOWN - MENU
     if ((keyCode == DOWN || key == 's') && input.downMenuDown)
         input.downMenuDown = false;
+
+    // PAUSE (FOR DEBUG ONLY)
+    if (key == 'p' && input.pauseDown)
+        input.pauseDown = false;
 }

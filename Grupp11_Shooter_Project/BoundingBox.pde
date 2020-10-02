@@ -5,10 +5,10 @@ public class BoundingBox
     public PVector position;
     public PVector size;
 
-    BoundingBox (PVector size)
+    BoundingBox (PVector position, PVector size)
     {
-        this.position = new PVector ();
-        this.size = size;
+        this.position = position;
+        this.size = size.mult (0.5f);
     }
 
     public void Update (PVector position)
@@ -18,7 +18,7 @@ public class BoundingBox
 
     public void Draw ()
     {
-        Draw (color (0, 255, 0, 64));
+        Draw (color (0, 255, 0, 32));
     }
 
     public void Draw (color colour)
@@ -29,19 +29,52 @@ public class BoundingBox
         stroke (192, 255, 192, 192);
         strokeWeight(2);
         fill (colour);
-        rect (position.x, position.y, size.x, size.y);
+        rectMode(CENTER);
+        rect (position.x, position.y, size.x + size.x, size.y + size.y);
+
+        strokeWeight (1);
+        float diameter = 8f;
+        stroke (255, 255, 255, 192);
+        noFill ();
+
+        for (int y = -1; y <= 2; y += 2)
+        {
+            for (int x = -1; x <= 2; x += 2)
+            {
+                ellipse (position.x + x * size.x, position.y + y * size.y, diameter, diameter);
+            }
+        }
     }
 
-    public boolean CollidedWithAABB (BoundingBox other)
+    public void SetPerfectSize (PVector size)
     {
-        for (int y = 0; y < 2; y++)
+        this.size = size;
+    }
+
+    // Default way of calling the method.
+    public boolean CollidedWithAABB (BoundingBox other, PVector velocity)
+    {
+        return CollidedWithAABB (other, velocity, "Me", "You");
+    }
+
+    // Just a wrapper for debugging.
+    public boolean CollidedWithAABB (BoundingBox other, PVector velocity, String first, String second)
+    {
+        int velocityCount = ceil (velocity.mag () / min (size.x, size.y));
+        PVector moveDelta = velocity.copy ().limit (velocity.mag () / velocityCount);
+
+        for (int i = 1; i <= velocityCount; i++)
         {
-            for (int x = 0; x < 2; x++)
+            for (int y = -1; y < 2; y += 2)
             {
-                if (PointOverlapBox (new PVector (  position.x + (size.x * x), 
-                                                    position.y + (size.y * y)),
-                                                    other))
-                    return true;
+                for (int x = -1; x < 2; x += 2)
+                {
+                    PVector point = new PVector (   position.x + (size.x * x) + moveDelta.copy ().mult (i).x,
+                                                    position.y + (size.y * y) + moveDelta.copy ().mult (i).y);
+
+                    if (PointOverlapBox (point, other))
+                        return true;
+                }
             }
         }
 
@@ -50,8 +83,8 @@ public class BoundingBox
 
     private boolean PointOverlapBox (PVector point, BoundingBox box)
     {
-        if (point.x > box.position.x && point.x < box.position.x + box.size.x &&
-            point.y > box.position.y && point.y < box.position.y + box.size.y)
+        if (point.x > box.position.x - box.size.x && point.x < box.position.x + box.size.x &&
+            point.y > box.position.y - box.size.y && point.y < box.position.y + box.size.y)
             return true;
             
         return false;

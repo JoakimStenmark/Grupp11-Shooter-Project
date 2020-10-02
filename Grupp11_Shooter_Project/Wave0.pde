@@ -4,7 +4,7 @@ public class Wave0 extends EnemyManager
 	{		
 		enemyAmount = 16;
 		enemyCount = enemyAmount;
-		spacing = 40;
+		spacing = 64;
 		enemyPerRow = 8;
 		time = millis() + timePerStep;
 		enemies = new Enemy[enemyAmount];
@@ -20,6 +20,7 @@ public class Wave0 extends EnemyManager
 			}
 
 			enemies[i] = new Enemy((float)(70 + h * spacing), (float)(-20 + j * spacing));
+			enemies[i]._name = "Enemy["+ i +"]";
 
 			h++;
 		}

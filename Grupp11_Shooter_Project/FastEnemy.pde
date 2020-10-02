@@ -16,30 +16,45 @@ public class FastEnemy extends Enemy
 		this.radius = 16f;
 		
 		diameter = radius + radius;
-		aabb = new BoundingBox (new PVector (diameter, diameter));
-		aabb.Update (position);
+		aabb = new BoundingBox (position, new PVector (diameter, diameter));
 
 		col = color(127, 0, 127);
-		moveLength = new PVector(50,0);
+		moveLength = new PVector(48,0);
 
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);
 
-		InitBullets ();
+		_name = "FastEnemy";
+
+		recoveryTime = 0.05f;
+		recoveryTimer = 0f;
 
 		points = 200;
+
+		isActive = true;
 	}
 
 	void Draw()
 	{
-		if (health <= 0)
+		if (!isActive)
 			return;
 
-		fill(col);
-		noStroke();
+		if (recoveryTimer > 0f)
+		{
+			noStroke ();
+			fill (255);
+
+			recoveryTimer -= deltaTime;
+			if (recoveryTimer <= 0f)
+				recoveryTimer = 0f;
+		}
+		else
+		{
+			fill(col);
+			noStroke();
+		}
 		rectMode(CENTER);
-		
 		triangle(position.x, position.y + radius, position.x - radius , position.y - radius, position.x + radius, position.y - radius);
 
 		aabb.Draw ();
@@ -47,7 +62,7 @@ public class FastEnemy extends Enemy
 
 	void Move()
 	{
-		if (health <= 0)
+		if (!isActive)
 			return;
 
 		moveLength.set(down);
@@ -73,11 +88,12 @@ public class FastEnemy extends Enemy
 		position.add(moveLength);
 		stepsTaken++;
 		
-		if (position.y >= height - 96) 
+		if (position.y - radius >= height - 96) 
 		{
 			gameManager.gameOver = true;
 		}
 
+		ClampPosition (true, false);
 		aabb.Update (position);
 	}
 

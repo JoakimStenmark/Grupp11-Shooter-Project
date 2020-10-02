@@ -7,10 +7,11 @@ public class Player extends GameObject
 	float recoveryTime;
 	float recoveryTimer;
 
-	boolean hasTwinGun;
+	int numOfTurrets;
+	int maxNumOfTurrets;
+	int maxBulletsPerTurret;
 
-	int killCount;
-	int spawnGoal;
+	int maxExtraLives = 5;
 
 	Player (PVector position, PVector direction, float speed, float radius, color colour)
 	{
@@ -21,13 +22,15 @@ public class Player extends GameObject
 
 		this.radius = radius;
 		diameter = radius + radius;
-		aabb = new BoundingBox (new PVector (diameter, diameter));
+		aabb = new BoundingBox (position, new PVector (diameter, diameter));
 
 		col = colour;
 
 		health = 3;
 
-		bullets = new Bullet[16];
+		maxNumOfTurrets = 3;
+		maxBulletsPerTurret = 8;
+		bullets = new Bullet[maxBulletsPerTurret * maxNumOfTurrets];
 		for (int i = 0; i < bullets.length; i++)
 		{
 			bullets[i] = new Bullet (	new PVector (),			// Position
@@ -45,76 +48,19 @@ public class Player extends GameObject
 		recoveryTime = 1.5f;
 		recoveryTimer = 0f;
 
-		hasTwinGun = false;
-
-		killCount = 0; // Counts as the player kills an Enemy.
-		spawnGoal = 5; // Every 5th enemy spawns a Pickup.
+		numOfTurrets = 2;
 	}
 
 	public void Update ()
 	{
 		Move ();
-		aabb.Update (position);
 
 		for (Bullet bullet : bullets)
 		{
-			if (!bullet.isActive)
-				continue;
-
-			bullet.Update ();
-			
-			for (Enemy enemy : gameManager.enemyManager.enemies)
-			{
-				if (enemy.health > 0 && bullet.DidCollide (enemy))
-				{
-					enemy.GotHit (bullet.damage);
-					bullet.isActive = false;
-
-					killCount++;
-					if (killCount % spawnGoal == 0)
-						gameManager.SpawnPickup ();
-					continue;
-				}
-			}
-
-			for (Barrier barrier : gameManager.barrierManager.bigBarrier1)
-			{
-				if (barrier.health > 0 && bullet.DidCollide (barrier))
-				{
-					barrier.GotHit (bullet.damage);
-					bullet.isActive = false;
-					continue;
-				}
-			}
-
-			for (Barrier barrier : gameManager.barrierManager.bigBarrier2)
-			{
-				if (barrier.health > 0 && bullet.DidCollide (barrier))
-				{
-					barrier.GotHit (bullet.damage);
-					bullet.isActive = false;
-					continue;
-				}
-			}
-
-			for (Barrier barrier : gameManager.barrierManager.bigBarrier3)
-			{
-				if (barrier.health > 0 && bullet.DidCollide (barrier))
-				{
-					barrier.GotHit (bullet.damage);
-					bullet.isActive = false;
-					continue;
-				}
-			}
+			bullet.Update (true);
 		}
 
-		if (recoveryTimer > 0f)
-		{
-			recoveryTimer -= deltaTime;
-
-			if (recoveryTimer <= 0f)
-				recoveryTimer = 0f;
-		}
+		UpdateTimers ();
 	}
 
 	public void Draw ()
@@ -130,6 +76,7 @@ public class Player extends GameObject
 		color _col = color (red (col), green(col), blue (col), a);
 
 		// Player
+		rectMode (CENTER);
 		noStroke ();
 		fill (_col);
 		ellipse (position.x, position.y, diameter, diameter);
@@ -137,14 +84,14 @@ public class Player extends GameObject
 		// Player Turrets
 		float gunSize = 8f;
 
-		if (!hasTwinGun)
+		if (numOfTurrets == 1)
 		{
 			stroke (255);
 			strokeWeight (2);
 			fill (0);
 			ellipse (position.x, position.y, gunSize, gunSize);
 		}
-		else
+		else if (numOfTurrets == 2)
 		{
 			stroke (255);
 			strokeWeight (2);
@@ -153,6 +100,18 @@ public class Player extends GameObject
 			{
 				ellipse ((position.x - radius) + (diameter * i), position.y, gunSize, gunSize);
 			}
+		}
+		else
+		{
+			stroke (255);
+			strokeWeight (2);
+			fill (0);
+			int turretCounter = 1;
+			for (int i = -1; i < 2; i++)
+			{
+				ellipse (position.x + (i * radius), position.y - ((radius * 0.5f) * ((turretCounter + 1) % 2)), gunSize, gunSize);
+				turretCounter++;
+			}	
 		}
 
 		aabb.Draw ();
@@ -176,47 +135,66 @@ public class Player extends GameObject
 	{
 		direction = input.GetDirectionRAW ();
 		direction.y = 0f;
-		position.add (direction.copy ().mult (speed * deltaTime));
+		position.add (GetVelocity ());
 
 		if (position.x <= radius)
 			position.x = radius;
 		else if (position.x >= width - radius)
 			position.x = width - radius;
+
+		aabb.Update (position);
 	}
 
 	public void Shoot ()
 	{
+		if (gameManager.gameOver || gameManager.victory)
+			return;
+
 		int bulletAmount = 0;
-		int maxBullets = (hasTwinGun) ? bullets.length : (int)(bullets.length * 0.5f);
+		int maxBullets = numOfTurrets * maxBulletsPerTurret;
+		int x = -1;
 
 		for (int i = 0; i < maxBullets; i++)
 		{
 			if (bullets[i].isActive)
 				continue;
 
-			if (!hasTwinGun)
+			bullets[i].SetNewDirection (0f);
+
+			if (numOfTurrets == 1)
 			{
-				bullets[i].Fire (position);
+				bullets[i].Fire (position.copy ());
 				return;
+			}
+			else if (numOfTurrets == 2)
+			{
+				bullets[i].Fire (new PVector ((position.x - radius) + (bulletAmount * diameter), position.y));
+				bullets[i].SetNewDirection (5f * x);
+				x = 1;
 			}
 			else
 			{
-				bullets[i].Fire (new PVector ((position.x - radius) + (bulletAmount * diameter), position.y));
-				bulletAmount++;
-				if (bulletAmount >= 2)
-					return;
+				bullets[i].Fire (new PVector (position.x + (x * radius), position.y - ((radius * 0.5f) * ((bulletAmount + 1) % 2))));
+				bullets[i].SetNewDirection (10f * x);
+				x++;
 			}
+			
+			bulletAmount++;
+			if (bulletAmount >= numOfTurrets)
+				return;
 		}
 	}
 
-	public void GotHit (int amount)
+	public void GotHit ()
 	{
 		if (recoveryTimer > 0f)
 			return;
 
-		health -= amount;
+		health--;
 
-		hasTwinGun = false;
+		numOfTurrets--;
+		if (numOfTurrets <= 1)
+			numOfTurrets = 1;
 
 		if (health <= 0)
 		{
@@ -231,8 +209,27 @@ public class Player extends GameObject
 	public void GotPickup (Pickup pickup)
 	{
 		if (pickup instanceof TwinGun)
-			hasTwinGun = true;
+		{
+			numOfTurrets++;
+			if (numOfTurrets > 3)
+				numOfTurrets = 3;
+		}
 		else if (pickup instanceof ExtraLife)
+		{
 			health += pickup.value;
+			if (health > maxExtraLives)
+				health = maxExtraLives;
+		}
+	}
+
+	private void UpdateTimers ()
+	{
+		if (recoveryTimer > 0f)
+		{
+			recoveryTimer -= deltaTime;
+
+			if (recoveryTimer <= 0f)
+				recoveryTimer = 0f;
+		}
 	}
 }

@@ -1,7 +1,5 @@
 // Eddie Norberg
 
-GameManager gameManager;
-
 void setup()
 {
 	size (672, 768);
@@ -15,7 +13,7 @@ void draw ()
 	UpdateDeltaTime ();
 
 	input.Update ();
-	
+
 	gameManager.Update ();
 	gameManager.Draw ();
 }
