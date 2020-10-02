@@ -11,8 +11,6 @@ public class Player extends GameObject
 	int maxNumOfTurrets;
 	int maxBulletsPerTurret;
 
-	int spawnGoal;
-
 	int maxExtraLives = 5;
 
 	Player (PVector position, PVector direction, float speed, float radius, color colour)
@@ -25,7 +23,6 @@ public class Player extends GameObject
 		this.radius = radius;
 		diameter = radius + radius;
 		aabb = new BoundingBox (position, new PVector (diameter, diameter));
-		// aabb.SetPerfectSize (new PVector (diameter, diameter));
 
 		col = colour;
 
@@ -34,7 +31,6 @@ public class Player extends GameObject
 		maxNumOfTurrets = 3;
 		maxBulletsPerTurret = 8;
 		bullets = new Bullet[maxBulletsPerTurret * maxNumOfTurrets];
-		println ("bullets.length: " + bullets.length);
 		for (int i = 0; i < bullets.length; i++)
 		{
 			bullets[i] = new Bullet (	new PVector (),			// Position
@@ -153,7 +149,7 @@ public class Player extends GameObject
 	{
 		if (gameManager.gameOver || gameManager.victory)
 			return;
-			
+
 		int bulletAmount = 0;
 		int maxBullets = numOfTurrets * maxBulletsPerTurret;
 		int x = -1;
@@ -171,7 +167,11 @@ public class Player extends GameObject
 				return;
 			}
 			else if (numOfTurrets == 2)
+			{
 				bullets[i].Fire (new PVector ((position.x - radius) + (bulletAmount * diameter), position.y));
+				bullets[i].SetNewDirection (5f * x);
+				x = 1;
+			}
 			else
 			{
 				bullets[i].Fire (new PVector (position.x + (x * radius), position.y - ((radius * 0.5f) * ((bulletAmount + 1) % 2))));

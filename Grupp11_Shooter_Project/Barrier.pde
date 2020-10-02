@@ -1,14 +1,13 @@
-// Eddie Norberg (mostly)
+// Eddie Norberg
 
 public class Barrier extends GameObject
 {
 	int maxHealth;
 
-	Barrier(float x, float y, PVector direction, int health, float radius)
+	Barrier (PVector position, float radius)
 	{
-		position = new PVector (x, y);
-		this.direction = direction;
-		this.health = health;
+		this.position = position;
+		this.health = 4;
 		maxHealth = health;
 		this.radius = radius;
 		diameter = radius + radius;
@@ -40,7 +39,6 @@ public class Barrier extends GameObject
 
 	public void GotKilled ()
 	{
-		println (_name + " got Killed");
 		isActive = false;
 	}
 }

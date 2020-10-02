@@ -47,8 +47,6 @@ public class FastEnemy extends Enemy
 			noStroke ();
 			fill (255);
 
-			println ("Fast Damage: " + recoveryTimer + " - " + recoveryTime);
-
 			recoveryTimer -= deltaTime;
 			if (recoveryTimer <= 0f)
 				recoveryTimer = 0f;
@@ -58,12 +56,7 @@ public class FastEnemy extends Enemy
 			fill(col);
 			noStroke();
 		}
-		
 		rectMode(CENTER);
-
-		// if (_name.equals ("FastEnemy[24]"))
-		// 	fill (255);
-
 		triangle(position.x, position.y + radius, position.x - radius , position.y - radius, position.x + radius, position.y - radius);
 
 		aabb.Draw ();
@@ -71,7 +64,7 @@ public class FastEnemy extends Enemy
 
 	void Move()
 	{
-		if (health <= 0)
+		if (!isActive)
 			return;
 
 		moveLength.set(down);
@@ -99,7 +92,6 @@ public class FastEnemy extends Enemy
 		
 		if (position.y - radius >= height - 96) 
 		{
-			println (_name + " reached the End Zone at: " + position);
 			gameManager.gameOver = true;
 		}
 

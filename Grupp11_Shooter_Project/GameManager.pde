@@ -1,4 +1,5 @@
 // Joakim Stenmark & Eddie Norberg
+GameManager gameManager;
 
 public class GameManager
 {

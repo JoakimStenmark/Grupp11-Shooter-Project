@@ -1,4 +1,4 @@
-// Eddie Norberg (mostly)
+// Joakim Stenmark (Original Creator) & Eddie Norberg (Mostly Re-written)
 
 class Enemy extends GameObject
 {
@@ -195,7 +195,6 @@ class Enemy extends GameObject
 			{
 				barriers[i].GotKilled ();
 				GotKilled (false);
-				println (_name + " collided with " + barriers[i]._name + " health: " + barriers[i].health);
 				return true;
 			}
 		}
@@ -222,7 +221,7 @@ class Enemy extends GameObject
 	private void GotKilled (boolean getPoints)
 	{
 		isActive = false;
-		println (_name + " got killed!");
+		// println (_name + " got killed!");
 		if (getPoints)
 			gameManager.EnemyGotKilled (points);
 	}

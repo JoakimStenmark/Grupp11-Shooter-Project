@@ -21,7 +21,7 @@ public class Bullet extends GameObject
 
 	public void Update (boolean isPlayerBullet)
 	{
-		if (!isActive || FoundCollision (isPlayerBullet))
+		if (!isActive || (isActive = !FoundCollision (isPlayerBullet)) == false)
 			return;
 
 		Move ();
@@ -66,28 +66,11 @@ public class Bullet extends GameObject
 	{
 		if (isPlayerBullet)
 		{
-			// ENEMIES
-			// if (position.y > height - 100f)
-			// {
-			// 	println ();
-			// 	println (_name + " - pos: " + position + " - aabb.pos: " + aabb.position);
-			// }
 			for (Enemy enemy : gameManager.enemyManager.enemies)
 			{
-				// if (_name.charAt (0) == 'P')
-				// {
-					// if (enemy.isActive && position.y > height - 100f && enemy._name.equals ("FastEnemy[20]"))
-					// {
-					// 	println (enemy._name + " - pos: " + enemy.position + " - aabb.pos: " + enemy.aabb.position);
-					// }
-				// }
 				if (enemy.isActive && DidCollide (enemy))
 				{
 					enemy.GotHit (damage);
-					isActive = false;
-					println (_name + " collided with " + enemy._name + " - health: " + enemy.health);
-					if (enemy.health - damage <= 0)
-						println (_name + " killed " + enemy._name + " at: " + enemy.position);
 					return true;
 				}
 			}
@@ -97,14 +80,9 @@ public class Bullet extends GameObject
 			if (DidCollide (gameManager.player))
 			{
 				gameManager.player.GotHit ();
-				isActive = false;
-				println (_name + " collided with " + gameManager.player._name + " - health: " + gameManager.player.health);
 				return true;
 			}	
 		}
-
-		// if (newTest)
-		// 	return false;
 
 		// BARRIERS
 		// How many small barriers in one big.
@@ -127,8 +105,6 @@ public class Bullet extends GameObject
 			if (barriers[i].isActive && DidCollide (barriers[i]))
 			{
 				barriers[i].GotHit (damage);
-				isActive = false;
-				// println (_name + " collided with " + barriers[i]._name + " health: " + barriers[i].health);
 				return true;
 			}
 		}

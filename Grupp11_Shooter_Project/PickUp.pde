@@ -19,11 +19,10 @@ public class Pickup extends GameObject
 
     public void Update ()
     {
-        if (!isActive)
+        if (!isActive || FoundCollision ())
             return;
 
         Move ();
-        CollisionCheck ();
     }
 
     public void Draw ()
@@ -44,17 +43,19 @@ public class Pickup extends GameObject
 
 		if (position.y > height + radius)
 			isActive = false;
+
+        aabb.Update (position);
 	}
 
-    protected void CollisionCheck ()
+    private boolean FoundCollision ()
     {
-        aabb.Update (position);
-
         if (DidCollide (gameManager.player))
         {
             gameManager.player.GotPickup (this);
             isActive = false;
         }
+
+        return !isActive;
     }
 
     public boolean CouldSpawn ()
