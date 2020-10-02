@@ -1,15 +1,15 @@
 # Grupp11-Shooter-Project
 
-CONTROLS:
-MOVE = LEFT 'a' + RIGHT 'd'
-SHOOT/CONFIRM(MENU) = 'k'
-RESTART = 'r'
-
-DEBUG MODE = 'b'
-
-Kill all enemies before they reach the end zone.
-Use your Barriers and powerups.
-
+CONTROLS:\n
+MOVE = LEFT 'a' + RIGHT 'd'\n
+SHOOT/CONFIRM(MENU) = 'k'\n
+RESTART = 'r'\n
+\n
+DEBUG MODE = 'b'\n
+\n
+Kill all enemies before they reach the end zone.\n
+Use your Barriers and powerups.\n
+\n
 List of filer
 
 1. Main
