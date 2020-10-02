@@ -48,7 +48,7 @@ public class Player extends GameObject
 		recoveryTime = 1.5f;
 		recoveryTimer = 0f;
 
-		numOfTurrets = 2;
+		numOfTurrets = 1;
 	}
 
 	public void Update ()
