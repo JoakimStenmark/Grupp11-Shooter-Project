@@ -6,7 +6,7 @@ public class Wave0 extends EnemyManager
 	{		
 		enemyAmount = 16;
 		enemyCount = enemyAmount;
-		spacing = 40;
+		spacing = 64;
 		enemyPerRow = 8;
 		time = millis() + timePerStep;
 		enemies = new Enemy[enemyAmount];

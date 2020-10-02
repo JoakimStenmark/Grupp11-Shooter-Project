@@ -6,7 +6,7 @@ public class GameManager
     MenuManager menuManager;
     EnemyManager enemyManager;
     EnemyManager[] waves;
-    int currentWave = 4;
+    int currentWave = 0;
     BarrierManager barrierManager;
     Player player;
 
@@ -23,7 +23,7 @@ public class GameManager
     float fadeIn;
 
     // DEBUG
-    boolean drawAABB = true;
+    boolean drawAABB = false;
     boolean pauseDebug = false;
 
     GameManager ()
@@ -42,20 +42,6 @@ public class GameManager
 
         player.Update ();
         enemyManager.Update ();
-
-        if (enemyManager.enemyCount == 0) 
-        {
-            currentWave++;
-            if (currentWave < waves.length) 
-            {
-                enemyManager = waves[currentWave];
-                if (waves[currentWave] instanceof Ending) 
-                {
-                    victory = true;
-                }
-            }
-    
-        }
 
         for (Pickup pickup : pickups)
         {
@@ -81,13 +67,10 @@ public class GameManager
             pickup.Draw ();
         }
 
-        if (victory) 
-        {
-            DrawVictoryScreen();
-        }
-
         if (gameOver)
             DrawGameOverScreen ();
+        else if (victory)
+            DrawVictoryScreen();
     }
 
     private void DrawBackground ()
@@ -181,6 +164,19 @@ public class GameManager
     {
         score += points;
 		enemyManager.enemyCount -= 1;
+
+        // println ("Wave[" + currentWave + "] - Enemies Left: " + enemyManager.enemyCount);
+        if (enemyManager.enemyCount == 0) 
+        {
+            currentWave++;
+            if (currentWave < waves.length) 
+            {
+                enemyManager = waves[currentWave];
+                // println ("Wave " + currentWave + " loaded with " + enemyManager.enemyCount + " enemies.");
+                if (waves[currentWave] instanceof Ending) 
+                    victory = true;
+            }
+        }
 
         killCount++;
         if (killCount % spawnGoal == 0)

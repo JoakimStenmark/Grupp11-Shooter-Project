@@ -13,9 +13,11 @@ class Enemy extends GameObject
 	PVector down;
 
 	Bullet[] bullets;
+	int maxBullets;
 
-	float bulletTime;
 	float bulletTimer;
+	float minBulletTime;
+	float maxBulletTime;
 
 	int points;
 	int shootChance = 6;
@@ -47,6 +49,7 @@ class Enemy extends GameObject
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);
 
+		maxBullets = 1;
 		InitBullets ();
 
 		_name = "Enemy";
@@ -61,15 +64,18 @@ class Enemy extends GameObject
 
 	public void Update ()
 	{
-		for (Bullet bullet : bullets)
+		if (bullets != null)
 		{
-			bullet.Update (false);
+			for (Bullet bullet : bullets)
+			{
+				bullet.Update (false);
+			}
 		}
 
-		if (!isActive)
+		if (!isActive || (isActive = !FoundCollision ()) == false)
 			return;
 
-		FoundCollision ();
+		UpdateTimers ();
 	}
 
 	void Draw()
@@ -130,7 +136,7 @@ class Enemy extends GameObject
 		//println("stepsTaken: " + stepsTaken % 4);
 		if (position.y + radius >= height - 96) 
 		{
-			println (_name + " reached the End Zone at: " + position);
+			// println (_name + " reached the End Zone at: " + position);
 			gameManager.gameOver = true;
 		}
 
@@ -159,12 +165,13 @@ class Enemy extends GameObject
 
 	public void Shoot ()
 	{
-		for (Bullet bullet : bullets)
+		for (int i = 0; i < bullets.length; i++)
 		{
-			if (bullet.isActive)
+			if (bullets[i].isActive)
 				continue;
 
-			bullet.Fire (position);
+			bullets[i]._name = _name + "-Bullet[" + i + "]";
+			bullets[i].Fire (position);
 			return;
 		}
 	}
@@ -174,7 +181,7 @@ class Enemy extends GameObject
 		if (DidCollide (gameManager.player))
 		{
 			gameManager.player.GotHit ();
-			GotKilled (false);
+			GotKilled (0);
 		}
 
 		// BARRIERS
@@ -194,7 +201,7 @@ class Enemy extends GameObject
 			if (barriers[i].isActive && DidCollide (barriers[i]))
 			{
 				barriers[i].GotKilled ();
-				GotKilled (false);
+				GotKilled (0);
 				return true;
 			}
 		}
@@ -204,26 +211,22 @@ class Enemy extends GameObject
 
 	public void GotHit (int amount)
 	{
-		if (health <= 0)
-			return;
-
 		health -= amount;
 
 		if (health <= 0)
 		{
-			GotKilled (true);
+			GotKilled (points);
 			return;
 		}
 
 		recoveryTimer = recoveryTime;
 	}
 
-	private void GotKilled (boolean getPoints)
+	private void GotKilled (int points)
 	{
 		isActive = false;
 		// println (_name + " got killed!");
-		if (getPoints)
-			gameManager.EnemyGotKilled (points);
+		gameManager.EnemyGotKilled (points);
 	}
 
 	private void UpdateTimers ()
@@ -237,19 +240,32 @@ class Enemy extends GameObject
 		}
 
 		// Do we Shoot?
+		if (bullets == null)
+			return;
+
+		boolean bulletsAvailable = false;
+		for (Bullet bullet : bullets)
+		{
+			if (!bullet.isActive)
+				bulletsAvailable = true;
+		}
+
+		if (!bulletsAvailable)
+			return;
+
 		bulletTimer -= deltaTime;
 		if (bulletTimer <= 0f)
 		{
-			if (round (random (shootChance)) == 10)
+			if (round (random (shootChance)) == shootChance)
 				Shoot ();
 
-			bulletTimer += bulletTime;
+			bulletTimer = random (minBulletTime, maxBulletTime);
 		}
 	}
 
 	protected void InitBullets ()
 	{
-		bullets = new Bullet[1];
+		bullets = new Bullet[maxBullets];
 		for (int i = 0; i < bullets.length; i++)
 		{
 			bullets[i] = new Bullet (	new PVector (),			// Position
@@ -262,8 +278,10 @@ class Enemy extends GameObject
 			bullets[i]._name = "E-Bullet["+i+"]";
 		}
 
-		bulletTime = 1f;
-		bulletTimer = 1f;
+		minBulletTime = 0.5f;
+		maxBulletTime = 1f;
+
+		bulletTimer = random (minBulletTime, maxBulletTime);
 	}
 
 	private color GetColorPercentValue ()

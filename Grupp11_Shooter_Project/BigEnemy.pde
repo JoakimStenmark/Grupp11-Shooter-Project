@@ -5,7 +5,7 @@ class BigEnemy extends Enemy
 	BigEnemy(float x, float y)
 	{
 		position = new PVector (x, y);
-		this.direction = direction;		
+		this.direction = new PVector (0,1);	
 		this.speed = speed;		
 		this.health = 5;
 		this.maxHealth = this.health;
@@ -28,6 +28,8 @@ class BigEnemy extends Enemy
 		recoveryTimer = 0f;
 
 		points = 200;
+
+		isActive = true;
 	}
 	
 }

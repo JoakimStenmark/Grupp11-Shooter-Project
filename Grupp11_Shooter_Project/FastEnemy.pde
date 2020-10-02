@@ -25,8 +25,6 @@ public class FastEnemy extends Enemy
 		left = new PVector(moveLength.x * -1, moveLength.y);
 		down = new PVector(moveLength.y, moveLength.x);
 
-		InitBullets ();
-
 		_name = "FastEnemy";
 
 		recoveryTime = 0.05f;

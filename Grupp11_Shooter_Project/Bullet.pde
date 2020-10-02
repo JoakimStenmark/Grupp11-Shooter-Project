@@ -29,13 +29,15 @@ public class Bullet extends GameObject
 
 	public void Draw ()
 	{
-		if (!isActive)
+		if (gameManager.drawAABB && !isActive)
 		{
 			noStroke ();
 			fill (255, 0, 0, 128);
 			ellipse (position.x, position.y, diameter, diameter);
 			return;
 		}
+		else if (!isActive)
+			return;
 		
 		noStroke ();
 		fill (col);
@@ -87,24 +89,24 @@ public class Bullet extends GameObject
 		// BARRIERS
 		// How many small barriers in one big.
 		int numOfBarriers = gameManager.barrierManager.bigBarrier1.length;
-		int barrierIndex = numOfBarriers - 1;	// Fill the array in reverse so we check the lower first.
+		int barrierIndex;
 		Barrier[] barriers = new Barrier[numOfBarriers * 3];
 
 		for (int i = 0; i < numOfBarriers; i++)
 		{
-			if (!isPlayerBullet)
-				barrierIndex = i;	// if not player then fill array in order
+			// if not player then fill array in order
+			barrierIndex = (isPlayerBullet) ? (numOfBarriers - 1) - i : i;
 
-			barriers[i] = gameManager.barrierManager.bigBarrier1[barrierIndex - i];
-			barriers[numOfBarriers + i] = gameManager.barrierManager.bigBarrier2[barrierIndex - i];
-			barriers[numOfBarriers * 2 + i] = gameManager.barrierManager.bigBarrier3[barrierIndex - i];
+			barriers[i] = gameManager.barrierManager.bigBarrier1[barrierIndex];
+			barriers[numOfBarriers + i] = gameManager.barrierManager.bigBarrier2[barrierIndex];
+			barriers[numOfBarriers * 2 + i] = gameManager.barrierManager.bigBarrier3[barrierIndex];
 		}
 
-		for (int i = 0; i < barriers.length; i++)
+		for (Barrier barrier : barriers)
 		{
-			if (barriers[i].isActive && DidCollide (barriers[i]))
+			if (barrier.isActive && DidCollide (barrier))
 			{
-				barriers[i].GotHit (damage);
+				barrier.GotHit (damage);
 				return true;
 			}
 		}
