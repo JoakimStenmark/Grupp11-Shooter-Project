@@ -141,7 +141,7 @@ class Enemy extends GameObject
 		if (position.y + radius >= height - 96) 
 		{
 			// println (_name + " reached the End Zone at: " + position);
-			gameManager.gameOver = true;
+			gameManager.GameOver();
 		}
 
 		ClampPosition (true, false);
@@ -223,6 +223,10 @@ class Enemy extends GameObject
 		{
 			GotKilled (points);
 			return;
+		}
+		else 
+		{
+			soundManager.PlaySound("EnemyHit.wav");
 		}
 
 		recoveryTimer = recoveryTime;

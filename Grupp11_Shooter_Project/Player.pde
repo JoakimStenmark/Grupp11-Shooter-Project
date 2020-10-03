@@ -136,8 +136,13 @@ public class Player extends GameObject
 	{
 		direction = input.GetDirectionRAW ();
 		direction.y = 0f;
-		position.add (GetVelocity ());
 
+		if(direction.mag() > 0)
+			soundManager.playerMoving = true;
+		else 
+			soundManager.playerMoving = false;
+		
+		position.add (GetVelocity ());
 		if (position.x <= radius)
 			position.x = radius;
 		else if (position.x >= width - radius)
@@ -207,7 +212,7 @@ public class Player extends GameObject
 		}
 		else
 		{
-			soundManager.PlaySound("Hit_Hurt3.wav");
+			soundManager.PlaySound("Player_hurt.wav");
 			recoveryTimer = recoveryTime;
 		}
 	}

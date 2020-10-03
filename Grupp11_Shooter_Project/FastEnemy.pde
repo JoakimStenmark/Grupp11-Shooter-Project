@@ -92,7 +92,7 @@ public class FastEnemy extends Enemy
 		
 		if (position.y - radius >= height - 96) 
 		{
-			gameManager.gameOver = true;
+			gameManager.GameOver();
 		}
 
 		ClampPosition (true, false);

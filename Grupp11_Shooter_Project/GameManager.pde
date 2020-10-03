@@ -42,6 +42,9 @@ public class GameManager
         print ("\n\nGameManager Constructor...\n");
 
         skyBackground = loadImage("NightSky.jpg");
+        
+        
+
 
     }
 
@@ -134,6 +137,7 @@ public class GameManager
 
     public void GameOver ()
     {
+        soundManager.ToggleGameOverMusic(true);       
         gameOver = true;
     }
 
