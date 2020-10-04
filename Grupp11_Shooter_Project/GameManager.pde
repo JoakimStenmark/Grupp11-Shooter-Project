@@ -7,7 +7,7 @@ public class GameManager
     
     EnemyManager enemyManager;
     EnemyManager[] waves;
-    int currentWave = 9;
+    int currentWave = 0;
     float timeBetweenWaves = 2000;
     float timeBetweenWavesCounter;
 
@@ -43,9 +43,6 @@ public class GameManager
 
         skyBackground = loadImage("NightSky.jpg");
         
-        
-
-
     }
 
     public void Update ()
@@ -137,7 +134,8 @@ public class GameManager
 
     public void GameOver ()
     {
-        soundManager.ToggleGameOverMusic(true);       
+        soundManager.ToggleGameOverMusic(true);
+        soundManager.music.stop();      
         gameOver = true;
     }
 

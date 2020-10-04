@@ -160,7 +160,18 @@ public class Player extends GameObject
 		int maxBullets = numOfTurrets * maxBulletsPerTurret;
 		int x = -1;
 
-		soundManager.PlaySound("Laser_Shoot2.wav");
+		if (numOfTurrets == 1) 
+		{
+			soundManager.playerShot1.play();			
+		}
+		else if (numOfTurrets == 2) 
+		{
+			soundManager.playerShot2.play();			
+		}
+		else 
+		{
+			soundManager.playerShot3.play();			
+		}
 
 		for (int i = 0; i < maxBullets; i++)
 		{
@@ -171,17 +182,20 @@ public class Player extends GameObject
 
 			if (numOfTurrets == 1)
 			{
+
 				bullets[i].Fire (position.copy ());
 				return;
 			}
 			else if (numOfTurrets == 2)
 			{
+
 				bullets[i].Fire (new PVector ((position.x - radius) + (bulletAmount * diameter), position.y));
 				bullets[i].SetNewDirection (5f * x);
 				x = 1;
 			}
 			else
 			{
+
 				bullets[i].Fire (new PVector (position.x + (x * radius), position.y - ((radius * 0.5f) * ((bulletAmount + 1) % 2))));
 				bullets[i].SetNewDirection (10f * x);
 				x++;

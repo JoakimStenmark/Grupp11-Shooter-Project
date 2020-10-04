@@ -169,6 +169,7 @@ class Enemy extends GameObject
 
 	public void Shoot ()
 	{
+		soundManager.enemyShot.play();
 		for (int i = 0; i < bullets.length; i++)
 		{
 			if (bullets[i].isActive)
@@ -176,7 +177,6 @@ class Enemy extends GameObject
 
 			bullets[i]._name = _name + "-Bullet[" + i + "]";
 			bullets[i].Fire (position);
-			soundManager.PlaySound("Laser_Shoot.wav");
 
 			return;
 		}
@@ -238,7 +238,11 @@ class Enemy extends GameObject
 		// println (_name + " got killed!");
 		gameManager.EnemyGotKilled (points);
 
-		soundManager.PlaySound(soundFileToPlayWhenDie);
+		if (_name == "BigEnemy") 
+			soundManager.explosion.play(0.8);
+		else
+			soundManager.explosion.play(1);
+
 	}
 
 	private void UpdateTimers ()
