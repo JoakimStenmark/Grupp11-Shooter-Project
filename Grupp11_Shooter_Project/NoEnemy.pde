@@ -6,7 +6,6 @@ class NoEnemy extends Enemy
 	{
 		position = new PVector (x, y);
 		this.direction = direction;		
-		this.speed = speed;		
 		this.health = 0;
 		this.maxHealth = this.health;
 		this.radius = 0f;

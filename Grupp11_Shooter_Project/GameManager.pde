@@ -25,7 +25,7 @@ public class GameManager
 
     Pickup[] pickups;
     int pickupsIndex;
-    float fadeIn;
+    float fadeInCounter;
     boolean waitingForNextWave = false;
 
     PImage skyBackground;
@@ -95,13 +95,13 @@ public class GameManager
         {   
 
             textSize(textSize/2);
-            fill(255, 255, 255, fadeIn);
+            fill(255, 255, 255, fadeInCounter);
             textAlign(CENTER);
             text("Next wave inbound...", width/2, height/2);    
-            fadeIn += 5;
-            if (fadeIn > 127) 
+            fadeInCounter += 5;
+            if (fadeInCounter > 127) 
             {
-                fadeIn = 0;    
+                fadeInCounter = 0;    
             }
         }
     }
@@ -134,22 +134,22 @@ public class GameManager
 
     public void GameOver ()
     {
-        soundManager.ToggleGameOverMusic(true);
-        soundManager.music.stop();      
+        soundManager.gameOverSound.loop();        
+        soundManager.music.stop();  
+
         gameOver = true;
     }
 
     public void DrawVictoryScreen() 
     {
-        if (fadeIn < 255) 
+        if (fadeInCounter < 255) 
         {
-            fadeIn += 1;
-            // println("fadeIn: "+fadeIn);
+            fadeInCounter += 1;
         }
-        fill(0, 0, 0, fadeIn);
+        fill(0, 0, 0, fadeInCounter);
         rectMode(CORNER);
         rect(0, 0, width, height);
-        fill(255, 255, 255, fadeIn);
+        fill(255, 255, 255, fadeInCounter);
         textAlign(CENTER);
         textSize(textSize);
         text("You are Winer!", width/2, height/3);
@@ -170,7 +170,7 @@ public class GameManager
                                 16f,                                        // Radius
                                 color (128, 128, 255));                     // Color
         
-        fadeIn = 0;
+        fadeInCounter = 0;
         score = 0;
         gameOver = false;
         gameIsPaused = false;
@@ -210,7 +210,7 @@ public class GameManager
         {
             waitingForNextWave = false;
             currentWave++;
-            fadeIn = 0;
+            fadeInCounter = 0;
             if (currentWave <= 9) 
             {
                 enemyManager = new Wave(currentWave);

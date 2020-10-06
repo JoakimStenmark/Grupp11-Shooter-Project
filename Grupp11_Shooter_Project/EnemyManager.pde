@@ -6,7 +6,7 @@ public class EnemyManager
 	int enemyCount;
 	Enemy[] enemies;
 	PVector enemyDirection = new PVector (0,1);
-	float timePerStep = 1000; //1000
+	float timePerStep = 1000;
 	float time; 
 	int spacing = 60;
 	int enemyPerRow = 8;

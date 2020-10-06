@@ -48,8 +48,6 @@ public class Input
         int buttonIndex = button.value;
         BUTTON_STATE previousState = buttons[buttonIndex];
 
-        // print ("\n\nButton: " + button + " - prevState: " + previousState);
-
         if (pressed)
         {
             if (previousState == BUTTON_STATE.PRESSED || previousState == BUTTON_STATE.HOLD)
@@ -63,7 +61,6 @@ public class Input
             else
                 buttons[buttonIndex] = BUTTON_STATE.RELEASED;
 
-        // print ("\nButton: " + button + " - newState: " + buttons[buttonIndex]);
     }
 
     public void UpdateDirection ()
@@ -87,8 +84,6 @@ public class Input
         if (downState == BUTTON_STATE.PRESSED.value || downState == BUTTON_STATE.HOLD.value)
             direction.y++;
 
-        // direction.x += buttons[BUTTON_NAME.RIGHT.value].value - buttons[BUTTON_NAME.LEFT.value].value;
-        // direction.y += buttons[BUTTON_NAME.DOWN.value].value - buttons[BUTTON_NAME.UP.value].value;
     }
 
     private void ResetDirectionButtons ()
@@ -100,10 +95,7 @@ public class Input
         }
     }
 
-    // public boolean GetButtonDown (int buttonName)
-    // {
-    //     return (buttons[buttonName].value == BUTTON_STATE.PRESSED.value) ? true : false;
-    // }
+
 
     public void DisplayInputText (PVector position)
     {
@@ -185,6 +177,9 @@ void keyPressed ()
     if (key == 'r' && !input.restartDown)
     {
         input.restartDown = true;
+        soundManager.music.stop();
+        soundManager.gameOverSound.stop();
+
         Init ();
     }
 

@@ -1,49 +1,59 @@
+// Joakim Stenmark
 import processing.sound.*;
 
 SoundManager soundManager;
-
 
 public class SoundManager 
 {
 	PApplet sketchRef;
 	SoundFile music;
 
+	boolean playerMoving;
+	SoundFile playerMovingSound;
 	SoundFile playerShot1;
 	SoundFile playerShot2;
 	SoundFile playerShot3;
+	SoundFile playerHurtSound;
+
+	SoundFile pickupHealthSound;
+	SoundFile pickupPowerupSound;
+
 
 	SoundFile enemyShot;
-
+	SoundFile enemyHitSound;	
 	SoundFile explosion;
-	SoundFile playerMovingSound;
+
 	SoundFile gameOverSound;
 
-	boolean playerMoving;
 
 	SoundManager(PApplet pApplet)
 	{
 		sketchRef = pApplet;
 		
-		playerMovingSound = new SoundFile(sketchRef, "Move.wav");
-		
 		playerMoving = false;
-
-		gameOverSound = new SoundFile(sketchRef, "GameOver.wav");
-		
-		PlayMusic(); 
-
+		playerMovingSound = new SoundFile(sketchRef, "Move.wav");
 		playerShot1 = new SoundFile(sketchRef, "Laser_Shoot2.wav");
 		playerShot1.amp(0.6);
 		playerShot2 = new SoundFile(sketchRef, "LaserDouble_Shoot2.wav");
 		playerShot2.amp(0.6);
 		playerShot3 = new SoundFile(sketchRef, "LaserTripple_Shoot2.wav");
 		playerShot3.amp(0.6);
+		playerHurtSound = new SoundFile(sketchRef, "Player_hurt.wav");
+
+		pickupHealthSound = new SoundFile(sketchRef, "Powerup3.wav");
+		pickupPowerupSound = new SoundFile(sketchRef, "Life_Get.wav");
 
 		enemyShot = new SoundFile(sketchRef, "Laser_Shoot.wav");
 		enemyShot.amp(0.7);
+		enemyHitSound = new SoundFile(sketchRef, "EnemyHit.wav");
+
 
 		explosion = new SoundFile(sketchRef, "Explosion.wav");
 		enemyShot.amp(0.8);
+		
+		gameOverSound = new SoundFile(sketchRef, "GameOver.wav");
+
+		PlayMusic(); 
 	}
 
 	void Update()
@@ -58,9 +68,9 @@ public class SoundManager
 		}
 	}
 
-
 	public void PlayMusic() 
 	{
+
 		music = new SoundFile(sketchRef , "Music.wav");	
 		music.amp(0.8);
 		music.loop();
@@ -79,16 +89,5 @@ public class SoundManager
 		soundToPlay.play();
 	}
 
-	public void ToggleGameOverMusic(boolean b) 
-	{
-		if (b) 
-		{
-			gameOverSound.loop();
-		}
-		else 
-		{
-			gameOverSound.stop();
-		}
 
-	}
 }

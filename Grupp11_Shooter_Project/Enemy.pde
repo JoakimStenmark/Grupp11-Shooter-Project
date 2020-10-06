@@ -27,8 +27,6 @@ class Enemy extends GameObject
 	float recoveryTime;
 	float recoveryTimer;
 
-	String soundFileToPlayWhenDie;
-
 	Enemy ()
 	{
 	}
@@ -39,15 +37,12 @@ class Enemy extends GameObject
 		this.direction = new PVector (0f, 1f);
 		this.health = 1;
 		this.maxHealth = this.health;
-		this.speed = 120f;
 		this.radius = 16f;
 		diameter = radius + radius;
 		aabb = new BoundingBox (position, new PVector (diameter, diameter));
 
 		col = color(255, 0, 0);
-		moveLength = new PVector(48,0);
-
-		soundFileToPlayWhenDie = "Explosion.wav";
+		moveLength = new PVector(48,0);		
 
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);
@@ -127,20 +122,16 @@ class Enemy extends GameObject
 		{
 			moveLength.set(left);
 
-			//goLeft = !goLeft;
 		}
 		else if (goRight)
 		{
 			moveLength.set(right);
-			//goRight = !goRight;
 		}
 
 		position.add(moveLength);
 		stepsTaken++;
-		//println("stepsTaken: " + stepsTaken % 4);
 		if (position.y + radius >= height - 96) 
 		{
-			// println (_name + " reached the End Zone at: " + position);
 			gameManager.GameOver();
 		}
 
@@ -226,7 +217,7 @@ class Enemy extends GameObject
 		}
 		else 
 		{
-			soundManager.PlaySound("EnemyHit.wav");
+			soundManager.enemyHitSound.play();
 		}
 
 		recoveryTimer = recoveryTime;
@@ -235,7 +226,6 @@ class Enemy extends GameObject
 	private void GotKilled (int points)
 	{
 		isActive = false;
-		// println (_name + " got killed!");
 		gameManager.EnemyGotKilled (points);
 
 		if (_name == "BigEnemy") 

@@ -6,7 +6,6 @@ class BigEnemy extends Enemy
 	{
 		position = new PVector (x, y);
 		this.direction = new PVector (0,1);	
-		this.speed = speed;		
 		this.health = 5;
 		this.maxHealth = this.health;
 		this.radius = 24f;
@@ -16,8 +15,6 @@ class BigEnemy extends Enemy
 
 		col = color(0, 0, 255);
 		moveLength = new PVector(50,0);
-
-		soundFileToPlayWhenDie = "ExplosionBig.wav";
 
 		right = new PVector(moveLength.x, moveLength.y);
 		left = new PVector(moveLength.x * -1, moveLength.y);

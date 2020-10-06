@@ -1,7 +1,5 @@
 // Eddie Norberg
 
-
-
 void setup()
 {
 	size (672, 768);
@@ -25,5 +23,5 @@ void draw ()
 public void Init ()
 {
 	gameManager = new GameManager ();
-	soundManager = new SoundManager(this);
+	soundManager = new SoundManager(this);	
 }

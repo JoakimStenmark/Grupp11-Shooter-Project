@@ -226,7 +226,7 @@ public class Player extends GameObject
 		}
 		else
 		{
-			soundManager.PlaySound("Player_hurt.wav");
+			soundManager.playerHurtSound.play();
 			recoveryTimer = recoveryTime;
 		}
 	}
@@ -238,14 +238,14 @@ public class Player extends GameObject
 			numOfTurrets++;
 			if (numOfTurrets > 3)
 				numOfTurrets = 3;
-			soundManager.PlaySound("Powerup3.wav");
+			soundManager.pickupPowerupSound.play();
 		}
 		else if (pickup instanceof ExtraLife)
 		{
 			health += pickup.value;
 			if (health > maxExtraLives)
 				health = maxExtraLives;
-			soundManager.PlaySound("Life_Get.wav");
+			soundManager.pickupHealthSound.play();
 
 		}
 	}
